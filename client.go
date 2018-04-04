@@ -30,8 +30,8 @@ func NewClient(key string, secret string) *Client {
 	auth := requests.Auth{Key: key, Secret: secret}
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
 	request = &requests.Request{Auth: auth, HTTPClient: httpClient,
-		Headers: nil, Version: getVersion(), SDKName: getSDKName(),
-		AppDetails: nil, BaseURL: constants.BASE_URL}
+		Version: getVersion(), SDKName: getSDKName(),
+		BaseURL: constants.BASE_URL}
 	payments := resources.Payments{Request: request}
 	orders := resources.Orders{Request: request}
 	client := Client{&payments, &orders}
