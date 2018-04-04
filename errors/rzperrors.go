@@ -1,12 +1,5 @@
 package errors
 
-// Types of Razorpay Errors
-const (
-	BAD_REQUEST_ERROR = "BAD_REQUEST_ERROR"
-	SERVER_ERROR      = "SERVER_ERROR"
-	GATEWAY_ERROR     = "GATEWAY_ERROR"
-)
-
 //RZPError ...
 type RZPError struct {
 	InternalErrorCode string `json:"internal_error_code"`

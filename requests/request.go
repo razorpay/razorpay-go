@@ -87,16 +87,21 @@ func (request *Request) SetTimeout(timeout int16) {
 	request.HTTPClient = &http.Client{Timeout: time.Duration(timeoutSeconds)}
 }
 
-func processResponse(response *http.Response) ([]byte, error) {
+func processResponse(response *http.Response) (map[string]interface{}, error) {
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
-	return body, nil
+	resp := make(map[string]interface{})
+	if err := json.Unmarshal(body, &resp); err != nil {
+		fmt.Printf("Error: %s\n", err)
+		return nil, err
+	}
+	return resp, nil
 }
 
-func (request *Request) doRequestResponse(req *http.Request) ([]byte, error) {
+func (request *Request) doRequestResponse(req *http.Request) (map[string]interface{}, error) {
 
 	client := request.HTTPClient
 
@@ -116,11 +121,11 @@ func (request *Request) doRequestResponse(req *http.Request) ([]byte, error) {
 	errorData := jsonResponse.ErrorData
 
 	switch errorData.InternalErrorCode {
-	case errors.SERVER_ERROR:
+	case constants.SERVER_ERROR:
 		return nil, &errors.ServerError{Message: errorData.Description}
-	case errors.GATEWAY_ERROR:
+	case constants.GATEWAY_ERROR:
 		return nil, &errors.GatewayError{Message: errorData.Description}
-	case errors.BAD_REQUEST_ERROR:
+	case constants.BAD_REQUEST_ERROR:
 	default:
 		return nil, &errors.BadRequestError{Message: errorData.Description}
 	}
@@ -129,7 +134,7 @@ func (request *Request) doRequestResponse(req *http.Request) ([]byte, error) {
 }
 
 //Get ...
-func (request *Request) Get(path string, queryParams map[string]interface{}, options map[string]string) ([]byte, error) {
+func (request *Request) Get(path string, queryParams map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
 
 	url = buildURLWithParams(url, queryParams)
@@ -144,7 +149,7 @@ func (request *Request) Get(path string, queryParams map[string]interface{}, opt
 }
 
 //Post ...
-func (request *Request) Post(path string, payload map[string]interface{}, options map[string]string) ([]byte, error) {
+func (request *Request) Post(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
 
@@ -154,15 +159,13 @@ func (request *Request) Post(path string, payload map[string]interface{}, option
 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
 
-	req.Header.Set("Content-Type", "application/json")
-
 	request.addRequestHeaders(req, options)
 
 	return request.doRequestResponse(req)
 }
 
 //Put ...
-func (request *Request) Put(path string, payload map[string]interface{}, options map[string]string) ([]byte, error) {
+func (request *Request) Put(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
 
@@ -172,15 +175,13 @@ func (request *Request) Put(path string, payload map[string]interface{}, options
 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
 
-	req.Header.Set("Content-Type", "application/json")
-
 	request.addRequestHeaders(req, options)
 
 	return request.doRequestResponse(req)
 }
 
 //Delete ...
-func (request *Request) Delete(path string, options map[string]string) ([]byte, error) {
+func (request *Request) Delete(path string, options map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
 

@@ -15,7 +15,7 @@ client := Client("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
 
 ```
 
-Note: All calls below return a byte array(`[]byte`) and error(`error`) object in response
+Note: All calls below return a `map[string]interface{} and error(`error`) object in response
 ### Payments
 
 - Fetch all payments
@@ -50,16 +50,16 @@ Note: All calls below return a byte array(`[]byte`) and error(`error`) object in
 - Create a new order
 
     ```
-    data = map[string][string] {
-        'amount' : '1234',
-        'currency': 'ISD',
-        'receipt' : 'receipt_id',
-        'payment_capture': '1',
-        }    
+    data := map[string]interface{}{
+        "amount":          1234,
+        "currency":        "INR",
+        "receipt_id":      "some_receipt_id",
+        "payment_capture": 1,
+    }
     body, err := client.orders.Create(data)
     ```
     Note: data is a map and should contain these keys
-        amount           : amount of order
+        amount           : amount of order(in paisa)
         currency         : currency of order
         receipt          : receipt id of order
         payment_capture  : 1 if capture should be done automatically or else 0

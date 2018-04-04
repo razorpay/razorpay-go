@@ -13,12 +13,12 @@ type Payments struct {
 }
 
 //All ...
-func (p *Payments) All(data map[string]interface{}, options map[string]string) ([]byte, error) {
+func (p *Payments) All(data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 	return p.Request.Get(constants.PAYMENT_URL, data, options)
 }
 
 //Fetch ...
-func (p *Payments) Fetch(id string, data map[string]interface{}, options map[string]string) ([]byte, error) {
+func (p *Payments) Fetch(id string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s/%s", constants.PAYMENT_URL, id)
 
@@ -26,7 +26,7 @@ func (p *Payments) Fetch(id string, data map[string]interface{}, options map[str
 }
 
 //Capture ...
-func (p *Payments) Capture(id string, amount int, data map[string]interface{}, options map[string]string) ([]byte, error) {
+func (p *Payments) Capture(id string, amount int, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s/%s/capture", constants.PAYMENT_URL, id)
 	// Amount should be in paisa
@@ -37,7 +37,7 @@ func (p *Payments) Capture(id string, amount int, data map[string]interface{}, o
 }
 
 //Refund ...
-func (p *Payments) Refund(id string, amount int, data map[string]interface{}, options map[string]string) ([]byte, error) {
+func (p *Payments) Refund(id string, amount int, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s/%s/refund", constants.PAYMENT_URL, id)
 	// Amount should be in paisa
