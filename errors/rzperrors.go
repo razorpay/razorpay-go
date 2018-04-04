@@ -15,16 +15,6 @@ type RZPError struct {
 	Code              string `json:"code"`
 }
 
-//GetInternalErrorCode ...
-func (e *RZPError) GetInternalErrorCode() string {
-	return e.InternalErrorCode
-}
-
-//GetDescription ...
-func (e *RZPError) GetDescription() string {
-	return e.Description
-}
-
 //RZPErrorJSON ...
 type RZPErrorJSON struct {
 	ErrorData RZPError `json:"error"`
@@ -56,19 +46,12 @@ type SignatureVerificationError struct {
 
 //Error ...
 func (s *BadRequestError) Error() string {
-	errorMessage := ""
 
 	if s == nil {
 		return "<nil>"
 	}
 
-	if s.Message != "" {
-		errorMessage += s.Message
-	}
-
-	errorMessage += s.Err.Error()
-
-	return errorMessage
+	return handleError(s.Message, s.Err.Error())
 }
 
 func handleError(msg string, desc string) string {

@@ -115,14 +115,14 @@ func (request *Request) doRequestResponse(req *http.Request) ([]byte, error) {
 	json.NewDecoder(response.Body).Decode(jsonResponse)
 	errorData := jsonResponse.ErrorData
 
-	switch errorData.GetInternalErrorCode() {
+	switch errorData.InternalErrorCode {
 	case errors.SERVER_ERROR:
-		return nil, &errors.ServerError{Message: errorData.GetDescription()}
+		return nil, &errors.ServerError{Message: errorData.Description}
 	case errors.GATEWAY_ERROR:
-		return nil, &errors.GatewayError{Message: errorData.GetDescription()}
+		return nil, &errors.GatewayError{Message: errorData.Description}
 	case errors.BAD_REQUEST_ERROR:
 	default:
-		return nil, &errors.BadRequestError{Message: errorData.GetDescription()}
+		return nil, &errors.BadRequestError{Message: errorData.Description}
 	}
 
 	return processResponse(response)

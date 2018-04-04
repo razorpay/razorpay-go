@@ -29,7 +29,7 @@ func getSDKName() string {
 func NewClient(key string, secret string) *Client {
 	auth := requests.Auth{Key: key, Secret: secret}
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
-	request := &requests.Request{Auth: auth, HTTPClient: httpClient,
+	request = &requests.Request{Auth: auth, HTTPClient: httpClient,
 		Headers: nil, Version: getVersion(), SDKName: getSDKName(),
 		AppDetails: nil, BaseURL: constants.BaseURL}
 	payments := resources.Payments{Request: request}
