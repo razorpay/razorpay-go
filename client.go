@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/razorpay/razorpay-golang/razorpay/constants"
-	"gitlab.com/venkatvghub/razorpay-go/razorpay/requests"
-	"gitlab.com/venkatvghub/razorpay-go/razorpay/resources"
+	"github.com/razorpay/razorpay-go/constants"
+	"github.com/razorpay/razorpay-go/requests"
+	"github.com/razorpay/razorpay-go/resources"
 )
 
 var request *requests.Request

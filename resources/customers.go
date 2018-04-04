@@ -3,8 +3,8 @@ package resources
 import (
 	"fmt"
 
-	"gitlab.com/venkatvghub/razorpay-go/razorpay/constants"
-	"gitlab.com/venkatvghub/razorpay-go/razorpay/requests"
+	"github.com/razorpay/razorpay-go/constants"
+	"github.com/razorpay/razorpay-go/requests"
 )
 
 //Customers ...

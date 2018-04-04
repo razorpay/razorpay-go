@@ -9,8 +9,8 @@ import (
 	"net/url"
 	"time"
 
-	"gitlab.com/venkatvghub/razorpay-go/razorpay/constants"
-	"gitlab.com/venkatvghub/razorpay-go/razorpay/errors"
+	"github.com/razorpay/razorpay-go/constants"
+	"github.com/razorpay/razorpay-go/errors"
 )
 
 //Auth ...
