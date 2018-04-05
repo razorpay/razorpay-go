@@ -37,16 +37,6 @@ type SignatureVerificationError struct {
 	Err     error
 }
 
-//Error ...
-func (s *BadRequestError) Error() string {
-
-	if s == nil {
-		return "<nil>"
-	}
-
-	return handleError(s.Message, s.Err.Error())
-}
-
 func handleError(msg string, desc string) string {
 	errorMessage := ""
 	if msg != "" {
@@ -56,29 +46,20 @@ func handleError(msg string, desc string) string {
 	return errorMessage
 }
 
+//Error ...
+func (s *BadRequestError) Error() string {
+	return handleError(s.Message, s.Err.Error())
+}
+
 func (s *GatewayError) Error() string {
-
-	if s == nil {
-		return "<nil>"
-	}
-
 	return handleError(s.Message, s.Err.Error())
 
 }
 
 func (s *ServerError) Error() string {
-	if s == nil {
-		return "<nil>"
-	}
-
 	return handleError(s.Message, s.Err.Error())
 }
 
 func (s *SignatureVerificationError) Error() string {
-	if s == nil {
-		return "<nil>"
-	}
-
 	return handleError(s.Message, s.Err.Error())
-
 }
