@@ -13,8 +13,8 @@ var request *requests.Request
 
 //Client ...
 type Client struct {
-	payments *resources.Payments
-	orders   *resources.Orders
+	payment *resources.Payment
+	order   *resources.Order
 }
 
 func getVersion() string {
@@ -32,9 +32,9 @@ func NewClient(key string, secret string) *Client {
 	request = &requests.Request{Auth: auth, HTTPClient: httpClient,
 		Version: getVersion(), SDKName: getSDKName(),
 		BaseURL: constants.BASE_URL}
-	payments := resources.Payments{Request: request}
-	orders := resources.Orders{Request: request}
-	client := Client{&payments, &orders}
+	payment := resources.Payment{Request: request}
+	order := resources.Order{Request: request}
+	client := Client{&payment, &order}
 	return &client
 }
 

@@ -20,30 +20,30 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
 
 - Fetch all payments
     ```
-    body, err := client.payments.All()
+    body, err := client.payment.All()
     ```
 - Fetch a particular payment
     ```
-    body, err := client.payments.Fetch(<payment_id>)
+    body, err := client.payment.Fetch(<payment_id>)
     ```
 - Capture a payment
     ```
-    body, err := client.payments.Capture(<payment_id>, <amount>)
+    body, err := client.payment.Capture(<payment_id>, <amount>)
     ```
     Note: amount is in paisa
 - Refund a payment
     ```
-    body, err := client.payments.Refund(<payment_id>, <amount_to_be_refunded>)
+    body, err := client.payment.Refund(<payment_id>, <amount_to_be_refunded>)
     ```
 
 ### Refunds
 - Fetch all refunds
     ```
-    body, err := client.refunds.All()
+    body, err := client.refund.All()
     ```
 - Fetch a particular refund
     ```
-    body, err := client.refunds.Fetch(<refund_id>)
+    body, err := client.refund.Fetch(<refund_id>)
     ```
 
 ### Orders
@@ -56,7 +56,7 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
         "receipt_id":      "some_receipt_id",
         "payment_capture": 1,
     }
-    body, err := client.orders.Create(data)
+    body, err := client.order.Create(data)
     ```
     Note: data is a map and should contain these keys
         amount           : amount of order(in paisa)
@@ -67,13 +67,13 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
 
 - Fetch a particular order
     ```
-    body, err := client.orders.Fetch(<order_id>)
+    body, err := client.order.Fetch(<order_id>)
     ```
 - Fetch all orders
     ```
-    body, err := client.orders.All()
+    body, err := client.order.All()
     ```
 - Fetch all payments for order
     ```
-    body, err := client.orders.Payments(<order_id>)
+    body, err := client.order.Payments(<order_id>)
     ```

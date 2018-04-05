@@ -95,7 +95,6 @@ func processResponse(response *http.Response) (map[string]interface{}, error) {
 	}
 	resp := make(map[string]interface{})
 	if err := json.Unmarshal(body, &resp); err != nil {
-		fmt.Printf("Error: %s\n", err)
 		return nil, err
 	}
 	return resp, nil
