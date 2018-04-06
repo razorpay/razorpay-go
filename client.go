@@ -14,8 +14,10 @@ var Request *requests.Request
 
 //Client ...
 type Client struct {
-	Payment *resources.Payment
-	Order   *resources.Order
+	Payment  *resources.Payment
+	Order    *resources.Order
+	Customer *resources.Customer
+	Refund   *resources.Refund
 }
 
 func getVersion() string {
@@ -35,7 +37,14 @@ func NewClient(key string, secret string) *Client {
 		BaseURL: constants.BASE_URL}
 	payment := resources.Payment{Request: Request}
 	order := resources.Order{Request: Request}
-	client := Client{Payment: &payment, Order: &order}
+	customer := resources.Customer{Request: Request}
+	refund := resources.Refund{Request: Request}
+	client := Client{
+		Payment:  &payment,
+		Order:    &order,
+		Customer: &customer,
+		Refund:   &refund,
+	}
 	return &client
 }
 

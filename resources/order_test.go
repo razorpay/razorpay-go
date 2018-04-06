@@ -64,3 +64,16 @@ func TestOrderCreate(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
+
+func TestOrderEdit(t *testing.T) {
+	url := constants.ORDER_URL + "/" + TestOrderID
+	teardown, fixture := utils.StartMockServer(url, "fake_order")
+	defer teardown()
+	params := map[string]interface{}{
+		"amount": 100,
+	}
+	body, err := utils.Client.Order.Edit(TestOrderID, params, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
