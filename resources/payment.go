@@ -30,7 +30,9 @@ func (p *Payment) Capture(id string, amount int, data map[string]interface{}, op
 
 	url := fmt.Sprintf("%s/%s/capture", constants.PAYMENT_URL, id)
 	// Amount should be in paisa
-
+	if data == nil {
+		data = make(map[string]interface{})
+	}
 	data["amount"] = amount
 
 	return p.Request.Post(url, data, options)
@@ -41,8 +43,28 @@ func (p *Payment) Refund(id string, amount int, data map[string]interface{}, opt
 
 	url := fmt.Sprintf("%s/%s/refund", constants.PAYMENT_URL, id)
 	// Amount should be in paisa
-
+	if data == nil {
+		data = make(map[string]interface{})
+	}
 	data["amount"] = amount
 
 	return p.Request.Post(url, data, options)
+}
+
+//Transfer ...
+func (p *Payment) Transfer(id string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/transfers", constants.PAYMENT_URL, id)
+	return p.Request.Post(url, data, options)
+}
+
+//Transfers ...
+func (p *Payment) Transfers(id string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/transfers", constants.PAYMENT_URL, id)
+	return p.Request.Get(url, data, options)
+}
+
+//BankTransfer ...
+func (p *Payment) BankTransfer(id string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/bank_transfer", constants.PAYMENT_URL, id)
+	return p.Request.Get(url, data, options)
 }

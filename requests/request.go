@@ -45,7 +45,7 @@ func buildURLWithParams(requestURL string, data map[string]interface{}) string {
 	parameters := url.Values{}
 
 	for k, v := range data {
-		parameters.Add(k, v.(string))
+		parameters.Add(k, fmt.Sprintf("%v", v))
 	}
 
 	URL.RawQuery = parameters.Encode()

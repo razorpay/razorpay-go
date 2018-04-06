@@ -9,12 +9,13 @@ import (
 	"github.com/razorpay/razorpay-go/resources"
 )
 
-var request *requests.Request
+//Request ...
+var Request *requests.Request
 
 //Client ...
 type Client struct {
-	payment *resources.Payment
-	order   *resources.Order
+	Payment *resources.Payment
+	Order   *resources.Order
 }
 
 func getVersion() string {
@@ -29,21 +30,21 @@ func getSDKName() string {
 func NewClient(key string, secret string) *Client {
 	auth := requests.Auth{Key: key, Secret: secret}
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
-	request = &requests.Request{Auth: auth, HTTPClient: httpClient,
+	Request = &requests.Request{Auth: auth, HTTPClient: httpClient,
 		Version: getVersion(), SDKName: getSDKName(),
 		BaseURL: constants.BASE_URL}
-	payment := resources.Payment{Request: request}
-	order := resources.Order{Request: request}
-	client := Client{&payment, &order}
+	payment := resources.Payment{Request: Request}
+	order := resources.Order{Request: Request}
+	client := Client{Payment: &payment, Order: &order}
 	return &client
 }
 
 //AddHeaders ...
 func (client *Client) AddHeaders(headers map[string]string) {
-	request.AddHeaders(headers)
+	Request.AddHeaders(headers)
 }
 
 //SetTimeout ...
 func (client *Client) SetTimeout(timeout int16) {
-	request.SetTimeout(timeout)
+	Request.SetTimeout(timeout)
 }
