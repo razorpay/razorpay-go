@@ -9,7 +9,9 @@ You need to setup your key and secret using the following:
 You can find your API keys at <https://dashboard.razorpay.com/#/app/keys>.
 
 ```
-import "github.com/razorpay/razorpay-go/"
+import (
+razorpay "github.com/razorpay/razorpay-go"
+)
 
 client := Client("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
 
