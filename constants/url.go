@@ -1,28 +1,37 @@
 package constants
 
-const (
-	//BASE_URL ... base api url
-	BASE_URL = "https://api.razorpay.com/v1"
-	//ORDER_URL ...orders api base path
-	ORDER_URL = "/orders"
-	//INVOICE_URL ...invoices api base path
-	INVOICE_URL = "/invoices"
-	//PAYMENT_URL ...payments api base pth
-	PAYMENT_URL = "/payments"
-	//REFUND_URL ...refunds api base path
-	REFUND_URL = "/refunds"
-	//CARD_URL ...cards api base path
-	CARD_URL = "/cards"
-	//CUSTOMER_URL ...customers api base path
-	CUSTOMER_URL = "/customers"
-	//ADDON_URL ...addon api base path
-	ADDON_URL = "/addons"
-	//TRANSFER_URL ...transfers api base path
-	TRANSFER_URL = "/transfers"
-	//VIRTUAL_ACCOUNT_URL ...virtual accounts base path
-	VIRTUAL_ACCOUNT_URL = "/virtual_accounts"
-	//SUBSCRIPTION_URL ... subscriptions base path
-	SUBSCRIPTION_URL = "/subscriptions"
-	//PLAN_URL ... plan api base path
-	PLAN_URL = "/plans"
-)
+//BASE_URL : Base api url
+const BASE_URL = "https://api.razorpay.com/v1"
+
+//ADDON_URL : Addon api base path
+const ADDON_URL = "/addons"
+
+//CARD_URL : Cards api base path
+const CARD_URL = "/cards"
+
+//CUSTOMER_URL : Customers api base path
+const CUSTOMER_URL = "/customers"
+
+//INVOICE_URL : Invoices api base path
+const INVOICE_URL = "/invoices"
+
+//ORDER_URL : Orders api base path
+const ORDER_URL = "/orders"
+
+//PAYMENT_URL : Payments api base pth
+const PAYMENT_URL = "/payments"
+
+//PLAN_URL : Plan api base path
+const PLAN_URL = "/plans"
+
+//REFUND_URL : Refunds api base path
+const REFUND_URL = "/refunds"
+
+//SUBSCRIPTION_URL : Subscriptions base path
+const SUBSCRIPTION_URL = "/subscriptions"
+
+//TRANSFER_URL : Transfers api base path
+const TRANSFER_URL = "/transfers"
+
+//VIRTUAL_ACCOUNT_URL : Virtual accounts base path
+const VIRTUAL_ACCOUNT_URL = "/virtual_accounts"

@@ -9,10 +9,9 @@ import (
 	"github.com/razorpay/razorpay-go/resources"
 )
 
-//Request ...
-var Request *requests.Request
+var request *requests.Request
 
-//Client ...
+//Client The base Razorpay SDK Client Struct. This is a composition of all the invidual client apis
 type Client struct {
 	Addon          *resources.Addon
 	Card           *resources.Card
@@ -29,33 +28,33 @@ type Client struct {
 }
 
 func getVersion() string {
-	return SDKVersion
+	return constants.SDKVersion
 }
 
 func getSDKName() string {
-	return SDKName
+	return constants.SDKName
 }
 
-//NewClient ...
+//NewClient Constructor to the Client Struct
 func NewClient(key string, secret string) *Client {
 	auth := requests.Auth{Key: key, Secret: secret}
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
-	Request = &requests.Request{Auth: auth, HTTPClient: httpClient,
+	request = &requests.Request{Auth: auth, HTTPClient: httpClient,
 		Version: getVersion(), SDKName: getSDKName(),
 		BaseURL: constants.BASE_URL}
 
-	addon := resources.Addon{Request: Request}
-	card := resources.Card{Request: Request}
-	customer := resources.Customer{Request: Request}
-	invoice := resources.Invoice{Request: Request}
-	order := resources.Order{Request: Request}
-	payment := resources.Payment{Request: Request}
-	plan := resources.Plan{Request: Request}
-	refund := resources.Refund{Request: Request}
-	subscription := resources.Subscription{Request: Request}
-	token := resources.Token{Request: Request}
-	transfer := resources.Transfer{Request: Request}
-	va := resources.VirtualAccount{Request: Request}
+	addon := resources.Addon{Request: request}
+	card := resources.Card{Request: request}
+	customer := resources.Customer{Request: request}
+	invoice := resources.Invoice{Request: request}
+	order := resources.Order{Request: request}
+	payment := resources.Payment{Request: request}
+	plan := resources.Plan{Request: request}
+	refund := resources.Refund{Request: request}
+	subscription := resources.Subscription{Request: request}
+	token := resources.Token{Request: request}
+	transfer := resources.Transfer{Request: request}
+	va := resources.VirtualAccount{Request: request}
 	client := Client{
 		Addon:          &addon,
 		Card:           &card,
@@ -73,12 +72,17 @@ func NewClient(key string, secret string) *Client {
 	return &client
 }
 
-//AddHeaders ...
+//AddHeaders method to add additional headers. Note that User-Agent and Content-Type cannot be overwritten at the moment
 func (client *Client) AddHeaders(headers map[string]string) {
-	Request.AddHeaders(headers)
+	request.AddHeaders(headers)
 }
 
-//SetTimeout ...
+//SetTimeout method to set the client timeout
 func (client *Client) SetTimeout(timeout int16) {
-	Request.SetTimeout(timeout)
+	request.SetTimeout(timeout)
+}
+
+//SetBaseURL method to set an additional BASE URL. This should be used for testing the golang SDK alone
+func (client *Client) SetBaseURL(baseURL string) {
+	request.BaseURL = baseURL
 }

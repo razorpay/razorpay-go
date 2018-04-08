@@ -1,3 +1,4 @@
+//Package requests : core handling of all the http request response calls
 package requests
 
 import (
@@ -13,16 +14,16 @@ import (
 	"github.com/razorpay/razorpay-go/errors"
 )
 
-//Auth ...
+//Auth : Struct for handling the client authentication keys
 type Auth struct {
 	Key    string
 	Secret string
 }
 
-//TIMEOUT ... client timeout
+//TIMEOUT : Default SDK Timeout in seconds
 const TIMEOUT = 10
 
-//Request ...
+//Request : Basic Struct for holding the entire request/response information for the SDK
 type Request struct {
 	Auth       Auth
 	HTTPClient *http.Client
@@ -53,7 +54,7 @@ func buildURLWithParams(requestURL string, data map[string]interface{}) string {
 	return URL.String()
 }
 
-//AddHeaders ...
+//AddHeaders : method to add additonal headers to the request
 func (request *Request) AddHeaders(headers map[string]string) {
 	//This just appends the headers to the request struct. In the actual
 	// Get/Post/Put/Delete calls, we call `addRequestHeaders` method
@@ -81,7 +82,7 @@ func (request *Request) addRequestHeaders(req *http.Request, headers map[string]
 	request.addRequestHeadersInternal(req, headers)
 }
 
-//SetTimeout ...
+//SetTimeout : method to explicity set client timeout
 func (request *Request) SetTimeout(timeout int16) {
 	timeoutSeconds := int64(timeout) * int64(time.Second)
 	request.HTTPClient = &http.Client{Timeout: time.Duration(timeoutSeconds)}
@@ -132,7 +133,7 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	return processResponse(response)
 }
 
-//Get ...
+//Get : method to handle HTTP GET calls. Takes the request path, the query params and additional http options as arguments.
 func (request *Request) Get(path string, queryParams map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
 
@@ -147,7 +148,8 @@ func (request *Request) Get(path string, queryParams map[string]interface{}, opt
 	return request.doRequestResponse(req)
 }
 
-//Post ...
+//Post : method to handle HTTP POST calls. Takes the request path, the post payload and additional http options
+// to be used as part of the request
 func (request *Request) Post(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
@@ -163,7 +165,7 @@ func (request *Request) Post(path string, payload map[string]interface{}, option
 	return request.doRequestResponse(req)
 }
 
-//Patch ...
+//Patch : method to handle HTTP PATCH calls. Takes request path, patch payload and additional http options to be used as part of the request
 func (request *Request) Patch(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
@@ -179,7 +181,7 @@ func (request *Request) Patch(path string, payload map[string]interface{}, optio
 	return request.doRequestResponse(req)
 }
 
-//Put ...
+//Put : method to handle HTTP PUT calls. Takes request path, payload and additional http options to be used as part of the request
 func (request *Request) Put(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
@@ -195,7 +197,7 @@ func (request *Request) Put(path string, payload map[string]interface{}, options
 	return request.doRequestResponse(req)
 }
 
-//Delete ...
+//Delete : method to handle HTTP DELETE calls. Takes request path, query params and additional http options to be used as part of the request
 func (request *Request) Delete(path string, queryParams map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
