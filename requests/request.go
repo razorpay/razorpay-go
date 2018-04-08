@@ -163,6 +163,22 @@ func (request *Request) Post(path string, payload map[string]interface{}, option
 	return request.doRequestResponse(req)
 }
 
+//Patch ...
+func (request *Request) Patch(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+
+	jsonStr, _ := json.Marshal(payload)
+
+	url := fmt.Sprintf("%s%s", request.BaseURL, path)
+
+	req, _ := http.NewRequest("PATCH", url, bytes.NewBuffer(jsonStr))
+
+	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+
+	request.addRequestHeaders(req, options)
+
+	return request.doRequestResponse(req)
+}
+
 //Put ...
 func (request *Request) Put(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
@@ -180,9 +196,11 @@ func (request *Request) Put(path string, payload map[string]interface{}, options
 }
 
 //Delete ...
-func (request *Request) Delete(path string, options map[string]string) (map[string]interface{}, error) {
+func (request *Request) Delete(path string, queryParams map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
+
+	url = buildURLWithParams(url, queryParams)
 
 	req, _ := http.NewRequest("DELETE", url, nil)
 

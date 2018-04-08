@@ -9,9 +9,11 @@ You need to setup your key and secret using the following:
 You can find your API keys at <https://dashboard.razorpay.com/#/app/keys>.
 
 ```
-import "github.com/razorpay/razorpay-go/"
+import (
+razorpay "github.com/razorpay/razorpay-go"
+)
 
-client := Client("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
+client := razorpay.Client("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
 
 ```
 
@@ -20,30 +22,30 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
 
 - Fetch all payments
     ```
-    body, err := client.payment.All()
+    body, err := client.Payment.All()
     ```
 - Fetch a particular payment
     ```
-    body, err := client.payment.Fetch(<payment_id>)
+    body, err := client.Payment.Fetch(<payment_id>)
     ```
 - Capture a payment
     ```
-    body, err := client.payment.Capture(<payment_id>, <amount>)
+    body, err := client.Payment.Capture(<payment_id>, <amount>)
     ```
     Note: amount is in paisa
 - Refund a payment
     ```
-    body, err := client.payment.Refund(<payment_id>, <amount_to_be_refunded>)
+    body, err := client.Payment.Refund(<payment_id>, <amount_to_be_refunded>)
     ```
 
 ### Refunds
 - Fetch all refunds
     ```
-    body, err := client.refund.All()
+    body, err := client.Refund.All()
     ```
 - Fetch a particular refund
     ```
-    body, err := client.refund.Fetch(<refund_id>)
+    body, err := client.Refund.Fetch(<refund_id>)
     ```
 
 ### Orders
@@ -56,7 +58,7 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
         "receipt_id":      "some_receipt_id",
         "payment_capture": 1,
     }
-    body, err := client.order.Create(data)
+    body, err := client.Order.Create(data)
     ```
     Note: data is a map and should contain these keys
         amount           : amount of order(in paisa)
@@ -67,13 +69,13 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
 
 - Fetch a particular order
     ```
-    body, err := client.order.Fetch(<order_id>)
+    body, err := client.Order.Fetch(<order_id>)
     ```
 - Fetch all orders
     ```
-    body, err := client.order.All()
+    body, err := client.Order.All()
     ```
 - Fetch all payments for order
     ```
-    body, err := client.order.Payments(<order_id>)
+    body, err := client.Order.Payments(<order_id>)
     ```
