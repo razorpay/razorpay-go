@@ -8,12 +8,12 @@ This is primarily meant for merchants who wish to perform interactions with the 
 You need to setup your key and secret using the following:
 You can find your API keys at <https://dashboard.razorpay.com/#/app/keys>.
 
-```
+```go
 import (
 razorpay "github.com/razorpay/razorpay-go"
 )
 
-client := razorpay.Client("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
+client := razorpay.NewClient("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
 
 ```
 
@@ -21,20 +21,20 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
 ### Payments
 
 - Fetch all payments
-    ```
+    ```go
     body, err := client.Payment.All()
     ```
 - Fetch a particular payment
-    ```
+    ```go
     body, err := client.Payment.Fetch(<payment_id>)
     ```
 - Capture a payment
-    ```
+    ```go
     body, err := client.Payment.Capture(<payment_id>, <amount>)
     ```
     Note: amount is in paisa
 - Refund a payment
-    ```
+    ```go
     body, err := client.Payment.Refund(<payment_id>, <amount_to_be_refunded>)
     ```
 
@@ -51,7 +51,7 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
 ### Orders
 - Create a new order
 
-    ```
+    ```go
     data := map[string]interface{}{
         "amount":          1234,
         "currency":        "INR",
@@ -68,14 +68,14 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
         notes(optional)  : optional notes for order
 
 - Fetch a particular order
-    ```
+    ```go
     body, err := client.Order.Fetch(<order_id>)
     ```
 - Fetch all orders
-    ```
+    ```go
     body, err := client.Order.All()
     ```
 - Fetch all payments for order
-    ```
+    ```go
     body, err := client.Order.Payments(<order_id>)
     ```
