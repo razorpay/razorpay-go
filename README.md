@@ -17,7 +17,7 @@ client := razorpay.NewClient("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
 
 ```
 
-Note: All calls below return a `map[string]interface{} and error(`error`) object in response
+Note: All methods below return a `map[string]interface{}` and `error`.
 ### Payments
 
 - Fetch all payments
@@ -61,6 +61,7 @@ Note: All calls below return a `map[string]interface{} and error(`error`) object
     body, err := client.Order.Create(data)
     ```
     Note: data is a map and should contain these keys
+
         amount           : amount of order(in paisa)
         currency         : currency of order
         receipt          : receipt id of order
