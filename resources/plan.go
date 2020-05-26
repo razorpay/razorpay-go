@@ -12,18 +12,18 @@ type Plan struct {
 	Request *requests.Request
 }
 
-//Create ...
-func (plan *Plan) Create(data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
-	return plan.Request.Post(constants.PLAN_URL, data, options)
+// Create creates a new plan for the given data.
+func (plan *Plan) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	return plan.Request.Post(constants.PLAN_URL, data, extraHeaders)
 }
 
-//Fetch ...
-func (plan *Plan) Fetch(id string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/%s", constants.PLAN_URL, id)
-	return plan.Request.Get(url, data, options)
+// Fetch fetches the plan entity having the given planID.
+func (plan *Plan) Fetch(planID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s", constants.PLAN_URL, planID)
+	return plan.Request.Get(url, queryParams, extraHeaders)
 }
 
-//All ...
-func (plan *Plan) All(data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
-	return plan.Request.Get(constants.PLAN_URL, data, options)
+// All fetches collection of plans for the given queryParams.
+func (plan *Plan) All(queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	return plan.Request.Get(constants.PLAN_URL, queryParams, extraHeaders)
 }

@@ -12,7 +12,7 @@ import (
 //Request ...
 var Request *requests.Request
 
-//Client ...
+//Client provides various helper methods to make HTTP requests to Razorpay's APIs.
 type Client struct {
 	Addon          *resources.Addon
 	Card           *resources.Card
@@ -28,15 +28,8 @@ type Client struct {
 	VirtualAccount *resources.VirtualAccount
 }
 
-func getVersion() string {
-	return SDKVersion
-}
-
-func getSDKName() string {
-	return SDKName
-}
-
-//NewClient ...
+// NewClient creates and returns a new Razorpay client. key and secret
+// are used to authenticate the requests made to Razorpay's APIs.
 func NewClient(key string, secret string) *Client {
 	auth := requests.Auth{Key: key, Secret: secret}
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
@@ -73,12 +66,22 @@ func NewClient(key string, secret string) *Client {
 	return &client
 }
 
-//AddHeaders ...
+// AddHeaders adds additional headers to Razorpay's client. All requests
+// made using the client will contain these additional headers in the HTTP request.
 func (client *Client) AddHeaders(headers map[string]string) {
 	Request.AddHeaders(headers)
 }
 
-//SetTimeout ...
+// SetTimeout sets the timeout of Razorpay's Client. The default timeout will
+// be overridden for all HTTP requests made using this client.
 func (client *Client) SetTimeout(timeout int16) {
 	Request.SetTimeout(timeout)
+}
+
+func getVersion() string {
+	return SDKVersion
+}
+
+func getSDKName() string {
+	return SDKName
 }

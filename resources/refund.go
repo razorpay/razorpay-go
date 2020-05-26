@@ -12,19 +12,19 @@ type Refund struct {
 	Request *requests.Request
 }
 
-//All ...
-func (refund *Refund) All(data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
-	return refund.Request.Get(constants.REFUND_URL, data, options)
+// All fetches colelction of Refund for the given queryParams
+func (refund *Refund) All(queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	return refund.Request.Get(constants.REFUND_URL, queryParams, extraHeaders)
 }
 
-//Fetch ...
-func (refund *Refund) Fetch(refundID string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+// Fetch fetches the Refund having the given refundID.
+func (refund *Refund) Fetch(refundID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s/%s", constants.REFUND_URL, refundID)
-	return refund.Request.Get(url, data, options)
+	return refund.Request.Get(url, queryParams, extraHeaders)
 }
 
-//Create ...
-func (refund *Refund) Create(data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
-	return refund.Request.Post(constants.REFUND_URL, data, options)
+// Create creates a new Refund for the given data.
+func (refund *Refund) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	return refund.Request.Post(constants.REFUND_URL, data, extraHeaders)
 }

@@ -12,8 +12,8 @@ type Card struct {
 	Request *requests.Request
 }
 
-//Fetch ...
-func (card *Card) Fetch(cardID string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+// Fetch fetches card having the given cardID.
+func (card *Card) Fetch(cardID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s", constants.CARD_URL, cardID)
-	return card.Request.Get(url, data, options)
+	return card.Request.Get(url, queryParams, extraHeaders)
 }
