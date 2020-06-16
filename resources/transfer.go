@@ -12,36 +12,36 @@ type Transfer struct {
 	Request *requests.Request
 }
 
-//All ...
-func (t *Transfer) All(data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
-	return t.Request.Get(constants.TRANSFER_URL, data, options)
+// All fetches collection of transfer for the given queryParams.
+func (t *Transfer) All(queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	return t.Request.Get(constants.TRANSFER_URL, queryParams, extraHeaders)
 }
 
-//Fetch ...
-func (t *Transfer) Fetch(transferID string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+// Fetch fetches a transfer having the given transferID.
+func (t *Transfer) Fetch(transferID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s", constants.TRANSFER_URL, transferID)
-	return t.Request.Get(url, data, options)
+	return t.Request.Get(url, queryParams, extraHeaders)
 }
 
-//Create ...
-func (t *Token) Create(data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
-	return t.Request.Post(constants.TRANSFER_URL, data, options)
+// Create creates a new transfer for the given data.
+func (t *Transfer) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	return t.Request.Post(constants.TRANSFER_URL, data, extraHeaders)
 }
 
-//Edit ...
-func (t *Token) Edit(transferID string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+// Edit edits the transfer having the given transferID.
+func (t *Transfer) Edit(transferID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s", constants.TRANSFER_URL, transferID)
-	return t.Request.Patch(url, data, options)
+	return t.Request.Patch(url, data, extraHeaders)
 }
 
-//Reverse ...
-func (t *Token) Reverse(transferID string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+// Reverse reverses the transfer having the given transferID.
+func (t *Transfer) Reverse(transferID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s/reversals", constants.TRANSFER_URL, transferID)
-	return t.Request.Post(url, data, options)
+	return t.Request.Post(url, data, extraHeaders)
 }
 
-//Reversals ...
-func (t *Token) Reversals(transferID string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+// Reversals fetches a collection of transfer associated with the given transferID.
+func (t *Transfer) Reversals(transferID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s/reversals", constants.TRANSFER_URL, transferID)
-	return t.Request.Get(url, data, options)
+	return t.Request.Get(url, queryParams, extraHeaders)
 }

@@ -12,21 +12,21 @@ type Customer struct {
 	Request *requests.Request
 }
 
-//Fetch ...
-func (cust *Customer) Fetch(customerID string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+// Fetch fetches customer having the given cutomerID.
+func (cust *Customer) Fetch(customerID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s", constants.CUSTOMER_URL, customerID)
-	return cust.Request.Get(url, data, options)
+	return cust.Request.Get(url, queryParams, extraHeaders)
 }
 
-//Create ...
-func (cust *Customer) Create(data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
-	return cust.Request.Post(constants.CUSTOMER_URL, data, options)
+// Create creates a new customer for the given data.
+func (cust *Customer) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	return cust.Request.Post(constants.CUSTOMER_URL, data, extraHeaders)
 }
 
-//Edit ...
-func (cust *Customer) Edit(customerID string, data map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+// Edit updates the customer having the given customerID.
+func (cust *Customer) Edit(customerID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s/%s", constants.CUSTOMER_URL, customerID)
 
-	return cust.Request.Post(url, data, options)
+	return cust.Request.Post(url, data, extraHeaders)
 }

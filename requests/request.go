@@ -13,7 +13,7 @@ import (
 	"github.com/razorpay/razorpay-go/errors"
 )
 
-//Auth ...
+//Auth holds the values required to authenticate the requests made to Razorpay APIs
 type Auth struct {
 	Key    string
 	Secret string
@@ -22,7 +22,8 @@ type Auth struct {
 //TIMEOUT ... client timeout
 const TIMEOUT = 10
 
-//Request ...
+// Request encapsulates all the information required to make an HTTP request
+// to Razorpay's APIs.
 type Request struct {
 	Auth       Auth
 	HTTPClient *http.Client
@@ -53,7 +54,7 @@ func buildURLWithParams(requestURL string, data map[string]interface{}) string {
 	return URL.String()
 }
 
-//AddHeaders ...
+// AddHeaders adds header to the Request object
 func (request *Request) AddHeaders(headers map[string]string) {
 	//This just appends the headers to the request struct. In the actual
 	// Get/Post/Put/Delete calls, we call `addRequestHeaders` method
@@ -133,7 +134,7 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 }
 
 //Get ...
-func (request *Request) Get(path string, queryParams map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+func (request *Request) Get(path string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
 
 	url = buildURLWithParams(url, queryParams)
@@ -142,13 +143,13 @@ func (request *Request) Get(path string, queryParams map[string]interface{}, opt
 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
 
-	request.addRequestHeaders(req, options)
+	request.addRequestHeaders(req, extraHeaders)
 
 	return request.doRequestResponse(req)
 }
 
 //Post ...
-func (request *Request) Post(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+func (request *Request) Post(path string, payload map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
 
@@ -158,13 +159,13 @@ func (request *Request) Post(path string, payload map[string]interface{}, option
 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
 
-	request.addRequestHeaders(req, options)
+	request.addRequestHeaders(req, extraHeaders)
 
 	return request.doRequestResponse(req)
 }
 
 //Patch ...
-func (request *Request) Patch(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+func (request *Request) Patch(path string, payload map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
 
@@ -174,13 +175,13 @@ func (request *Request) Patch(path string, payload map[string]interface{}, optio
 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
 
-	request.addRequestHeaders(req, options)
+	request.addRequestHeaders(req, extraHeaders)
 
 	return request.doRequestResponse(req)
 }
 
 //Put ...
-func (request *Request) Put(path string, payload map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+func (request *Request) Put(path string, payload map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
 
@@ -190,13 +191,13 @@ func (request *Request) Put(path string, payload map[string]interface{}, options
 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
 
-	request.addRequestHeaders(req, options)
+	request.addRequestHeaders(req, extraHeaders)
 
 	return request.doRequestResponse(req)
 }
 
 //Delete ...
-func (request *Request) Delete(path string, queryParams map[string]interface{}, options map[string]string) (map[string]interface{}, error) {
+func (request *Request) Delete(path string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
 
@@ -206,7 +207,7 @@ func (request *Request) Delete(path string, queryParams map[string]interface{}, 
 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
 
-	request.addRequestHeaders(req, options)
+	request.addRequestHeaders(req, extraHeaders)
 
 	return request.doRequestResponse(req)
 }
