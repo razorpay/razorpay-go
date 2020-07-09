@@ -1,0 +1,53 @@
+# Start by giving a name to your workflow
+name: Analyze branch
+
+# then define on which event, here a push
+on:
+  push:
+  # and the target with some regex to match our specific  branch names
+    branches:
+      - master
+      - test
+
+# We can now build our job
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # Use an existing action, you can look in the market place to find what you need and how to use it, to setup the sonar scanner
+      - name: Setup sonar scanner
+        uses: warchant/setup-sonar-scanner@v1
+
+      # Another existing action, this one to checkout the repository
+      - name: 'Checkout repository on branch: test'
+        uses: actions/checkout@v2
+        with:
+          ref: test
+          fetch-depth: 0
+
+      # Conditional execution can be done, in this case the parameter to use with sonar scanner are different if we are analyzing master or a branch
+      - if: endsWith(github.REF, '/master') != true
+        name: 'Run an analysis of the test branch'
+        env:
+          # to get access to secrets.SONAR_TOKEN, provide GITHUB_TOKEN
+          GITHUB_TOKEN: $git_token
+        run: sonar-scanner
+          -Dsonar.host.url=https://sonar.razorpay.com
+          -Dsonar.login=$sonar_token
+          -Dsonar.projectKey=hello-world
+          -Dsonar.branch.name=test
+          -Dsonar.scm.provider=git
+
+      - if: endsWith(github.REF, '/master') == true
+        name: 'Run an analysis of the master branch'
+        env:
+          # to get access to secrets.SONAR_TOKEN, provide GITHUB_TOKEN
+          GITHUB_TOKEN: $git_token
+        run: sonar-scanner
+          -Dsonar.host.url=https://sonar.razorpay.com
+          -Dsonar.login=$sonar_token
+          -Dsonar.projectKey=hello-world
+          -Dsonar.scm.provider=git
+          -Dsonar.java.binaries=/tmp
