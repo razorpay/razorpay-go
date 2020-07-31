@@ -22,7 +22,7 @@ const (
 	//VIRTUAL_ACCOUNT_URL ...virtual accounts base path
 	VIRTUAL_ACCOUNT_URL = "/virtual_accounts"
 	//SUBSCRIPTION_URL ... subscriptions base path
-	SUBSCRIPTION_URL = "/subscriptions"
+	SUBSCRIPTION_URL = "/subscription_registration/auth_links"
 	//PLAN_URL ... plan api base path
 	PLAN_URL = "/plans"
 )
