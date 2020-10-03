@@ -17,35 +17,36 @@ client := razorpay.NewClient("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
 
 ```
 
-Note: All methods below return a `map[string]interface{}` and `error`.
+Note: All methods below return a `map[string]interface{}` and `error`. All methods accept an `extraHeaders` param of type `map[string]string`, allowing you to optinally set extra HTTP headers on the request.
+
 ### Payments
 
 - Fetch all payments
     ```go
-    body, err := client.Payment.All()
+    body, err := client.Payment.All(nil, nil)
     ```
 - Fetch a particular payment
     ```go
-    body, err := client.Payment.Fetch(<payment_id>)
+    body, err := client.Payment.Fetch("<payment_id>" , nil, nil)
     ```
 - Capture a payment
     ```go
-    body, err := client.Payment.Capture(<payment_id>, <amount>)
+    body, err := client.Payment.Capture("<payment_id>", <amount>, nil, nil)
     ```
     Note: amount is in paisa
 - Refund a payment
     ```go
-    body, err := client.Payment.Refund(<payment_id>, <amount_to_be_refunded>)
+    body, err := client.Payment.Refund("<payment_id>", <amount_to_be_refunded>, nil, nil)
     ```
 
 ### Refunds
 - Fetch all refunds
-    ```
-    body, err := client.Refund.All()
+    ```go
+    body, err := client.Refund.All(nil, nil)
     ```
 - Fetch a particular refund
-    ```
-    body, err := client.Refund.Fetch(<refund_id>)
+    ```go
+    body, err := client.Refund.Fetch("<refund_id>", nil, nil)
     ```
 
 ### Orders
@@ -55,14 +56,14 @@ Note: All methods below return a `map[string]interface{}` and `error`.
     data := map[string]interface{}{
         "amount":          1234,
         "currency":        "INR",
-        "receipt_id":      "some_receipt_id",
+        "receipt":         "some_receipt_id",
         "payment_capture": 1,
     }
-    body, err := client.Order.Create(data)
+    body, err := client.Order.Create(data, nil)
     ```
-    Note: data is a map and should contain these keys
+    Note: data is a map and should contain these keys. See the [Orders entity reference](https://razorpay.com/docs/api/orders/#order-entity) for details on these keys.
 
-        amount           : amount of order(in paisa)
+        amount           : amount of order (in paisa)
         currency         : currency of order
         receipt          : receipt id of order
         payment_capture  : 1 if capture should be done automatically or else 0
@@ -70,13 +71,13 @@ Note: All methods below return a `map[string]interface{}` and `error`.
 
 - Fetch a particular order
     ```go
-    body, err := client.Order.Fetch(<order_id>)
+    body, err := client.Order.Fetch("<order_id>", nil, nil)
     ```
 - Fetch all orders
     ```go
-    body, err := client.Order.All()
+    body, err := client.Order.All(nil, nil)
     ```
 - Fetch all payments for order
     ```go
-    body, err := client.Order.Payments(<order_id>)
+    body, err := client.Order.Payments("<order_id>", nil, nil)
     ```
