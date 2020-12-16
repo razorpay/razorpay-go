@@ -117,17 +117,20 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 
 	// Raise an error depending on the type of error in response
 	var jsonResponse errors.RZPErrorJSON
-	json.NewDecoder(response.Body).Decode(jsonResponse)
-	errorData := jsonResponse.ErrorData
+	err = json.NewDecoder(response.Body).Decode(&jsonResponse)
+	if err != nil {
+		return nil, err
+	}
 
+	errorData := jsonResponse.ErrorData
 	switch errorData.InternalErrorCode {
 	case constants.SERVER_ERROR:
-		return nil, &errors.ServerError{Message: errorData.Description}
+		return nil, &errors.ServerError{Message: errorData.Description, Err: fmt.Errorf("")}
 	case constants.GATEWAY_ERROR:
-		return nil, &errors.GatewayError{Message: errorData.Description}
+		return nil, &errors.GatewayError{Message: errorData.Description, Err: fmt.Errorf("")}
 	case constants.BAD_REQUEST_ERROR:
 	default:
-		return nil, &errors.BadRequestError{Message: errorData.Description}
+		return nil, &errors.BadRequestError{Message: errorData.Description, Err: fmt.Errorf("")}
 	}
 
 	return processResponse(response)

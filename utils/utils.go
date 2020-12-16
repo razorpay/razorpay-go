@@ -75,12 +75,12 @@ func TestResponse(jsonBodyByteArray []byte, fixtureByteArray []byte, t *testing.
 }
 
 //StartMockServer ...
-func StartMockServer(url string, fixtureName string) (func(), string) {
+func StartMockServer(url string, fixtureName string, httpStatus int) (func(), string) {
 	teardown := testSetup()
 	fixture := getFixture(fixtureName)
 	mux.HandleFunc(url, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(httpStatus)
 		fmt.Fprintf(w, fixture)
 	})
 	return teardown, fixture

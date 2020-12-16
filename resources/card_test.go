@@ -2,6 +2,7 @@ package resources_test
 
 import (
 	"encoding/json"
+	libhttp "net/http"
 	"testing"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -13,7 +14,7 @@ const TestCardID = "fake_card_id"
 
 func TestCardFetch(t *testing.T) {
 	url := constants.CARD_URL + "/" + TestCardID
-	teardown, fixture := utils.StartMockServer(url, "fake_card")
+	teardown, fixture := utils.StartMockServer(url, "fake_card", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Card.Fetch(TestCardID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)

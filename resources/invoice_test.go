@@ -2,6 +2,7 @@ package resources_test
 
 import (
 	"encoding/json"
+	libhttp "net/http"
 	"testing"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -13,7 +14,7 @@ const TestInvoiceID = "fake_invoice_id"
 
 func TestInvoiceAll(t *testing.T) {
 	url := constants.INVOICE_URL
-	teardown, fixture := utils.StartMockServer(url, "invoice_collection")
+	teardown, fixture := utils.StartMockServer(url, "invoice_collection", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Invoice.All(nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -23,7 +24,7 @@ func TestInvoiceAll(t *testing.T) {
 
 func TestInvoiceAllWithOptions(t *testing.T) {
 	url := constants.INVOICE_URL
-	teardown, fixture := utils.StartMockServer(url, "invoice_collection_with_one_invoice")
+	teardown, fixture := utils.StartMockServer(url, "invoice_collection_with_one_invoice", libhttp.StatusOK)
 	defer teardown()
 	data := map[string]interface{}{
 		"count": 1,
@@ -36,7 +37,7 @@ func TestInvoiceAllWithOptions(t *testing.T) {
 
 func TestInvoiceFetch(t *testing.T) {
 	url := constants.INVOICE_URL + "/" + TestInvoiceID
-	teardown, fixture := utils.StartMockServer(url, "fake_invoice")
+	teardown, fixture := utils.StartMockServer(url, "fake_invoice", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Invoice.Fetch(TestInvoiceID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -46,7 +47,7 @@ func TestInvoiceFetch(t *testing.T) {
 
 func TestInvoiceCreate(t *testing.T) {
 	url := constants.INVOICE_URL
-	teardown, fixture := utils.StartMockServer(url, "fake_invoice")
+	teardown, fixture := utils.StartMockServer(url, "fake_invoice", libhttp.StatusOK)
 	defer teardown()
 	line_item := map[string]interface{}{
 		"name":   "name",
