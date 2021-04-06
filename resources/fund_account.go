@@ -26,4 +26,3 @@ func (fa *FundAccount) Fetch(fundAccountID string, queryParams map[string]interf
 	url := fmt.Sprintf("%s/%s", constants.FUND_ACCOUNT_URL, fundAccountID)
 	return fa.Request.Get(url, queryParams, extraHeaders)
 }
-

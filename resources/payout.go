@@ -26,4 +26,3 @@ func (p *Payout) Fetch(payoutID string, queryParams map[string]interface{}, extr
 	url := fmt.Sprintf("%s/%s", constants.PAYOUT_URL, payoutID)
 	return p.Request.Get(url, queryParams, extraHeaders)
 }
-
