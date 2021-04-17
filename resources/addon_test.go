@@ -12,7 +12,7 @@ import (
 const TestAddonID = "ao_8sg8LU73Y3ieav"
 
 func TestFetchAddon(t *testing.T) {
-	url := constants.ADDON_URL + "/" + TestAddonID
+	url := constants.AddonURL + "/" + TestAddonID
 	teardown, fixture := utils.StartMockServer(url, "fake_addon")
 	defer teardown()
 	body, err := utils.Client.Addon.Fetch(TestAddonID, nil, nil)
@@ -22,7 +22,7 @@ func TestFetchAddon(t *testing.T) {
 }
 
 func TestAddonDelete(t *testing.T) {
-	url := constants.ADDON_URL + "/" + TestAddonID
+	url := constants.AddonURL + "/" + TestAddonID
 	teardown, fixture := utils.StartMockServer(url, "fake_addon")
 	defer teardown()
 	body, err := utils.Client.Addon.Delete(TestAddonID, nil, nil)

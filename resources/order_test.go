@@ -12,7 +12,7 @@ import (
 const TestOrderID = "fake_order_id"
 
 func TestOrderAll(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.ORDER_URL, "order_collection")
+	teardown, fixture := utils.StartMockServer(constants.OrderURL, "order_collection")
 	defer teardown()
 	body, err := utils.Client.Order.All(nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -21,7 +21,7 @@ func TestOrderAll(t *testing.T) {
 }
 
 func TestOrderWithOptions(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.ORDER_URL, "order_collection_with_one_order")
+	teardown, fixture := utils.StartMockServer(constants.OrderURL, "order_collection_with_one_order")
 	defer teardown()
 	queryParams := map[string]interface{}{
 		"count": 1,
@@ -33,7 +33,7 @@ func TestOrderWithOptions(t *testing.T) {
 }
 
 func TestOrderFetch(t *testing.T) {
-	url := constants.ORDER_URL + "/" + TestOrderID
+	url := constants.OrderURL + "/" + TestOrderID
 	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
 	body, err := utils.Client.Order.Fetch(TestOrderID, nil, nil)
@@ -42,7 +42,7 @@ func TestOrderFetch(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 func TestOrderPayments(t *testing.T) {
-	url := constants.ORDER_URL + "/" + TestOrderID + "/payments"
+	url := constants.OrderURL + "/" + TestOrderID + "/payments"
 	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
 	body, err := utils.Client.Order.Payments(TestOrderID, nil, nil)
@@ -52,7 +52,7 @@ func TestOrderPayments(t *testing.T) {
 }
 
 func TestOrderCreate(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.ORDER_URL, "fake_order")
+	teardown, fixture := utils.StartMockServer(constants.OrderURL, "fake_order")
 	defer teardown()
 	params := map[string]interface{}{
 		"amount":   100,
@@ -66,7 +66,7 @@ func TestOrderCreate(t *testing.T) {
 }
 
 func TestOrderEdit(t *testing.T) {
-	url := constants.ORDER_URL + "/" + TestOrderID
+	url := constants.OrderURL + "/" + TestOrderID
 	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
 	params := map[string]interface{}{

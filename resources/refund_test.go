@@ -12,7 +12,7 @@ import (
 const TestRefundID = "fake_refund_id"
 
 func TestRefundAll(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.REFUND_URL, "refund_collection")
+	teardown, fixture := utils.StartMockServer(constants.RefundURL, "refund_collection")
 	defer teardown()
 	body, err := utils.Client.Refund.All(nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -21,7 +21,7 @@ func TestRefundAll(t *testing.T) {
 }
 
 func TestRefundFetch(t *testing.T) {
-	url := constants.REFUND_URL + "/" + TestRefundID
+	url := constants.RefundURL + "/" + TestRefundID
 	teardown, fixture := utils.StartMockServer(url, "fake_refund")
 	defer teardown()
 	body, err := utils.Client.Refund.Fetch(TestRefundID, nil, nil)
@@ -31,7 +31,7 @@ func TestRefundFetch(t *testing.T) {
 }
 
 func TestRefundCreate(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.REFUND_URL, "fake_refund")
+	teardown, fixture := utils.StartMockServer(constants.RefundURL, "fake_refund")
 	defer teardown()
 	params := map[string]interface{}{
 		"payment_id": TestPaymentID,
