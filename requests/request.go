@@ -110,8 +110,8 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	if err != nil {
 		return nil, err
 	}
-	if response.StatusCode >= constants.HTTP_STATUS_OK &&
-		response.StatusCode < constants.HTTP_STATUS_REDIRECT {
+	if response.StatusCode >= constants.HTTPStatusOk &&
+		response.StatusCode < constants.HTTPStatusRedirect {
 		return processResponse(response)
 	}
 
@@ -121,11 +121,11 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	errorData := jsonResponse.ErrorData
 
 	switch errorData.InternalErrorCode {
-	case constants.SERVER_ERROR:
+	case constants.ServerError:
 		return nil, &errors.ServerError{Message: errorData.Description}
-	case constants.GATEWAY_ERROR:
+	case constants.GatewayError:
 		return nil, &errors.GatewayError{Message: errorData.Description}
-	case constants.BAD_REQUEST_ERROR:
+	case constants.BadRequestError:
 	default:
 		return nil, &errors.BadRequestError{Message: errorData.Description}
 	}

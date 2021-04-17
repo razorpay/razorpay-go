@@ -14,6 +14,6 @@ type Card struct {
 
 // Fetch fetches card having the given cardID.
 func (card *Card) Fetch(cardID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/%s", constants.CARD_URL, cardID)
+	url := fmt.Sprintf("%s/%s", constants.CardURL, cardID)
 	return card.Request.Get(url, queryParams, extraHeaders)
 }

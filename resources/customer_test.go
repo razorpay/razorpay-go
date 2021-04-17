@@ -12,7 +12,7 @@ import (
 const TestCustomerID = "fake_customer_id"
 
 func TestCustomerFetch(t *testing.T) {
-	url := constants.CUSTOMER_URL + "/" + TestCustomerID
+	url := constants.CustomerURL + "/" + TestCustomerID
 	teardown, fixture := utils.StartMockServer(url, "fake_customer")
 	defer teardown()
 	body, err := utils.Client.Customer.Fetch(TestCustomerID, nil, nil)
@@ -22,7 +22,7 @@ func TestCustomerFetch(t *testing.T) {
 }
 
 func TestCustomerCreate(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.CUSTOMER_URL, "fake_customer")
+	teardown, fixture := utils.StartMockServer(constants.CustomerURL, "fake_customer")
 	defer teardown()
 	params := map[string]interface{}{
 		"name":  "test",
@@ -35,7 +35,7 @@ func TestCustomerCreate(t *testing.T) {
 }
 
 func TestCustomerEdit(t *testing.T) {
-	url := constants.CUSTOMER_URL + "/" + TestCustomerID
+	url := constants.CustomerURL + "/" + TestCustomerID
 	teardown, fixture := utils.StartMockServer(url, "fake_customer")
 	defer teardown()
 	params := map[string]interface{}{

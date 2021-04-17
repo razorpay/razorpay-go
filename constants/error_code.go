@@ -1,7 +1,10 @@
 package constants
 
 const (
-	BAD_REQUEST_ERROR = "BAD_REQUEST_ERROR"
-	GATEWAY_ERROR     = "GATEWAY_ERROR"
-	SERVER_ERROR      = "SERVER_ERROR"
+	//BadRequestError ...
+	BadRequestError = "BadRequestError"
+	//GatewayError ...
+	GatewayError    = "GatewayError"
+	//ServerError ...
+	ServerError     = "ServerError"
 )

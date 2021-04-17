@@ -12,7 +12,7 @@ import (
 const TestInvoiceID = "fake_invoice_id"
 
 func TestInvoiceAll(t *testing.T) {
-	url := constants.INVOICE_URL
+	url := constants.InvoiceURL
 	teardown, fixture := utils.StartMockServer(url, "invoice_collection")
 	defer teardown()
 	body, err := utils.Client.Invoice.All(nil, nil)
@@ -22,7 +22,7 @@ func TestInvoiceAll(t *testing.T) {
 }
 
 func TestInvoiceAllWithOptions(t *testing.T) {
-	url := constants.INVOICE_URL
+	url := constants.InvoiceURL
 	teardown, fixture := utils.StartMockServer(url, "invoice_collection_with_one_invoice")
 	defer teardown()
 	data := map[string]interface{}{
@@ -35,7 +35,7 @@ func TestInvoiceAllWithOptions(t *testing.T) {
 }
 
 func TestInvoiceFetch(t *testing.T) {
-	url := constants.INVOICE_URL + "/" + TestInvoiceID
+	url := constants.InvoiceURL + "/" + TestInvoiceID
 	teardown, fixture := utils.StartMockServer(url, "fake_invoice")
 	defer teardown()
 	body, err := utils.Client.Invoice.Fetch(TestInvoiceID, nil, nil)
@@ -45,7 +45,7 @@ func TestInvoiceFetch(t *testing.T) {
 }
 
 func TestInvoiceCreate(t *testing.T) {
-	url := constants.INVOICE_URL
+	url := constants.InvoiceURL
 	teardown, fixture := utils.StartMockServer(url, "fake_invoice")
 	defer teardown()
 	line_item := map[string]interface{}{

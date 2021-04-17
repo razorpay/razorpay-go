@@ -35,7 +35,7 @@ func NewClient(key string, secret string) *Client {
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
 	Request = &requests.Request{Auth: auth, HTTPClient: httpClient,
 		Version: getVersion(), SDKName: getSDKName(),
-		BaseURL: constants.BASE_URL}
+		BaseURL: constants.BaseURL}
 
 	addon := resources.Addon{Request: Request}
 	card := resources.Card{Request: Request}
