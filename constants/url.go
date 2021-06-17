@@ -9,6 +9,8 @@ const (
 	INVOICE_URL = "/invoices"
 	//PAYMENT_URL ...payments api base pth
 	PAYMENT_URL = "/payments"
+	//PaymentLink_URL ...payments link api base pth
+	PaymentLink_URL = "/payment_links"
 	//REFUND_URL ...refunds api base path
 	REFUND_URL = "/refunds"
 	//CARD_URL ...cards api base path
