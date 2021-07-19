@@ -1,0 +1,41 @@
+{
+  "id": "va_D6Vw6zyJ0OmRZg",
+  "name": "Acme Corp",
+  "entity": "virtual_account",
+  "status": "active",
+  "description": "Virtual Account for Raftar Soft",
+  "amount_expected": 5000,
+  "notes": [],
+  "amount_paid": null,
+  "customer_id": "cust_9xnHzNGIEY4TAV",
+  "receivers": [
+    {
+      "id": "ba_D6Vw76RrHA3DC9",
+      "entity": "bank_account",
+      "ifsc": "RATN0VAAPIS",
+      "bank_name": "RBL Bank",
+      "name": "Acme Corp",
+      "notes": [],
+      "account_number": "2223330025991681"
+    }
+  ],
+  "allowed_payers": [
+    {
+      "type": "bank_account",
+      "bank_account": {
+        "ifsc": "UTIB0000013",
+        "account_number": "914010012345679"
+      }
+    },
+    {
+      "type": "bank_account",
+      "bank_account": {
+        "ifsc": "UTIB0000014",
+        "account_number": "914010012345680"
+      }
+    }
+  ],
+  "close_by": null,
+  "closed_at": 1568109789,
+  "created_at": 1565939036
+}
