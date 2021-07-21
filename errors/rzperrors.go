@@ -16,50 +16,46 @@ type RZPErrorJSON struct {
 //BadRequestError ...
 type BadRequestError struct {
 	Message string
-	Err     error
 }
 
 //ServerError ...
 type ServerError struct {
 	Message string
-	Err     error
 }
 
 //GatewayError ...
 type GatewayError struct {
 	Message string
-	Err     error
 }
 
 //SignatureVerificationError ...
 type SignatureVerificationError struct {
 	Message string
-	Err     error
 }
 
-func handleError(msg string, desc string) string {
+func handleError(msg string) string {
 	errorMessage := ""
 	if msg != "" {
 		errorMessage += msg
 	}
-	errorMessage += desc
+
 	return errorMessage
 }
 
 //Error ...
 func (s *BadRequestError) Error() string {
-	return handleError(s.Message, s.Err.Error())
+	return handleError(s.Message)
 }
 
 func (s *GatewayError) Error() string {
-	return handleError(s.Message, s.Err.Error())
+	return handleError(s.Message)
 
 }
 
 func (s *ServerError) Error() string {
-	return handleError(s.Message, s.Err.Error())
+	return handleError(s.Message)
 }
 
 func (s *SignatureVerificationError) Error() string {
-	return handleError(s.Message, s.Err.Error())
+	return handleError(s.Message)
 }
