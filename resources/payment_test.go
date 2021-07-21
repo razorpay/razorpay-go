@@ -2,6 +2,7 @@ package resources_test
 
 import (
 	"encoding/json"
+	libhttp "net/http"
 	"testing"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -14,7 +15,7 @@ const TestCaptureAmount = 500
 const TestRefundAmount = 2000
 
 func TestPaymentAll(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.PAYMENT_URL, "payment_collection")
+	teardown, fixture := utils.StartMockServer(constants.PAYMENT_URL, "payment_collection", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Payment.All(nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -23,7 +24,7 @@ func TestPaymentAll(t *testing.T) {
 }
 
 func TestPaymentAllWithOptions(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.PAYMENT_URL, "payment_collection_with_one_payment")
+	teardown, fixture := utils.StartMockServer(constants.PAYMENT_URL, "payment_collection_with_one_payment", libhttp.StatusOK)
 	defer teardown()
 	queryParams := map[string]interface{}{
 		"count": 1,
@@ -36,7 +37,7 @@ func TestPaymentAllWithOptions(t *testing.T) {
 
 func TestPaymentFetch(t *testing.T) {
 	url := constants.PAYMENT_URL + "/" + TestPaymentID
-	teardown, fixture := utils.StartMockServer(url, "payment_collection_with_one_payment")
+	teardown, fixture := utils.StartMockServer(url, "payment_collection_with_one_payment", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Payment.Fetch(TestPaymentID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -46,7 +47,7 @@ func TestPaymentFetch(t *testing.T) {
 
 func TestPaymentCapture(t *testing.T) {
 	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/capture"
-	teardown, fixture := utils.StartMockServer(url, "fake_captured_payment")
+	teardown, fixture := utils.StartMockServer(url, "fake_captured_payment", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Payment.Capture(TestPaymentID, TestCaptureAmount, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -56,7 +57,7 @@ func TestPaymentCapture(t *testing.T) {
 
 func TestPaymentRefundCreate(t *testing.T) {
 	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/refund"
-	teardown, fixture := utils.StartMockServer(url, "fake_refund")
+	teardown, fixture := utils.StartMockServer(url, "fake_refund", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Payment.Refund(TestPaymentID, TestRefundAmount, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -65,7 +66,7 @@ func TestPaymentRefundCreate(t *testing.T) {
 }
 func TestPaymentTransfer(t *testing.T) {
 	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/transfers"
-	teardown, fixture := utils.StartMockServer(url, "transfers_collection_with_payment_id")
+	teardown, fixture := utils.StartMockServer(url, "transfers_collection_with_payment_id", libhttp.StatusOK)
 	defer teardown()
 	params := map[string]interface{}{
 		"transfers": map[string]interface{}{
@@ -84,7 +85,7 @@ func TestPaymentTransfer(t *testing.T) {
 
 func TestPaymentTransferFetch(t *testing.T) {
 	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/transfers"
-	teardown, fixture := utils.StartMockServer(url, "transfers_collection_with_payment_id")
+	teardown, fixture := utils.StartMockServer(url, "transfers_collection_with_payment_id", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Payment.Transfers(TestPaymentID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -94,7 +95,7 @@ func TestPaymentTransferFetch(t *testing.T) {
 
 func TestPaymentBankTransferFetch(t *testing.T) {
 	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/bank_transfer"
-	teardown, fixture := utils.StartMockServer(url, "fake_bank_transfer")
+	teardown, fixture := utils.StartMockServer(url, "fake_bank_transfer", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Payment.BankTransfer(TestPaymentID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)

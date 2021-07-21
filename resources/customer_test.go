@@ -2,6 +2,7 @@ package resources_test
 
 import (
 	"encoding/json"
+	libhttp "net/http"
 	"testing"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -13,7 +14,7 @@ const TestCustomerID = "fake_customer_id"
 
 func TestCustomerFetch(t *testing.T) {
 	url := constants.CUSTOMER_URL + "/" + TestCustomerID
-	teardown, fixture := utils.StartMockServer(url, "fake_customer")
+	teardown, fixture := utils.StartMockServer(url, "fake_customer", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Customer.Fetch(TestCustomerID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -22,7 +23,7 @@ func TestCustomerFetch(t *testing.T) {
 }
 
 func TestCustomerCreate(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.CUSTOMER_URL, "fake_customer")
+	teardown, fixture := utils.StartMockServer(constants.CUSTOMER_URL, "fake_customer", libhttp.StatusOK)
 	defer teardown()
 	params := map[string]interface{}{
 		"name":  "test",
@@ -36,7 +37,7 @@ func TestCustomerCreate(t *testing.T) {
 
 func TestCustomerEdit(t *testing.T) {
 	url := constants.CUSTOMER_URL + "/" + TestCustomerID
-	teardown, fixture := utils.StartMockServer(url, "fake_customer")
+	teardown, fixture := utils.StartMockServer(url, "fake_customer", libhttp.StatusOK)
 	defer teardown()
 	params := map[string]interface{}{
 		"email": "test@test.com",

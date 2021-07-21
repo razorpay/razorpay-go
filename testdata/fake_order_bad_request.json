@@ -1,0 +1,10 @@
+{
+  "error": {
+    "code": "BAD_REQUEST_ERROR",
+    "description": "error_message",
+    "source": null,
+    "step": null,
+    "reason": null,
+    "metadata": {}
+  }
+}

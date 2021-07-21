@@ -3,6 +3,7 @@ package resources_test
 import (
 	"encoding/json"
 	"fmt"
+	libhttp "net/http"
 	"testing"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -14,7 +15,7 @@ const TestTokenID = "fake_token_id"
 
 func TestTokenAll(t *testing.T) {
 	url := fmt.Sprintf("%s/%s/tokens", constants.CUSTOMER_URL, TestCustomerID)
-	teardown, fixture := utils.StartMockServer(url, "token_collection")
+	teardown, fixture := utils.StartMockServer(url, "token_collection", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Token.All(TestCustomerID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -24,7 +25,7 @@ func TestTokenAll(t *testing.T) {
 
 func TestTokenFetch(t *testing.T) {
 	url := fmt.Sprintf("%s/%s/tokens/%s", constants.CUSTOMER_URL, TestCustomerID, TestTokenID)
-	teardown, fixture := utils.StartMockServer(url, "token_collection")
+	teardown, fixture := utils.StartMockServer(url, "token_collection", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Token.Fetch(TestCustomerID, TestTokenID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -34,7 +35,7 @@ func TestTokenFetch(t *testing.T) {
 
 func TestTokenDelete(t *testing.T) {
 	url := fmt.Sprintf("%s/%s/tokens/%s", constants.CUSTOMER_URL, TestCustomerID, TestTokenID)
-	teardown, fixture := utils.StartMockServer(url, "token_delete")
+	teardown, fixture := utils.StartMockServer(url, "token_delete", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Token.Delete(TestCustomerID, TestTokenID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)

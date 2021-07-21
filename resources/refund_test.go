@@ -2,6 +2,7 @@ package resources_test
 
 import (
 	"encoding/json"
+	libhttp "net/http"
 	"testing"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -12,7 +13,7 @@ import (
 const TestRefundID = "fake_refund_id"
 
 func TestRefundAll(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.REFUND_URL, "refund_collection")
+	teardown, fixture := utils.StartMockServer(constants.REFUND_URL, "refund_collection", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Refund.All(nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -22,7 +23,7 @@ func TestRefundAll(t *testing.T) {
 
 func TestRefundFetch(t *testing.T) {
 	url := constants.REFUND_URL + "/" + TestRefundID
-	teardown, fixture := utils.StartMockServer(url, "fake_refund")
+	teardown, fixture := utils.StartMockServer(url, "fake_refund", libhttp.StatusOK)
 	defer teardown()
 	body, err := utils.Client.Refund.Fetch(TestRefundID, nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -31,7 +32,7 @@ func TestRefundFetch(t *testing.T) {
 }
 
 func TestRefundCreate(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.REFUND_URL, "fake_refund")
+	teardown, fixture := utils.StartMockServer(constants.REFUND_URL, "fake_refund", libhttp.StatusOK)
 	defer teardown()
 	params := map[string]interface{}{
 		"payment_id": TestPaymentID,
