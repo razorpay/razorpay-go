@@ -20,7 +20,7 @@ func (cust *Customer) Fetch(customerID string, queryParams map[string]interface{
 
 // Create creates a new customer for the given data.
 func (cust *Customer) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	return cust.Request.Post(constants.CUSTOMER_URL, data, extraHeaders)
+	return cust.Request.Put(constants.CUSTOMER_URL, data, extraHeaders)
 }
 
 // Edit updates the customer having the given customerID.
