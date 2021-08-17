@@ -1,0 +1,25 @@
+{
+  "id":"va_Di5gbNptcWV8fQ",
+  "name":"Acme Corp",
+  "entity":"virtual_account",
+  "status":"closed",
+  "description":"Virtual Account created for M/S ABC Exports",
+  "amount_expected":null,
+  "notes":{
+    "material":"teakwood"
+  },
+  "amount_paid":239000,
+  "customer_id":"cust_DOMUFFiGdCaCUJ",
+  "receivers":[
+    {
+      "id":"vpa_CkTmLXqVYPkbxx",
+      "entity":"vpa",
+      "username": "rpy.payto00000468657501",
+      "handle": "icici",
+      "address": "rpy.payto00000468657501@icici"
+    }
+  ],
+  "close_by":1574427237,
+  "closed_at":1574164078,
+  "created_at":1574143517
+}

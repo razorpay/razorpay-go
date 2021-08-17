@@ -21,8 +21,8 @@ const (
 	TransferURL = "/transfers"
 	//VirtualAccountURL ...virtual accounts base path
 	VirtualAccountURL = "/virtual_accounts"
-	//SubscriptionURL ... subscriptions base path
+	//SubscriptionURL ...subscriptions base path
 	SubscriptionURL = "/subscriptions"
-	//PlanURL ... plan api base path
+	//PlanURL ...plan api base path
 	PlanURL = "/plans"
 )

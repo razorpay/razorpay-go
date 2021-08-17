@@ -30,12 +30,11 @@ func (v *VirtualAccount) Create(data map[string]interface{}, extraHeaders map[st
 
 // Close closes the virtual account having the given virtualAccID.
 func (v *VirtualAccount) Close(virtualAccID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/%s", constants.VirtualAccountURL, virtualAccID)
+	url := fmt.Sprintf("%s/%s/close", constants.VirtualAccountURL, virtualAccID)
 	if data == nil {
 		data = make(map[string]interface{})
 	}
-	data["status"] = "closed"
-	return v.Request.Patch(url, data, extraHeaders)
+	return v.Request.Post(url, data, extraHeaders)
 }
 
 // Payments fetches a collection of payments associated with the virtual account having the given virtualAccID.
