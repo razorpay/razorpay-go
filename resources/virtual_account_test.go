@@ -13,7 +13,7 @@ import (
 const TestVirtualID = "fake_virtual_id"
 
 func TestVirtualAll(t *testing.T) {
-	url := constants.VIRTUAL_ACCOUNT_URL
+	url := constants.VirtualAccountURL
 	teardown, fixture := utils.StartMockServer(url, "fake_virtual_collection")
 	defer teardown()
 	body, err := utils.Client.VirtualAccount.All(nil, nil)
@@ -23,7 +23,7 @@ func TestVirtualAll(t *testing.T) {
 }
 
 func TestVirtualFetch(t *testing.T) {
-	url := constants.VIRTUAL_ACCOUNT_URL + "/" + TestVirtualID
+	url := constants.VirtualAccountURL + "/" + TestVirtualID
 	teardown, fixture := utils.StartMockServer(url, "fake_virtual")
 	defer teardown()
 	body, err := utils.Client.VirtualAccount.Fetch(TestVirtualID, nil, nil)
@@ -33,7 +33,7 @@ func TestVirtualFetch(t *testing.T) {
 }
 
 func TestVirtualCreate(t *testing.T) {
-	url := constants.VIRTUAL_ACCOUNT_URL
+	url := constants.VirtualAccountURL
 	teardown, fixture := utils.StartMockServer(url, "fake_virtual")
 	defer teardown()
 	line_item := map[string]interface{}{
@@ -53,7 +53,7 @@ func TestVirtualCreate(t *testing.T) {
 }
 
 func TestVirtualClose(t *testing.T) {
-	url := fmt.Sprintf("%s/%s/close", constants.VIRTUAL_ACCOUNT_URL, TestVirtualID)
+	url := fmt.Sprintf("%s/%s/close", constants.VirtualAccountURL, TestVirtualID)
 	teardown, fixture := utils.StartMockServer(url, "virtual_collection")
 	defer teardown()
 	body, err := utils.Client.VirtualAccount.Close(TestVirtualID, nil, nil)
