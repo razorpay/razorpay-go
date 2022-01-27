@@ -12,7 +12,7 @@ import (
 const TestPaymentLinkID = "payment_id"
 
 func TestPaymentLinkAll(t *testing.T) {
-	url := constants.PaymentLink_URL
+	url := constants.PaymentLinkURL
 	teardown, fixture := utils.StartMockServer(url, "paymentlink_collection")
 	defer teardown()
 	body, err := utils.Client.PaymentLink.All(nil, nil)
@@ -22,7 +22,7 @@ func TestPaymentLinkAll(t *testing.T) {
 }
 
 func TestPaymentLinkFetch(t *testing.T) {
-	url := constants.PaymentLink_URL + "/" + TestPaymentLinkID
+	url := constants.PaymentLinkURL + "/" + TestPaymentLinkID
 	teardown, fixture := utils.StartMockServer(url, "paymentlink_collection")
 	defer teardown()
 	body, err := utils.Client.PaymentLink.Fetch(TestPaymentLinkID, nil, nil)
@@ -32,7 +32,7 @@ func TestPaymentLinkFetch(t *testing.T) {
 }
 
 func TestPaymentLinkCreate(t *testing.T) {
-	url := constants.PaymentLink_URL
+	url := constants.PaymentLinkURL
 	teardown, fixture := utils.StartMockServer(url, "fake_paymentlink")
 	defer teardown()
 	line_item := map[string]interface{}{

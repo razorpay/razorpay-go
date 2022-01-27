@@ -14,16 +14,16 @@ type Plan struct {
 
 // Create creates a new plan for the given data.
 func (plan *Plan) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	return plan.Request.Post(constants.PLAN_URL, data, extraHeaders)
+	return plan.Request.Post(constants.PlanURL, data, extraHeaders)
 }
 
 // Fetch fetches the plan entity having the given planID.
 func (plan *Plan) Fetch(planID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/%s", constants.PLAN_URL, planID)
+	url := fmt.Sprintf("%s/%s", constants.PlanURL, planID)
 	return plan.Request.Get(url, queryParams, extraHeaders)
 }
 
 // All fetches collection of plans for the given queryParams.
 func (plan *Plan) All(queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	return plan.Request.Get(constants.PLAN_URL, queryParams, extraHeaders)
+	return plan.Request.Get(constants.PlanURL, queryParams, extraHeaders)
 }

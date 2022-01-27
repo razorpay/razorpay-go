@@ -14,7 +14,7 @@ const TestCaptureAmount = 500
 const TestRefundAmount = 2000
 
 func TestPaymentAll(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.PAYMENT_URL, "payment_collection")
+	teardown, fixture := utils.StartMockServer(constants.PaymentURL, "payment_collection")
 	defer teardown()
 	body, err := utils.Client.Payment.All(nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -23,7 +23,7 @@ func TestPaymentAll(t *testing.T) {
 }
 
 func TestPaymentAllWithOptions(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.PAYMENT_URL, "payment_collection_with_one_payment")
+	teardown, fixture := utils.StartMockServer(constants.PaymentURL, "payment_collection_with_one_payment")
 	defer teardown()
 	queryParams := map[string]interface{}{
 		"count": 1,
@@ -35,7 +35,7 @@ func TestPaymentAllWithOptions(t *testing.T) {
 }
 
 func TestPaymentFetch(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID
+	url := constants.PaymentURL + "/" + TestPaymentID
 	teardown, fixture := utils.StartMockServer(url, "payment_collection_with_one_payment")
 	defer teardown()
 	body, err := utils.Client.Payment.Fetch(TestPaymentID, nil, nil)
@@ -45,7 +45,7 @@ func TestPaymentFetch(t *testing.T) {
 }
 
 func TestPaymentCapture(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/capture"
+	url := constants.PaymentURL + "/" + TestPaymentID + "/capture"
 	teardown, fixture := utils.StartMockServer(url, "fake_captured_payment")
 	defer teardown()
 	body, err := utils.Client.Payment.Capture(TestPaymentID, TestCaptureAmount, nil, nil)
@@ -55,7 +55,7 @@ func TestPaymentCapture(t *testing.T) {
 }
 
 func TestPaymentRefundCreate(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/refund"
+	url := constants.PaymentURL + "/" + TestPaymentID + "/refund"
 	teardown, fixture := utils.StartMockServer(url, "fake_refund")
 	defer teardown()
 	body, err := utils.Client.Payment.Refund(TestPaymentID, TestRefundAmount, nil, nil)
@@ -64,7 +64,7 @@ func TestPaymentRefundCreate(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 func TestPaymentTransfer(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/transfers"
+	url := constants.PaymentURL + "/" + TestPaymentID + "/transfers"
 	teardown, fixture := utils.StartMockServer(url, "transfers_collection_with_payment_id")
 	defer teardown()
 	params := map[string]interface{}{
@@ -83,7 +83,7 @@ func TestPaymentTransfer(t *testing.T) {
 }
 
 func TestPaymentTransferFetch(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/transfers"
+	url := constants.PaymentURL + "/" + TestPaymentID + "/transfers"
 	teardown, fixture := utils.StartMockServer(url, "transfers_collection_with_payment_id")
 	defer teardown()
 	body, err := utils.Client.Payment.Transfers(TestPaymentID, nil, nil)
@@ -93,7 +93,7 @@ func TestPaymentTransferFetch(t *testing.T) {
 }
 
 func TestPaymentBankTransferFetch(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/bank_transfer"
+	url := constants.PaymentURL + "/" + TestPaymentID + "/bank_transfer"
 	teardown, fixture := utils.StartMockServer(url, "fake_bank_transfer")
 	defer teardown()
 	body, err := utils.Client.Payment.BankTransfer(TestPaymentID, nil, nil)

@@ -13,7 +13,7 @@ import (
 const TestTokenID = "fake_token_id"
 
 func TestTokenAll(t *testing.T) {
-	url := fmt.Sprintf("%s/%s/tokens", constants.CUSTOMER_URL, TestCustomerID)
+	url := fmt.Sprintf("%s/%s/tokens", constants.CustomerURL, TestCustomerID)
 	teardown, fixture := utils.StartMockServer(url, "token_collection")
 	defer teardown()
 	body, err := utils.Client.Token.All(TestCustomerID, nil, nil)
@@ -23,7 +23,7 @@ func TestTokenAll(t *testing.T) {
 }
 
 func TestTokenFetch(t *testing.T) {
-	url := fmt.Sprintf("%s/%s/tokens/%s", constants.CUSTOMER_URL, TestCustomerID, TestTokenID)
+	url := fmt.Sprintf("%s/%s/tokens/%s", constants.CustomerURL, TestCustomerID, TestTokenID)
 	teardown, fixture := utils.StartMockServer(url, "token_collection")
 	defer teardown()
 	body, err := utils.Client.Token.Fetch(TestCustomerID, TestTokenID, nil, nil)
@@ -33,7 +33,7 @@ func TestTokenFetch(t *testing.T) {
 }
 
 func TestTokenDelete(t *testing.T) {
-	url := fmt.Sprintf("%s/%s/tokens/%s", constants.CUSTOMER_URL, TestCustomerID, TestTokenID)
+	url := fmt.Sprintf("%s/%s/tokens/%s", constants.CustomerURL, TestCustomerID, TestTokenID)
 	teardown, fixture := utils.StartMockServer(url, "token_delete")
 	defer teardown()
 	body, err := utils.Client.Token.Delete(TestCustomerID, TestTokenID, nil, nil)

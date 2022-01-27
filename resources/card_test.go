@@ -12,7 +12,7 @@ import (
 const TestCardID = "fake_card_id"
 
 func TestCardFetch(t *testing.T) {
-	url := constants.CARD_URL + "/" + TestCardID
+	url := constants.CardURL + "/" + TestCardID
 	teardown, fixture := utils.StartMockServer(url, "fake_card")
 	defer teardown()
 	body, err := utils.Client.Card.Fetch(TestCardID, nil, nil)
