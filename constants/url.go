@@ -27,4 +27,10 @@ const (
 	SUBSCRIPTION_URL = "/subscriptions"
 	//PLAN_URL ... plan api base path
 	PLAN_URL = "/plans"
+	// CONTACT_URL ... contact api base path
+	CONTACT_URL = "/contacts"
+	// FUND_ACCOUNT_URL ... fund accounts api base path
+	FUND_ACCOUNT_URL = "/fund_accounts"
+	// PAYOUT_URL ... payouts api base path
+	PAYOUT_URL = "/payouts"
 )
