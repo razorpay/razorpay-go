@@ -1,0 +1,39 @@
+{
+"accept_partial": true,
+"amount": 1000,
+"amount_paid": 0,
+"callback_method": "get",
+"callback_url": "https://example-callback-url.com/",
+"cancelled_at": 1591097270,
+"created_at": 1591097057,
+"currency": "INR",
+"customer": {
+"contact": "+919999999999",
+"email": "gaurav.kumar@example.com",
+"name": "Gaurav Kumar"
+},
+"description": "Payment for policy no #23456",
+"expire_by": 0,
+"expired_at": 0,
+"first_min_partial_amount": 100,
+"id": "plink_ExjpAUN3gVHrPJ",
+"notes": {
+"policy_name": "Jeevan Bima"
+},
+"notify": {
+"email": true,
+"sms": true
+},
+"payments": [],
+"reference_id": "TS1989",
+"reminder_enable": true,
+"reminders": {
+"status": "failed"
+},
+"short_url": "https://rzp.io/i/nxrHnLJ",
+"source": "",
+"source_id": "",
+"status": "cancelled",
+"updated_at": 1591097270,
+"user_id": ""
+}

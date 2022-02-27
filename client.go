@@ -18,6 +18,7 @@ type Client struct {
 	Card           *resources.Card
 	Customer       *resources.Customer
 	Invoice        *resources.Invoice
+	PaymentLink    *resources.PaymentLink
 	Order          *resources.Order
 	Payment        *resources.Payment
 	Plan           *resources.Plan
@@ -41,6 +42,7 @@ func NewClient(key string, secret string) *Client {
 	card := resources.Card{Request: Request}
 	customer := resources.Customer{Request: Request}
 	invoice := resources.Invoice{Request: Request}
+	paymentLink := resources.PaymentLink{Request: Request}
 	order := resources.Order{Request: Request}
 	payment := resources.Payment{Request: Request}
 	plan := resources.Plan{Request: Request}
@@ -54,6 +56,7 @@ func NewClient(key string, secret string) *Client {
 		Card:           &card,
 		Customer:       &customer,
 		Invoice:        &invoice,
+		PaymentLink:    &paymentLink,
 		Order:          &order,
 		Payment:        &payment,
 		Plan:           &plan,

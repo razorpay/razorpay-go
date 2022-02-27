@@ -80,8 +80,8 @@ func StartMockServer(url string, fixtureName string, httpStatus int) (func(), st
 	fixture := getFixture(fixtureName)
 	mux.HandleFunc(url, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(httpStatus)
-		fmt.Fprintf(w, fixture)
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, fixture) // nosemgrep : go.lang.security.audit.xss.no-fprintf-to-responsewriter.no-fprintf-to-responsewriter
 	})
 	return teardown, fixture
 }
