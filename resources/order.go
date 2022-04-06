@@ -33,7 +33,7 @@ func (order *Order) Create(data map[string]interface{}, extraHeaders map[string]
 func (order *Order) Edit(orderID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s/%s", constants.ORDER_URL, orderID)
-	return order.Request.Put(url, data, extraHeaders)
+	return order.Request.Patch(url, data, extraHeaders)
 }
 
 // Payments fetches the payments for the given orderID.

@@ -70,7 +70,10 @@ func TestOrderEdit(t *testing.T) {
 	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
 	params := map[string]interface{}{
-		"amount": 100,
+		"notes": map[string]interface{}{
+                        "notes_key_1": "value1",
+                        "notes_key_2": "value2",
+                      },
 	}
 	body, err := utils.Client.Order.Edit(TestOrderID, params, nil)
 	jsonByteArray, _ := json.Marshal(body)
