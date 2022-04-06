@@ -23,3 +23,8 @@ func (addon *Addon) Delete(addonID string, queryParams map[string]interface{}, e
 	url := fmt.Sprintf("%s/%s", constants.ADDON_URL, addonID)
 	return addon.Request.Delete(url, queryParams, extraHeaders)
 }
+
+// All fetches collection of addon for the given queryParams.
+func (addon *Addon) All(queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	return addon.Request.Get(constants.ADDON_URL, queryParams, extraHeaders)
+}
