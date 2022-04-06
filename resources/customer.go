@@ -28,5 +28,10 @@ func (cust *Customer) Edit(customerID string, data map[string]interface{}, extra
 
 	url := fmt.Sprintf("%s/%s", constants.CUSTOMER_URL, customerID)
 
-	return cust.Request.Post(url, data, extraHeaders)
+	return cust.Request.Put(url, data, extraHeaders)
+}
+
+// All fetches collection of customer for the given queryParams.
+func (cust *Customer) All(queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	return cust.Request.Get(constants.CUSTOMER_URL, queryParams, extraHeaders)
 }

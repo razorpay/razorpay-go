@@ -46,3 +46,12 @@ func TestCustomerEdit(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
+
+func TestCustomerAll(t *testing.T) {
+	teardown, fixture := utils.StartMockServer(constants.CUSTOMER_URL, "customers_collection")
+	defer teardown()
+	body, err := utils.Client.Customer.All(nil, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
