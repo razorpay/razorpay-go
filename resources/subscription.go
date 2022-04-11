@@ -39,3 +39,45 @@ func (s *Subscription) CreateAddon(subscriptionID string, data map[string]interf
 	url := fmt.Sprintf("%s/%s/addons", constants.SUBSCRIPTION_URL, subscriptionID)
 	return s.Request.Post(url, data, extraHeaders)
 }
+
+// Pause a subscription having the given subscriptionID.
+func (s *Subscription) Pause(subscriptionID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/pause", constants.SUBSCRIPTION_URL, subscriptionID)
+	return s.Request.Post(url, data, extraHeaders)
+}
+
+// Resume resumes a subscription having the given subscriptionID.
+func (s *Subscription) Resume(subscriptionID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/resume", constants.SUBSCRIPTION_URL, subscriptionID)
+	return s.Request.Post(url, data, extraHeaders)
+}
+
+// PendingUpdate fetches details of a pending update.
+func (s *Subscription) PendingUpdate(subscriptionID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/retrieve_scheduled_changes", constants.SUBSCRIPTION_URL, subscriptionID)
+	return s.Request.Get(url, queryParams, extraHeaders)
+}
+
+// CancelScheduledChanges cancels a pending update.
+func (s *Subscription) CancelScheduledChanges(subscriptionID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/cancel_scheduled_changes", constants.SUBSCRIPTION_URL, subscriptionID)
+	return s.Request.Post(url, data, extraHeaders)
+}
+
+// Update updates a subscription for the given data.
+func (s *Subscription) Update(subscriptionID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s", constants.SUBSCRIPTION_URL, subscriptionID)
+	return s.Request.Patch(url, data, extraHeaders)
+}
+
+// DeleteOffer deletes a offer linked to subscription.
+func (s *Subscription) DeleteOffer(subscriptionID string, offerID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/%s", constants.SUBSCRIPTION_URL, subscriptionID, offerID)
+	return s.Request.Delete(url, queryParams, extraHeaders)
+}
+
+// CreateRegistrationLink creates a registration link
+func (s *Subscription) CreateRegistrationLink(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := "/subscription_registration/auth_links"
+	return s.Request.Post(url, data, extraHeaders)
+}
