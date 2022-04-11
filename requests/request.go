@@ -91,6 +91,7 @@ func (request *Request) SetTimeout(timeout int16) {
 func processResponse(response *http.Response) (map[string]interface{}, error) {
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
+	
 	if err != nil {
 		return nil, err
 	}
@@ -110,6 +111,7 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	if err != nil {
 		return nil, err
 	}
+
 	if response.StatusCode >= constants.HTTP_STATUS_OK &&
 		response.StatusCode < constants.HTTP_STATUS_REDIRECT {
 		return processResponse(response)
@@ -154,7 +156,7 @@ func (request *Request) Post(path string, payload map[string]interface{}, extraH
 	jsonStr, _ := json.Marshal(payload)
 
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
-
+    fmt.Println(jsonStr)
 	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
