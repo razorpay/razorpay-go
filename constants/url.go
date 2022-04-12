@@ -27,4 +27,6 @@ const (
 	SUBSCRIPTION_URL = "/subscriptions"
 	//PLAN_URL ... plan api base path
 	PLAN_URL = "/plans"
+	//QRCODE_URL ... qrcode api base path
+	QRCODE_URL = "/payments/qr_codes"
 )

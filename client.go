@@ -27,6 +27,7 @@ type Client struct {
 	Token          *resources.Token
 	Transfer       *resources.Transfer
 	VirtualAccount *resources.VirtualAccount
+	QrCode         *resources.QrCode
 }
 
 // NewClient creates and returns a new Razorpay client. key and secret
@@ -51,6 +52,7 @@ func NewClient(key string, secret string) *Client {
 	token := resources.Token{Request: Request}
 	transfer := resources.Transfer{Request: Request}
 	va := resources.VirtualAccount{Request: Request}
+	qrCode := resources.QrCode{Request: Request}
 	client := Client{
 		Addon:          &addon,
 		Card:           &card,
@@ -65,6 +67,7 @@ func NewClient(key string, secret string) *Client {
 		Token:          &token,
 		Transfer:       &transfer,
 		VirtualAccount: &va,
+		QrCode:         &qrCode,
 	}
 	return &client
 }
