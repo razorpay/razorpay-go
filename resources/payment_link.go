@@ -43,7 +43,7 @@ func (pl *PaymentLink) NotifyBy(paymentLinkID string, medium string, data map[st
 }
 
 // Edit updates the paymentLink for the given data.
-func (pl *PaymentLink) Edit(paymentLinkID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+func (pl *PaymentLink) Update(paymentLinkID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s", constants.PaymentLink_URL, paymentLinkID)
 	return pl.Request.Patch(url, data, extraHeaders)
 }

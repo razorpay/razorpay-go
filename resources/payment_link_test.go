@@ -71,7 +71,7 @@ func TestPaymentLinkNotifyBy(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 
-func TestPaymentLinkEdit(t *testing.T) {
+func TestPaymentLinkUpdate(t *testing.T) {
 	url := constants.PaymentLink_URL + "/" + TestPaymentLinkID
 	teardown, fixture := utils.StartMockServer(url, "fake_paymentlink")
 	defer teardown()
@@ -83,7 +83,7 @@ func TestPaymentLinkEdit(t *testing.T) {
           "policy_name": "Jeevan Saral",
         },
 	}
-	body, err := utils.Client.PaymentLink.Edit(TestPaymentLinkID, data, nil)
+	body, err := utils.Client.PaymentLink.Update(TestPaymentLinkID, data, nil)
 	jsonByteArray, _ := json.Marshal(body)
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
