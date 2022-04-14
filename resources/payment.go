@@ -68,3 +68,51 @@ func (p *Payment) BankTransfer(paymentID string, queryParams map[string]interfac
 	url := fmt.Sprintf("%s/%s/bank_transfer", constants.PAYMENT_URL, paymentID)
 	return p.Request.Get(url, queryParams, extraHeaders)
 }
+
+// Create creates a json payment for the given data.
+func (p *Payment) CreatePaymentJson(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/create/json", constants.PAYMENT_URL)
+	return p.Request.Post(url, data, extraHeaders)
+}
+
+// Create creates a recurring payment for the given data.
+func (p *Payment) CreateRecurringPayment(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/create/recurring", constants.PAYMENT_URL)
+	return p.Request.Post(url, data, extraHeaders)
+}
+
+// Edit updates the payment having the given paymentID.
+func (p *Payment) Edit(paymentID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+    url := fmt.Sprintf("%s/%s", constants.PAYMENT_URL, paymentID)
+    return p.Request.Patch(url, data, extraHeaders)
+}
+
+// FetchCardDetails fetches card details with the given paymentID.
+func (p *Payment) FetchCardDetails(paymentID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/card", constants.PAYMENT_URL, paymentID)
+	return p.Request.Get(url, queryParams, extraHeaders)
+}
+
+// FetchPaymentDowntime fetches downtime details.
+func (p *Payment) FetchPaymentDowntime(queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/downtimes", constants.PAYMENT_URL)
+	return p.Request.Get(url, queryParams, extraHeaders)
+}
+
+// FetchPaymentDowntimeById fetches downtime details with the given downtimeID.
+func (p *Payment) FetchPaymentDowntimeById(downtimeId string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/downtimes/%s", constants.PAYMENT_URL, downtimeId)
+	return p.Request.Get(url, queryParams, extraHeaders)
+}
+
+// FetchMultipleRefund fetches multiple refunds details with the given paymentID.
+func (p *Payment) FetchMultipleRefund(paymentId string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/refunds", constants.PAYMENT_URL, paymentId)
+	return p.Request.Get(url, queryParams, extraHeaders)
+}
+
+// FetchRefund fetches refund detail with the given paymentId and refundId
+func (p *Payment) FetchRefund(paymentId string,refundId string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/refunds/%s", constants.PAYMENT_URL, paymentId, refundId)
+	return p.Request.Get(url, queryParams, extraHeaders)
+}
