@@ -28,3 +28,10 @@ func (refund *Refund) Fetch(refundID string, queryParams map[string]interface{},
 func (refund *Refund) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	return refund.Request.Post(constants.REFUND_URL, data, extraHeaders)
 }
+
+// Edit updates the Refund having the given refundID.
+func (refund *Refund) Edit(refundID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+
+	url := fmt.Sprintf("%s/%s", constants.REFUND_URL, refundID)
+	return refund.Request.Patch(url, queryParams, extraHeaders)
+}
