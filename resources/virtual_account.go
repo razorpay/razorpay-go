@@ -46,7 +46,6 @@ func (v *VirtualAccount) Payments(virtualAccID string, queryParams map[string]in
 // Create add receiver to an existing virtual account by virtual Id and data
 func (v *VirtualAccount) AddReceiver(virtualAccID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/%s/receivers", constants.VIRTUAL_ACCOUNT_URL, virtualAccID)
-	//fmt.Println(data)
 	return v.Request.Post(url, data, extraHeaders)
 }
 
