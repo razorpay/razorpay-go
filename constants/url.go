@@ -27,4 +27,6 @@ const (
 	SUBSCRIPTION_URL = "/subscriptions"
 	//PLAN_URL ... plan api base path
 	PLAN_URL = "/plans"
+	//SETTLEMENT_URL ... settlements api base path
+    SETTLEMENT_URL = "/settlements"
 )
