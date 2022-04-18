@@ -24,6 +24,7 @@ body, err := client.Customer.Create(data, nil)
 |---------------|-------------|---------------------------------------------|
 | name*          | string      | Name of the customer                        |
 | email        | string      | Email of the customer                       |
+| fail_existing | string | If a customer with the same details already exists, the request throws an exception by default. Possible value is `0` or `1`|
 | contact      | string      | Contact number of the customer              |
 | notes         | object      | A key-value pair                            |
 
@@ -130,7 +131,7 @@ body, err := client.Customer.All(optional, nil)
 ```go
 customerId := "cust_1Aa00000000003"
 
-body, err := client.Cusstomer.Fetch(customerId, nil)
+body, err := client.Customer.Fetch(customerId, nil)
 ```
 
 **Parameters:**
