@@ -96,7 +96,7 @@ func TestInvoiceEdit(t *testing.T) {
 			"notes_key_2": "Tea, Earl Grey… decaf.",
 			},
 	}
-	body, err := utils.Client.Invoice.Edit(TestInvoiceID, data, nil)
+	body, err := utils.Client.Invoice.Update(TestInvoiceID, data, nil)
 	jsonByteArray, _ := json.Marshal(body)
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)

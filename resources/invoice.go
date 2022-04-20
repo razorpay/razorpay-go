@@ -42,8 +42,8 @@ func (s *Invoice) Delete(invoiceID string, queryParams map[string]interface{}, e
 	return s.Request.Delete(url, queryParams, extraHeaders)
 }
 
-// Edit updates the invoice having the given invoiceID.
-func (s *Invoice) Edit(invoiceID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+// Update updates the invoice having the given invoiceID.
+func (s *Invoice) Update(invoiceID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
     url := fmt.Sprintf("%s/%s", constants.INVOICE_URL, invoiceID)
     return s.Request.Patch(url, data, extraHeaders)
 }

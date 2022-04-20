@@ -72,9 +72,16 @@ body, err := client.Invoice.Create(data, nil)
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
 |type*          | string | entity type (here its invoice)                                               |
+| currency*   | string  | The currency of the payment (defaults to INR)  |
+| partial_payment*    | boolean | Possible values is `0` or `1` |
 |description        | string  | A brief description of the invoice.                      |
 |customer_id           | string  | customer id for which invoice need be raised                     |
 |customer           | object  | customer details in a object format                     |
+|line_items           | object  | line items details in a object format                     |
+| expire_by    | integer | The timestamp, in Unix format, at which the invoice will expire. |
+| sms_notify    | boolean | Possible values is `0` or `1` |
+| email_notify    | boolean | Possible values is `0` or `1` |
+
 
 **Response:**
 For create invoice response please click [here](https://razorpay.com/docs/api/invoices/#create-an-invoice)
@@ -232,7 +239,7 @@ data:= map[string]interface{}{
     "updated-key": "An updated note.",
   },
 }
-body, err := client.Invoice.Invoice.Edit("<invoiceId>", data, nil)
+body, err := client.Invoice.Invoice.Update("<invoiceId>", data, nil)
 
 ```
 
