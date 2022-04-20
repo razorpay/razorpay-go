@@ -7,7 +7,7 @@ data := map[string]interface{}{
   "amount": 50000,
   "currency": "INR",
   "receipt": "some_receipt_id",
-  "payment_capture": 1,
+  "partial_payment": false,
   "notes": map[string]interface{}{
       "key1": "value1",
       "key2": "value2",
@@ -23,7 +23,7 @@ body, err := client.Order.Create(data, nil)
 | amount*          | integer | Amount of the order to be paid                                               |
 | currency*        | string  | Currency of the order. Currently only `INR` is supported.                      |
 | receipt         | string  | Your system order reference id.                                              |
-| payment_capture  | integer  | 1 if capture should be done automatically or else 0                                                             |
+| partial_payment  | boolean  | Indicates whether the customer can make a partial payment. Possible values: `true` or `false`    |
 | notes           | object  | A key-value pair                                                             |
 
 **Response:**
@@ -181,7 +181,7 @@ data := map[string]interface{}{
         "notes_key_2": "value2",
       }, 
 }
-body, err := client.Order.Edit("<orderId>", data, nil)
+body, err := client.Order.Update("<orderId>", data, nil)
 ```
 **Parameters**
 

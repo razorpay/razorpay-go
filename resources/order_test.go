@@ -65,7 +65,7 @@ func TestOrderCreate(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 
-func TestOrderEdit(t *testing.T) {
+func TestOrderUpdate(t *testing.T) {
 	url := constants.ORDER_URL + "/" + TestOrderID
 	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
@@ -75,7 +75,7 @@ func TestOrderEdit(t *testing.T) {
                         "notes_key_2": "value2",
                       },
 	}
-	body, err := utils.Client.Order.Edit(TestOrderID, params, nil)
+	body, err := utils.Client.Order.Update(TestOrderID, params, nil)
 	jsonByteArray, _ := json.Marshal(body)
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
