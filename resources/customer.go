@@ -2,6 +2,7 @@ package resources
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/razorpay/razorpay-go/constants"
 	"github.com/razorpay/razorpay-go/requests"
@@ -14,7 +15,7 @@ type Customer struct {
 
 // Fetch fetches customer having the given cutomerID.
 func (cust *Customer) Fetch(customerID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/%s", constants.CUSTOMER_URL, customerID)
+	url := fmt.Sprintf("%s/%s", constants.CUSTOMER_URL, url.PathEscape(customerID))
 	return cust.Request.Get(url, queryParams, extraHeaders)
 }
 
@@ -26,7 +27,7 @@ func (cust *Customer) Create(data map[string]interface{}, extraHeaders map[strin
 // Edit updates the customer having the given customerID.
 func (cust *Customer) Edit(customerID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
-	url := fmt.Sprintf("%s/%s", constants.CUSTOMER_URL, customerID)
+	url := fmt.Sprintf("%s/%s", constants.CUSTOMER_URL, url.PathEscape(customerID))
 
 	return cust.Request.Put(url, data, extraHeaders)
 }
