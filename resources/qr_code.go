@@ -2,6 +2,7 @@ package resources
 
 import (
 	"fmt"
+    "net/url"
 
 	"github.com/razorpay/razorpay-go/constants"
 	"github.com/razorpay/razorpay-go/requests"
@@ -19,13 +20,13 @@ func (q *QrCode) Create(data map[string]interface{}, extraHeaders map[string]str
 
 //Fetch fetches the qrcode entity having the given QrCodeID.
 func (q *QrCode) FetchPayments(QrCodeID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/%s/payments", constants.QRCODE_URL, QrCodeID)
+	url := fmt.Sprintf("%s/%s/payments", constants.QRCODE_URL, url.PathEscape(QrCodeID))
 	return q.Request.Get(url, queryParams, extraHeaders)
 }
 
 //Fetch fetches the QrCode entity having the given QrCodeID.
 func (q *QrCode) Fetch(QrCodeID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/%s", constants.QRCODE_URL, QrCodeID)
+	url := fmt.Sprintf("%s/%s", constants.QRCODE_URL, url.PathEscape(QrCodeID))
 	return q.Request.Get(url, queryParams, extraHeaders)
 }
 
@@ -36,7 +37,7 @@ func (q *QrCode) All(queryParams map[string]interface{}, extraHeaders map[string
 
 //Close close a QrCode for the given QrCodeID.
 func (q *QrCode) Close(QrCodeID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/%s/close", constants.QRCODE_URL, QrCodeID)
+	url := fmt.Sprintf("%s/%s/close", constants.QRCODE_URL, url.PathEscape(QrCodeID))
 	return q.Request.Post(url, data, extraHeaders)
 }
 
