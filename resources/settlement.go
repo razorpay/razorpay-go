@@ -2,6 +2,7 @@ package resources
 
 import (
 	"fmt"
+  	"net/url"
 
 	"github.com/razorpay/razorpay-go/constants"
 	"github.com/razorpay/razorpay-go/requests"
@@ -19,7 +20,7 @@ func (settlement *Settlement) All(queryParams map[string]interface{}, extraHeade
 
 // Fetch fetches a settlement having the given settlementID.
 func (settlement *Settlement) Fetch(settlementID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/%s", constants.SETTLEMENT_URL, settlementID)
+	url := fmt.Sprintf("%s/%s", constants.SETTLEMENT_URL, url.PathEscape(settlementID))
 	return settlement.Request.Get(url, queryParams, extraHeaders)
 }
 
@@ -37,7 +38,7 @@ func (settlement *Settlement) FetchAllOnDemandSettlement(queryParams map[string]
 
 // FetchOnDemandSettlementById fetches On-demand Settlement by settlementID.
 func (settlement *Settlement) FetchOnDemandSettlementById(settlementID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := fmt.Sprintf("%s/ondemand/%s", constants.SETTLEMENT_URL, settlementID)
+	url := fmt.Sprintf("%s/ondemand/%s", constants.SETTLEMENT_URL, url.PathEscape(settlementID))
 	return settlement.Request.Get(url, queryParams, extraHeaders)
 }
 
