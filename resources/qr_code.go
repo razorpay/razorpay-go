@@ -40,7 +40,3 @@ func (q *QrCode) Close(QrCodeID string, data map[string]interface{}, extraHeader
 	url := fmt.Sprintf("%s/%s/close", constants.QRCODE_URL, url.PathEscape(QrCodeID))
 	return q.Request.Post(url, data, extraHeaders)
 }
-
-
-
-
