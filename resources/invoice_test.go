@@ -86,7 +86,7 @@ func TestInvoiceDelete(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 
-func TestInvoiceEdit(t *testing.T) {
+func TestInvoiceUpdate(t *testing.T) {
 	url := constants.INVOICE_URL + "/" + TestInvoiceID
 	teardown, fixture := utils.StartMockServer(url, "fake_invoice")
 	defer teardown()
