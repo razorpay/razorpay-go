@@ -197,7 +197,7 @@ data:= map[string]interface{}{
   },
 }
 
-body, err := client.Subscription.CreateRegistrationLink(data, nil)
+body, err := client.Invoice.CreateRegistrationLink(data, nil)
 ```
 
 **Parameters:**

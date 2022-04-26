@@ -132,7 +132,7 @@ data:= map[string]interface{}{
     "note_key 2":"Tea. Earl Gray. Hot.",
   },
 }
-body, err := client.Subscription.CreateRegistrationLink(data, nil)
+body, err := client.Invoice.CreateRegistrationLink(data, nil)
 ```
 
 **Parameters:**
