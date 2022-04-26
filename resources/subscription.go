@@ -75,9 +75,3 @@ func (s *Subscription) DeleteOffer(subscriptionID string, offerID string, queryP
 	url := fmt.Sprintf("%s/%s/%s", constants.SUBSCRIPTION_URL, subscriptionID, offerID)
 	return s.Request.Delete(url, queryParams, extraHeaders)
 }
-
-// CreateRegistrationLink creates a registration link
-func (s *Subscription) CreateRegistrationLink(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := "/subscription_registration/auth_links"
-	return s.Request.Post(url, data, extraHeaders)
-}
