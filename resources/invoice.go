@@ -59,3 +59,9 @@ func (s *Invoice) Notify(invoiceID string, medium string, data map[string]interf
     url := fmt.Sprintf("%s/%s/notify_by/%s", constants.INVOICE_URL, invoiceID, medium)
 	return s.Request.Post(url, data, extraHeaders)
 }
+
+// CreateRegistrationLink creates a registration link
+func (s *Invoice) CreateRegistrationLink(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := "/subscription_registration/auth_links"
+	return s.Request.Post(url, data, extraHeaders)
+}

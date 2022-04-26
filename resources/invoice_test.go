@@ -122,3 +122,44 @@ func TestInvoiceNotify(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
+
+func TestCreateRegistrationLink(t *testing.T) {
+	teardown, fixture := utils.StartMockServer("/subscription_registration/auth_links", "fake_registration_link")
+	defer teardown()
+	params := map[string]interface{}{
+	  "customer": map[string]interface{}{
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9123456780",
+      },
+      "type": "link",
+      "amount": 0,
+      "currency": "INR",
+      "description": "12 p.m. Meals",
+      "subscription_registration": map[string]interface{}{
+        "first_payment_amount": 100,
+        "method": "emandate",
+        "auth_type": "netbanking",
+        "expire_at": 1580480689,
+        "max_amount": 50000,
+        "bank_account": map[string]interface{}{
+          "beneficiary_name": "Gaurav Kumar",
+          "account_number": "11214311215411",
+          "account_type": "savings",
+          "ifsc_code": "HDFC0001233",
+        },
+      },
+      "receipt": "Receipt no. 1",
+      "expire_by": 1880480689,
+      "sms_notify": 1,
+      "email_notify": 1,
+      "notes": map[string]interface{}{
+        "note_key 1": "Beam me up Scotty",
+        "note_key 2": "Tea. Earl Gray. Hot.",
+      },
+    }
+	body, err := utils.Client.Invoice.CreateRegistrationLink(params, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
