@@ -103,7 +103,8 @@ body, err := client.VirtualAccount.Create(data, nil)
 | allowed_payers*  | object      | All parameters listed [here](https://razorpay.com/docs/api/smart-collect-tpv/#create-virtual-account) are supported |
 | description  | string      | A brief description of the virtual account.                    |
 | customer_id  | string      | Unique identifier of the customer to whom the virtual account must be tagged.                    |
-| notes  | integer      | Any custom notes you might want to add to the virtual account can be entered here.                  |
+| notes  | integer      | Any custom notes you might want to add to the virtual account can be entered here.  
+| close_by  | integer      | UNIX timestamp at which the virtual account is scheduled to be automatically closed.                  |                |
 
 **Response:**
 ```json
@@ -166,24 +167,11 @@ data:= map[string]interface{}{
   "receivers": map[string]interface{}{
     "types": types,
   },
-  "qr_code": map[string]interface{}{
-	"type": "upi_qr",
-	"name": "Store_1",
-	"usage": "single_use",
-	"fixed_amount": true,
-	"payment_amount": 300,
-	"description": "For Store 1",
+	"description": "First Payment by BharatQR",
 	"customer_id": "cust_IOyIY3JvbVny9o",
-	"close_by": 1650335857,
 	"notes": map[string]interface{}{
-	  "purpose": "Test UPI QR code notes",
+	  "reference_key": "reference_value",
 	},
-  },
-  "description": "First QR code",
-  "amount_expected": 100,
-  "notes": map[string]interface{}{
-    "receiver_key": "receiver_value",
-  },
 }
 
 body, err := client.VirtualAccount.Create(data, nil)
@@ -196,6 +184,7 @@ body, err := client.VirtualAccount.Create(data, nil)
 | receivers*    | array      | Array that defines what receivers are available for this Virtual Account                        |
 | description  | string      | A brief description of the payment.   |
 | amount_expected  | integer   | The maximum amount you expect to receive in this virtual account. Pass `69999` for ₹699.99.   |
+| customer_id  | string      | Unique identifier of the customer to whom the virtual account must be tagged.                    |
 | notes       | object | All keys listed [here](https://razorpay.com/docs/payments/payments/payment-methods/bharatqr/api/#create) are supported   |
 
 **Response:**
