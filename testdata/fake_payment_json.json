@@ -1,0 +1,30 @@
+{
+  "type": "respawn",
+  "request": {
+    "url": "https://api.razorpay.com/v1/payments?key_id=rzp_test_pNL6H0AmbBEyjD",
+    "method": "POST",
+      "content": {
+        "amount": "100",
+        "currency": "INR",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9123456789",
+        "order_id": "order_ItZMEZjpBD6dhT",
+        "method": "upi",
+        "_": {
+            "library": "s2s"
+        },
+        "upi": {
+            "flow": "collect",
+            "type": "default"
+        }
+      }
+    },
+   "image": null,
+   "theme": "#3594E2",
+   "method": "upi",
+   "version": "1",
+   "missing": [
+    "vpa"
+   ],
+   "base": "api.razorpay.com"
+}
