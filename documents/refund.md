@@ -6,7 +6,7 @@
 
 data := map[string]interface{}{
   "speed": "normal",
-	"notes": map[string]interface{}{
+  "notes": map[string]interface{}{
     "key_1": "value1",
     "key_2": "value2",
   },
