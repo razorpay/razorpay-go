@@ -27,6 +27,7 @@ type Client struct {
 	Token          *resources.Token
 	Transfer       *resources.Transfer
 	VirtualAccount *resources.VirtualAccount
+	FundAccount    *resources.FundAccount
 	Settlement     *resources.Settlement
 	Item           *resources.Item
 }
@@ -53,6 +54,7 @@ func NewClient(key string, secret string) *Client {
 	token := resources.Token{Request: Request}
 	transfer := resources.Transfer{Request: Request}
 	va := resources.VirtualAccount{Request: Request}
+	fundAccount := resources.FundAccount{Request: Request}
 	settlement := resources.Settlement{Request: Request}
 	item := resources.Item{Request: Request}
 	client := Client{
@@ -69,6 +71,7 @@ func NewClient(key string, secret string) *Client {
 		Token:          &token,
 		Transfer:       &transfer,
 		VirtualAccount: &va,
+		FundAccount:    &fundAccount,
 		Settlement:     &settlement,
 		Item:           &item,
 	}
