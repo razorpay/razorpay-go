@@ -28,6 +28,7 @@ type Client struct {
 	Transfer       *resources.Transfer
 	VirtualAccount *resources.VirtualAccount
 	Settlement     *resources.Settlement
+	Item           *resources.Item
 }
 
 // NewClient creates and returns a new Razorpay client. key and secret
@@ -53,6 +54,7 @@ func NewClient(key string, secret string) *Client {
 	transfer := resources.Transfer{Request: Request}
 	va := resources.VirtualAccount{Request: Request}
 	settlement := resources.Settlement{Request: Request}
+	item := resources.Item{Request: Request}
 	client := Client{
 		Addon:          &addon,
 		Card:           &card,
@@ -68,6 +70,7 @@ func NewClient(key string, secret string) *Client {
 		Transfer:       &transfer,
 		VirtualAccount: &va,
 		Settlement:     &settlement,
+		Item:           &item,
 	}
 	return &client
 }

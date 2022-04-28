@@ -29,4 +29,6 @@ const (
 	PLAN_URL = "/plans"
 	//SETTLEMENT_URL ... settlements api base path
 	SETTLEMENT_URL = "/settlements"
+	//ITEM_URL ... item api base path
+	ITEM_URL = "/items"
 )
