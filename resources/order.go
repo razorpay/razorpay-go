@@ -29,7 +29,7 @@ func (order *Order) Create(data map[string]interface{}, extraHeaders map[string]
 	return order.Request.Post(constants.ORDER_URL, data, extraHeaders)
 }
 
-// Edit updates an order having the given orderID.
+// Update updates an order having the given orderID.
 func (order *Order) Update(orderID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s/%s", constants.ORDER_URL, orderID)
