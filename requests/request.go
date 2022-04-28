@@ -91,11 +91,12 @@ func (request *Request) SetTimeout(timeout int16) {
 func processResponse(response *http.Response) (map[string]interface{}, error) {
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
-
+	
 	if len(body) == 0 || len(body) == 2{
-        resp :=  make(map[string]interface{})
-        return resp, nil
-    }
+		resp :=  make(map[string]interface{})
+		return resp, nil
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -115,6 +116,7 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	if err != nil {
 		return nil, err
 	}
+
 	if response.StatusCode >= constants.HTTP_STATUS_OK &&
 		response.StatusCode < constants.HTTP_STATUS_REDIRECT {
 		return processResponse(response)

@@ -1,0 +1,32 @@
+{
+    "id": "va_DzaBLzIz494C64",
+    "name": "Acme Corp",
+    "entity": "virtual_account",
+    "status": "active",
+    "description": "Virtual Account created for Raftar Soft",
+    "amount_expected": null,
+    "notes": [],
+    "amount_paid": 0,
+    "customer_id": "cust_Cp5BlkchbcN9vf",
+    "receivers": [
+      {
+        "id": "ba_DzcfdIfpw37iUl",
+        "entity": "bank_account",
+        "ifsc": "YESB0CMSNOC",
+        "bank_name": "Yes Bank",
+        "name": "Acme Corp",
+        "notes": [],
+        "account_number": "2223333225458057"
+      },
+      {
+        "id": "vpa_DzaBM9AEJew8H1",
+        "entity": "vpa",
+        "username": "rpy.payto00000gaurikumar",
+        "handle": "icici",
+        "address": "rpy.payto00000gaurikumar@icici"
+      }
+    ],
+    "close_by": 1581615838,
+    "closed_at": null,
+    "created_at": 1577962694
+}
