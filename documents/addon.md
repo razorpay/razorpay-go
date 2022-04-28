@@ -9,6 +9,7 @@ data := map[string]interface{}{
       "name":"Extra appala (papadum)",
       "amount":3000,
       "currency":"INR",
+      "description":"1 extra oil fried appala with meals",
     },
     "quantity":2,
 }
@@ -21,7 +22,7 @@ body, err := client.Subscription.CreateAddon(subscriptionId, data, nil)
 |-------|-----------|--------------------------------------------------|
 | subscriptionId*  | string | The subscription ID to which the add-on is being added. |
 | items*  | object | Details of the add-on you want to create. |
-| quantity*  | integer | This specifies the number of units of the add-on to be charged to the customer. |
+| quantity  | integer | This specifies the number of units of the add-on to be charged to the customer. Defaults to 1 |
 
 **Response:**
 ```json
