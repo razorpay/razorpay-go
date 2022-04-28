@@ -42,8 +42,8 @@ func TestRefundCreate(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 
-func TestRefundEdit(t *testing.T) {
-	url := constants.REFUND_URL + "/" + TestPaymentID
+func TestRefundUpdate(t *testing.T) {
+	url := constants.REFUND_URL + "/" + TestRefundID
 	teardown, fixture := utils.StartMockServer(url, "fake_refund")
 	defer teardown()
 	params:= map[string]interface{}{
@@ -52,7 +52,7 @@ func TestRefundEdit(t *testing.T) {
 		  "notes_key_2":"Engage",
 		},
 	  }
-	body, err := utils.Client.Refund.Edit(TestPaymentID, params, nil)
+	body, err := utils.Client.Refund.Update(TestRefundID, params, nil)
 	jsonByteArray, _ := json.Marshal(body)
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)

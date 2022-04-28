@@ -5,7 +5,7 @@
 ```go
 
 data := map[string]interface{}{
-    "speed": "normal",
+  "speed": "normal",
 	"notes": map[string]interface{}{
     "key_1": "value1",
     "key_2": "value2",
@@ -267,7 +267,7 @@ data:= map[string]interface{}{
   },
 }
 
-body, err := client.Refund.Edit("<refundId>", data, nil)
+body, err := client.Refund.Update("<refundId>", data, nil)
 ```
 
 **Parameters:**
