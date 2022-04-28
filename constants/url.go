@@ -29,4 +29,10 @@ const (
 	PLAN_URL = "/plans"
 	//QRCODE_URL ... qrcode api base path
 	QRCODE_URL = "/payments/qr_codes"
+	//FUND_ACCOUNT_URL ... fund account api base path
+	FUND_ACCOUNT_URL = "/fund_accounts"
+	//SETTLEMENT_URL ... settlements api base path
+	SETTLEMENT_URL = "/settlements"
+	//ITEM_URL ... item api base path
+	ITEM_URL = "/items"
 )

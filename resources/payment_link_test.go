@@ -51,3 +51,40 @@ func TestPaymentLinkCreate(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 
+func TestPaymentLinkCancel(t *testing.T) {
+	url := constants.PaymentLink_URL + "/" + TestPaymentLinkID + "/cancel"
+	teardown, fixture := utils.StartMockServer(url, "fake_paymentlink")
+	defer teardown()
+	body, err := utils.Client.PaymentLink.Cancel(TestPaymentLinkID, nil, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
+
+func TestPaymentLinkNotifyBy(t *testing.T) {
+	url := constants.PaymentLink_URL + "/" + TestPaymentLinkID + "/notify_by/email"
+	teardown, fixture := utils.StartMockServer(url, "fake_paymentlink")
+	defer teardown()
+	body, err := utils.Client.PaymentLink.NotifyBy(TestPaymentLinkID, "email", nil, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
+
+func TestPaymentLinkUpdate(t *testing.T) {
+	url := constants.PaymentLink_URL + "/" + TestPaymentLinkID
+	teardown, fixture := utils.StartMockServer(url, "fake_paymentlink")
+	defer teardown()
+	data := map[string]interface{}{
+        "reference_id": "TS35",
+        "expire_by": 1653347540,
+        "reminder_enable":false,
+        "notes":map[string]interface{}{
+          "policy_name": "Jeevan Saral",
+        },
+	}
+	body, err := utils.Client.PaymentLink.Update(TestPaymentLinkID, data, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
