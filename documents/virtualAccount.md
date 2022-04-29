@@ -480,7 +480,7 @@ types := make(map[string]interface{})
 types["0"] = "vpa"
 
  data:= map[string]interface{}{
-	"types": types,
+	"type": types,
 	"vpa": map[string]interface{}{
 	  "descriptor": "gaubikumar",
 	},
