@@ -51,4 +51,4 @@ Note: All methods below return a `map[string]interface{}` and `error`. All metho
 
 ## License
 
-The Razorpay PHP SDK is released under the MIT License. See [LICENSE](LICENSE) file for more details.
+The Razorpay Go SDK is released under the MIT License. See [LICENSE](LICENSE) file for more details.
