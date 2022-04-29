@@ -30,3 +30,12 @@ func TestAddonDelete(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
+
+func TestAddonAll(t *testing.T) {
+	teardown, fixture := utils.StartMockServer(constants.ADDON_URL, "addon_collection")
+	defer teardown()
+	body, err := utils.Client.Addon.All(nil, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}

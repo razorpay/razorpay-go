@@ -4,4 +4,4 @@ package razorpay
 const SDKName = "razorpay-go"
 
 //SDKVersion ...
-const SDKVersion = "0.1"
+const SDKVersion = "1.0.0"

@@ -29,3 +29,21 @@ func (pl *PaymentLink) Fetch(paymentLinkID string, queryParams map[string]interf
 func (pl *PaymentLink) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	return pl.Request.Post(constants.PaymentLink_URL, data, extraHeaders)
 }
+
+// Cancel cancels paymentLink
+func (pl *PaymentLink) Cancel(paymentLinkID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/cancel", constants.PaymentLink_URL, paymentLinkID)
+	return pl.Request.Post(url, data, extraHeaders)
+}
+
+// NotifyBy Send/re-send notification by given medium
+func (pl *PaymentLink) NotifyBy(paymentLinkID string, medium string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s/notify_by/%s", constants.PaymentLink_URL, paymentLinkID, medium)
+	return pl.Request.Post(url, data, extraHeaders)
+}
+
+// Edit updates the paymentLink for the given data.
+func (pl *PaymentLink) Update(paymentLinkID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("%s/%s", constants.PaymentLink_URL, paymentLinkID)
+	return pl.Request.Patch(url, data, extraHeaders)
+}
