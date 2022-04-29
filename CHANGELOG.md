@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New API for Refund (Update refund)
 - New APIs for Payments (Update, Create recurring, Create Json, Payment downtime details, refunds of a payment)
 - New APIs for Virtual Account (Add receiver, add an allowed payer account, delete an allowed payer account)
+- Updated Testcases
+- Updated Readme 
 
 ### Changed
 
