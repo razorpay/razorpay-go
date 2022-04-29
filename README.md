@@ -4,6 +4,12 @@ Golang bindings for interacting with the Razorpay API
 
 This is primarily meant for merchants who wish to perform interactions with the Razorpay API programatically
 
+Read up here for getting started and understanding the payment flow with Razorpay: <https://docs.razorpay.com/docs/getting-started>
+
+## Documentation
+
+Documentation of Razorpay's API and their usage is available at <https://docs.razorpay.com>
+
 ## Usage
 You need to setup your key and secret using the following:
 You can find your API keys at <https://dashboard.razorpay.com/#/app/keys>.
@@ -19,65 +25,30 @@ client := razorpay.NewClient("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
 
 Note: All methods below return a `map[string]interface{}` and `error`. All methods accept an `extraHeaders` param of type `map[string]string`, allowing you to optinally set extra HTTP headers on the request.
 
-### Payments
+## Supported Resources
 
-- Fetch all payments
-    ```go
-    body, err := client.Payment.All(nil, nil)
-    ```
-- Fetch a particular payment
-    ```go
-    body, err := client.Payment.Fetch("<payment_id>" , nil, nil)
-    ```
-- Capture a payment
-    ```go
-    body, err := client.Payment.Capture("<payment_id>", <amount>, nil, nil)
-    ```
-    Note: amount is in paisa
-- Refund a payment
-    ```go
-    body, err := client.Payment.Refund("<payment_id>", <amount_to_be_refunded>, nil, nil)
-    ```
+- [Customer](documents/customers.md)
+- [Token](documents/token.md)
+- [Order](documents/order.md)
+- [Payments](documents/payment.md)
+- [Settlements](documents/settlement.md)
+- [Refunds](documents/refund.md)
+- [Invoice](documents/invoice.md)
+- [Item](documents/item.md)
+- [Plan](documents/plan.md)
+- [Subscriptions](documents/subscription.md)
+- [Add-on](documents/addon.md)
+- [Payment Links](documents/paymentLink.md)
+- [Smart Collect](documents/virtualAccount.md)
+- [Route](documents/transfer.md)
+- [QR Code](documents/qrcode.md)
+- [Emandate](documents/emandate.md)
+- [Cards](documents/card.md)
+- [Paper NACH](documents/papernach.md)
+- [UPI](documents/upi.md)
+- [Register Emandate and Charge First Payment Together](documents/registerEmandate.md)
+- [Register NACH and Charge First Payment Together](documents/registerNach.md)
 
-### Refunds
-- Fetch all refunds
-    ```go
-    body, err := client.Refund.All(nil, nil)
-    ```
-- Fetch a particular refund
-    ```go
-    body, err := client.Refund.Fetch("<refund_id>", nil, nil)
-    ```
+## License
 
-### Orders
-- Create a new order
-
-    ```go
-    data := map[string]interface{}{
-        "amount":          1234,
-        "currency":        "INR",
-        "receipt":         "some_receipt_id",
-        "payment_capture": 1,
-    }
-    body, err := client.Order.Create(data, nil)
-    ```
-    Note: data is a map and should contain these keys. See the [Orders entity reference](https://razorpay.com/docs/api/orders/#order-entity) for details on these keys.
-
-        amount           : amount of order (in paisa)
-        currency         : currency of order
-        receipt          : receipt id of order
-        payment_capture  : 1 if capture should be done automatically or else 0
-        notes(optional)  : optional notes for order
-
-- Fetch a particular order
-    ```go
-    body, err := client.Order.Fetch("<order_id>", nil, nil)
-    ```
-- Fetch all orders
-    ```go
-    body, err := client.Order.All(nil, nil)
-    ```
-- Fetch all payments for order
-    ```go
-    body, err := client.Order.Payments("<order_id>", nil, nil)
-    ```
+The Razorpay Go SDK is released under the MIT License. See [LICENSE](LICENSE) file for more details.
