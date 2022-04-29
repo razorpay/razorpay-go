@@ -22,8 +22,7 @@ func TestSettlementAll(t *testing.T) {
 }
 
 func TestSettlementFetch(t *testing.T) {
-	url := constants.SETT
-	LEMENT_URL + "/" + TestSettlementID
+	url := constants.SETTLEMENT_URL + "/" + TestSettlementID
 	teardown, fixture := utils.StartMockServer(url, "fake_settlement")
 	defer teardown()
 	body, err := utils.Client.Settlement.Fetch(TestSettlementID, nil, nil)
