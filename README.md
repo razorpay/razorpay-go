@@ -36,6 +36,7 @@ Note: All methods below return a `map[string]interface{}` and `error`. All metho
 - [Invoice](documents/invoice.md)
 - [Item](documents/item.md)
 - [Plan](documents/plan.md)
+- [PaymentVerfication](documents/paymentVerification.md)
 - [Subscriptions](documents/subscription.md)
 - [Add-on](documents/addon.md)
 - [Payment Links](documents/paymentLink.md)
