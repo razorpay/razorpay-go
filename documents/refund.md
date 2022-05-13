@@ -48,11 +48,6 @@ body, err := client.Payment.Refund("<paymentId>",1200, data, nil)
 ### Create an instant refund
 
 ```go
-instance.payments.refund(paymentId,{
-  "amount": "100",
-  "speed": "optimum",
-  "receipt": "Receipt No. 31"
-})
 data := map[string]interface{}{
     "speed": "optimum",
     "receipt": "Receipt No. 31",

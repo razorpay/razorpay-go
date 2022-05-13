@@ -72,7 +72,7 @@
 | param.razorpay_payment_id*  | string | The id of the payment to be fetched  |
 | param.payment_link_reference_id*  | string |  A reference number tagged to a Payment Link |
 | param.payment_link_status*  | string | Current status of the link  |
-| signature* | string   | Signature returned by the Checkout. This is used to verify the payment. |
+| signature* | string   | The hash signature is calculated using HMAC with SHA256 algorithm; with your webhook secret set as the key and the webhook request body as the message.. |
 | secret* | string   | your api secret as secret |
 
 -------------------------------------------------------------------------------------------------------
