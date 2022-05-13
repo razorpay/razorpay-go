@@ -124,7 +124,7 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 
 	// Raise an error depending on the type of error in response
 	var jsonResponse errors.RZPErrorJSON
-	json.NewDecoder(response.Body).Decode(jsonResponse)
+	json.NewDecoder(response.Body).Decode(&jsonResponse)
 	errorData := jsonResponse.ErrorData
 
 	switch errorData.InternalErrorCode {

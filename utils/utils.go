@@ -9,6 +9,9 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+        "crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 
 	razorpay "github.com/razorpay/razorpay-go"
 	"github.com/stretchr/testify/assert"
@@ -84,4 +87,51 @@ func StartMockServer(url string, fixtureName string) (func(), string) {
 		fmt.Fprintf(w, fixture) // nosemgrep : go.lang.security.audit.xss.no-fprintf-to-responsewriter.no-fprintf-to-responsewriter
 	})
 	return teardown, fixture
+}
+
+// Validate webhooks
+func VerifyWebhookSignature(requestBody string, webhookSignature string, webhookSecret string) (bool) {
+	body := []byte(requestBody)
+
+	isValid := VerifySignature(body, webhookSignature, webhookSecret)
+
+	return isValid
+}
+
+func VerifySubscriptionSignature(queryParams map[string]interface{}, webhookSignature string, webhookSecret string) (bool){
+     
+	payload := fmt.Sprint(queryParams["razorpay_payment_id"], "|", queryParams["razorpay_subscription_id"])
+
+	isValid := VerifySignature([]byte(payload), webhookSignature, webhookSecret)
+
+	return isValid
+}
+
+func VerifyPaymentSignature(queryParams map[string]interface{}, webhookSignature string, webhookSecret string) (bool){
+     
+	payload := fmt.Sprint(queryParams["razorpay_order_id"], "|", queryParams["razorpay_payment_id"])
+
+	isValid := VerifySignature([]byte(payload), webhookSignature, webhookSecret)
+
+	return isValid
+}
+
+func VerifyPaymentLinkSignature(queryParams map[string]interface{}, webhookSignature string, webhookSecret string) (bool){
+     
+	payload := fmt.Sprint(queryParams["payment_link_id"], "|", queryParams["payment_link_reference_id"], "|", 
+	queryParams["payment_link_status"], "|", queryParams["razorpay_payment_id"])
+
+	isValid := VerifySignature([]byte(payload), webhookSignature, webhookSecret)
+
+	return isValid
+}
+
+func VerifySignature(body []byte, signature string, key string) (bool) {
+	h := hmac.New(sha256.New, []byte(key))
+	h.Write(body)
+	expectedSignature := hex.EncodeToString(h.Sum(nil))
+	if expectedSignature != signature {
+		return false
+	}
+	return true
 }

@@ -449,10 +449,10 @@ body, err := client.Payment.Refund("pay_JKpA1zAwaOi0xH",1200, data, nil)
 ```go
 
 types := make(map[string]interface{})
-types["0"] = "vpa"
+type["0"] = "vpa"
 
 data:= map[string]interface{}{
-	"types": types,
+	"type": type,
 	"vpa": map[string]interface{}{
 	  "descriptor": "gaubikumar",
 	},
