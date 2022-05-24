@@ -117,3 +117,18 @@ func (p *Payment) FetchRefund(paymentId string,refundId string, queryParams map[
 	url := fmt.Sprintf("%s/%s/refunds/%s", constants.PAYMENT_URL, url.PathEscape(paymentId), url.PathEscape(refundId))
 	return p.Request.Get(url, queryParams, extraHeaders)
 }
+
+func (p *Payment) OtpGenerate(paymentId string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error){
+	url := fmt.Sprintf("%s/%s/otp_generate", constants.PAYMENT_URL, url.PathEscape(paymentId))
+    return p.Request.Post(url, queryParams, extraHeaders)
+}
+
+func (p *Payment) OtpSubmit(paymentId string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error){
+	url := fmt.Sprintf("%s/%s/otp/submit", constants.PAYMENT_URL, url.PathEscape(paymentId))
+    return p.Request.Post(url, data, extraHeaders)
+}
+
+func (p *Payment) OtpResend(paymentId string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error){
+	url := fmt.Sprintf("%s/%s/otp/resend", constants.PAYMENT_URL, url.PathEscape(paymentId))
+    return p.Request.Post(url, queryParams, extraHeaders)
+}
