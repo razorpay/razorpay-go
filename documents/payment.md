@@ -478,7 +478,7 @@ body, err := client.Payment.OtpGenerate(paymentId, nil, nil)
 |-------------|---------|--------------------------------------|
 | paymentId*    | integer | Unique identifier of the payment                                               |
 
-Doc reference [doc](https://razorpay.com/docs/payments/payment-gateway/s2s-integration/json/v2/build-integration/cards/#otp-generation-)
+Doc reference [doc](https://razorpay.com/docs/payments/payment-gateway/s2s-integration/json/v2/build-integration/cards/#otp-generation)
 
 **Response:** <br>
 
