@@ -138,6 +138,7 @@ body, err := client.Payment.Fetch(paymentId, nil, nil)
 | Name       | Type   | Description                       |
 |------------|--------|-----------------------------------|
 | paymentId* | string | Id of the payment to be retrieved |
+| expand[]   | string    |  Used to retrieve additional information about the payment. Possible value is `cards` or `emi`|
 
 **Response:**
 ```json
