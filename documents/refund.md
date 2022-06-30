@@ -32,15 +32,17 @@ body, err := client.Payment.Refund("<paymentId>",1200, data, nil)
   "amount": 500100,
   "receipt": "Receipt No. 31",
   "currency": "INR",
-  "payment_id": "pay_FCXKPFtYfPXJPy",
+  "payment_id": "pay_29QQoUBi66xm2f",
   "notes": [],
+  "receipt": null,
   "acquirer_data": {
     "arn": null
   },
   "created_at": 1597078866,
   "batch_id": null,
   "status": "processed",
-  "speed_processed": "normal"
+  "speed_processed": "normal",
+  "speed_requested": "normal"
 }
 ```
 -------------------------------------------------------------------------------------------------------
@@ -193,27 +195,27 @@ body, err := client.Payment.All(option, nil)
 **Response:**
 ```json
 {
-  "entity": "collection",
-  "count": 2,
-  "items": [
-    {
-      "id": "rfnd_FFX6AnnIN3puqW",
-      "entity": "refund",
-      "amount": 88800,
-      "currency": "INR",
-      "payment_id": "pay_FFX5FdEYx8jPwA",
-      "notes": {
-        "comment": "Issuing an instant refund"
-      },
-      "receipt": null,
-      "acquirer_data": {},
-      "created_at": 1594982363,
-      "batch_id": null,
-      "status": "processed",
-      "speed_processed": "optimum",
-      "speed_requested": "optimum"
-    }
-  ]
+    "entity": "collection",
+    "count": 1,
+    "items": [
+        {
+            "id": "rfnd_Jnh48KzUkrUZ2I",
+            "entity": "refund",
+            "amount": 100,
+            "currency": "INR",
+            "payment_id": "pay_JRSS9bMrRMds3w",
+            "notes": [],
+            "receipt": "#999",
+            "acquirer_data": {
+                "arn": "Jnh4MAOSUc7w63"
+            },
+            "created_at": 1656589374,
+            "batch_id": null,
+            "status": "processed",
+            "speed_processed": "instant",
+            "speed_requested": "optimum"
+        }
+    ]
 }
 ```
 -------------------------------------------------------------------------------------------------------
