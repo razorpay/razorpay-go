@@ -262,6 +262,8 @@ body, err := client.Invoice.Update("<invoiceId>", data, nil)
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
 | invoiceId*          | string | The id of the invoice to be fetched                         |
+| line_items    | array | All parameters listed [here](https://razorpay.com/docs/api/payments/invoices/#update-an-invoice) are supported |
+| notes         | object      | A key-value pair                            |
 
 **Response:**
 
