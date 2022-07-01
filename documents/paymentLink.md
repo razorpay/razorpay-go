@@ -132,7 +132,7 @@ data := map[string]interface{}{
       "policy_name": "Jeevan Saral",
     },
 }
-body, err := client.PaymentLink.Edit("<paymentLinkId>", data, nil)
+body, err := client.PaymentLink.Update("<paymentLinkId>", data, nil)
 ```
 
 **Parameters:**
