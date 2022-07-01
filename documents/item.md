@@ -175,7 +175,7 @@ body, err := client.Item.Update("<itemId>", data, nil)
 ### Delete item
 
 ```go
-body, err := client.Item.Delete("<itemId>", nil, nil)~~
+body, err := client.Item.Delete("<itemId>", nil, nil)
 ```
 **Parameters**
 
