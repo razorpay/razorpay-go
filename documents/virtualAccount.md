@@ -25,7 +25,7 @@ body, err := client.VirtualAccount.Create(data, nil)
 
 | Name          | Type        | Description                                 |
 |---------------|-------------|---------------------------------------------|
-| receivers*    | object      | Array that defines what receivers are available for this Virtual Account                        |
+| receivers*    | object      | All parameters listed [here](https://razorpay.com/docs/api/payments/smart-collect/#create-virtual-account) are supported |
 | description  | string      | A brief description of the virtual account.                    |
 | customer_id  | string      | Unique identifier of the customer to whom the virtual account must be tagged.                    |
 | close_by  | integer      | UNIX timestamp at which the virtual account is scheduled to be automatically closed.                  |
@@ -99,7 +99,7 @@ body, err := client.VirtualAccount.Create(data, nil)
 
 | Name          | Type        | Description                                 |
 |---------------|-------------|---------------------------------------------|
-| receivers*    | object      | Array that defines what receivers are available for this Virtual Account                        |
+| receivers*    | object      | All parameters listed [here](https://razorpay.com/docs/api/payments/smart-collect-tpv#create-virtual-account) are supported |
 | allowed_payers*  | object      | All parameters listed [here](https://razorpay.com/docs/api/smart-collect-tpv/#create-virtual-account) are supported |
 | description  | string      | A brief description of the virtual account.                    |
 | customer_id  | string      | Unique identifier of the customer to whom the virtual account must be tagged.                    |
@@ -181,7 +181,7 @@ body, err := client.VirtualAccount.Create(data, nil)
 
 | Name          | Type        | Description                                 |
 |---------------|-------------|---------------------------------------------|
-| receivers*    | array      | Array that defines what receivers are available for this Virtual Account                        |
+| receivers*    | array      | All parameters listed [here](https://razorpay.com/docs/payments/payments/payment-methods/bharatqr/api/#create) are supported |
 | description  | string      | A brief description of the payment.   |
 | amount_expected  | integer   | The maximum amount you expect to receive in this virtual account. Pass `69999` for ₹699.99.   |
 | customer_id  | string      | Unique identifier of the customer to whom the virtual account must be tagged.                    |
@@ -234,7 +234,7 @@ For fetch virtual account by id response please click [here](https://razorpay.co
 ### Fetch all virtual account
 ```go
 data:= map[string]interface{}{
-    "count" : 1
+    "count" : 1,
 }
 
 body, err := client.VirtualAccount.All(data, nil)
@@ -427,20 +427,22 @@ body, err := client.Payment.Refund("pay_JKpA1zAwaOi0xH",1200, data, nil)
 **Response:**
 ```json
 {
-  "id": "rfnd_E6j36ZEKvsWsEn",
+  "id": "rfnd_FP8QHiV938haTz",
   "entity": "refund",
-  "amount": 100,
+  "amount": 500100,
+  "receipt": "Receipt No. 31",
   "currency": "INR",
-  "payment_id": "pay_E54n391WnEAV9H",
-  "notes": {
-    "key_1": "value1",
-    "key_2": "value2"
-  },
+  "payment_id": "pay_FCXKPFtYfPXJPy",
+  "notes": []
   "receipt": null,
   "acquirer_data": {
-    "rrn": null
+    "arn": null
   },
-  "created_at": 1579522301
+  "created_at": 1597078866,
+  "batch_id": null,
+  "status": "processed",
+  "speed_processed": "normal",
+  "speed_requested": "normal"
 }
 ```
 -------------------------------------------------------------------------------------------------------
@@ -466,8 +468,9 @@ body, err :=  client.VirtualAccount.AddReceiver("<virtualID>", data, nil)
 | Name  | Type      | Description                                      |
 |-------|-----------|--------------------------------------------------|
 | virtualId*  | string    | The id of the virtual to be updated  |
-| types*  | object | The receiver type to be added to the virtual account. Possible values are `vpa` or `bank_account`  |
-| vpa    | object | This is to be passed only when `vpa` is passed as the receiver types. |
+| types*  | object | All parameters listed [here](https://razorpay.com/docs/api/payments/smart-collect/#add-receiver-to-an-existing-virtual-account) are supported |
+
+| vpa    | object | All parameters listed [here](https://razorpay.com/docs/api/payments/smart-collect/#add-receiver-to-an-existing-virtual-account) are supported |
 
 **Response:**
 For add receiver to an existing virtual account response please click [here](https://razorpay.com/docs/api/smart-collect/#add-receiver-to-an-existing-virtual-account)
@@ -476,15 +479,13 @@ For add receiver to an existing virtual account response please click [here](htt
 
 ### Add an Allowed Payer Account
 ```go
-types := make(map[string]interface{})
-types["0"] = "vpa"
-
- data:= map[string]interface{}{
-	"type": types,
-	"vpa": map[string]interface{}{
-	  "descriptor": "gaubikumar",
-	},
-  }
+data:= map[string]interface{}{
+  "type": "bank_account",
+  "bank_account": map[string]interface{}{
+    "ifsc": "UTIB0000013",
+    "account_number": 914010012345679,
+  },
+}
 body, err := client.VirtualAccount.AllowedPayer("<virtualId>", data, nil)
 ```
 
@@ -494,7 +495,7 @@ body, err := client.VirtualAccount.AllowedPayer("<virtualId>", data, nil)
 |-------|-----------|--------------------------------------------------|
 | virtualId*  | string    | The id of the virtual to be updated  |
 | types*  | object | The receiver type to be added to the virtual account. Possible values are `vpa` or `bank_account`  |
-| bank_account*    | object | Indicates the bank account details such as `ifsc` and `account_number` |
+| bank_account*    | object | All parameters listed [here](https://razorpay.com/docs/api/payments/smart-collect-tpv#add-an-allowed-payer-account) are supported |
 
 **Response:**
 ```json
