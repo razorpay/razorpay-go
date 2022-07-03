@@ -371,7 +371,7 @@ data:= map[string]interface{}{
     "note_key 2": "Tea. Earl Gray. Hot.",
   },
 }
-body, err := Client.Payment.CreateRecurringPayment(data, nil)
+body, err := client.Payment.CreateRecurringPayment(data, nil)
 ```
 **Parameters:**
 
