@@ -46,33 +46,33 @@ body, err := client.Customer.Create(data, nil)
 ### Create order
 
 ```go
-data := map[string]interface{}{
-  "amount": 0,
-  "currency": "INR",
-  "payment_capture": true,
-  "method": "emandate",
-  "customer_id": "cust_1Aa00000000001",
-  "receipt": "Receipt No. 1",
-  "notes": map[string]interface{}{
-    "notes_key_1": "Beam me up Scotty",
-    "notes_key_2": "Engage",
-  },
-  "token": map[string]interface{}{
-    "auth_type": "netbanking",
-    "max_amount": 9999900,
-    "expire_at": 4102444799,
-    "notes": {
-      "notes_key_1": "Tea, Earl Grey, Hot",
-      "notes_key_2": "Tea, Earl Grey… decaf.",
-    },
-    "bank_account": map[string]interface{}{
-      "beneficiary_name": "Gaurav Kumar",
-      "account_number": "1121431121541121",
-      "account_type": "savings",
-      "ifsc_code": "HDFC0000001",
-    },
-  },
-}
+ data := map[string]interface{}{
+		"amount": 0,
+		"currency": "INR",
+		"payment_capture": true,
+		"method": "emandate",
+		"customer_id": "cust_JnFmpXS63vWgYJ",
+		"receipt": "Receipt No. 1",
+		"notes": map[string]interface{}{
+		  "notes_key_1": "Beam me up Scotty",
+		  "notes_key_2": "Engage",
+		},
+		"token": map[string]interface{}{
+		  "auth_type": "netbanking",
+		  "max_amount": 9999900,
+		  "expire_at": 4102444799,
+		  "notes": map[string]interface{}{
+			"notes_key_1": "Tea, Earl Grey, Hot",
+			"notes_key_2": "Tea, Earl Grey… decaf.",
+		  },
+		  "bank_account": map[string]interface{}{
+			"beneficiary_name": "Gaurav Kumar",
+			"account_number": "1121431121541121",
+			"account_type": "savings",
+			"ifsc_code": "HDFC0000001",
+		  },
+		},
+	}
 body, err := client.Order.Create(data, nil)
 ```
 
@@ -139,16 +139,20 @@ body, err := client.Invoice.CreateRegistrationLink(data, nil)
 
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
-| customer          | object | Details of the customer to whom the registration link will be sent.           |
+| customer*          | array  | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/emandate/create-authorization-transaction/#121-create-a-registration-link) are supported  |
 | type*        | string  | In this case, the value is `link`.                      |
 | currency*        | string  | The 3-letter ISO currency code for the payment. Currently, only `INR` is supported. |
 | amount*         | integer  | The payment amount in the smallest currency sub-unit.                 |
 | description*    | string  | A description that appears on the hosted page. For example, `12:30 p.m. Thali meals (Gaurav Kumar`).                                                             |
-| subscription_registration           | object  | Details of the authorization payment.                      |
-| notes           | object  | A key-value pair                                                             |
+| subscription_registration  | array  | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/emandate/create-authorization-transaction/#121-create-a-registration-link) are supported  |
+| email_notify | boolean  | Email notifications are to be sent by Razorpay (default : 1)  |
+| expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
+| receipt      | string  | Your system order reference id.  |
+| notes           | array  | A key-value pair  |
 
 **Response:**
 Create registration link response please click [here](https://razorpay.com/docs/api/recurring-payments/emandate/authorization-transaction/#121-create-a-registration-link)
+
 -------------------------------------------------------------------------------------------------------
 
 ### Send/Resend notifications
@@ -392,6 +396,8 @@ body, err := client.Order.Create(data, nil)
 | currency*        | string  | Currency of the order. Currently only `INR` is supported.                      |
 | receipt         | string  | Your system order reference id.                                              |
 | notes           | object  | A key-value pair                                                             |
+| payment_capture*  | boolean  | Indicates whether payment status should be changed to captured automatically or not. Possible values: true - Payments are captured automatically. false - Payments are not captured automatically. |
+
 
 **Response:**
 ```json
