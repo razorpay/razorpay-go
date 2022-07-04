@@ -178,7 +178,7 @@ body, err := client.Payment.FetchRefund("<paymentId>","<refundId>", nil, nil)
 ### Fetch all refunds
 ```go
 option := map[string]interface{}{
-    "count" : 1
+    "count" : 1,
 }
 body, err := client.Payment.All(option, nil)
 ```
