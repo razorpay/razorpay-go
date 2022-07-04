@@ -18,7 +18,7 @@ body, err := client.FundAccount.Create(data, nil)
 
 | Name          | Type        | Description                                 |
 |---------------|-------------|---------------------------------------------|
-| customerId*   | string      | The id of the customer to be fetched  |
+| customer_id*   | string      | The id of the customer to be fetched  |
 | account_type* | string      | The bank_account to be linked to the customer ID  |
 | bank_account* | object      | All keys listed [here](https://razorpay.com/docs/payments/customers/customer-fund-account-api/#create-a-fund-account) are supported |
 
