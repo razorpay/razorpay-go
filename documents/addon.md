@@ -159,6 +159,8 @@ body, err := client.Addon.Fetch("ao_JSg0XYEbNjYQ5n", nil, nil)
 ### Delete an addon
 
 ```go
+addonId := "ao_JSg0XYEbNjYQ5n";
+
 body, err := client.Addon.Delete(addonId, nil, nil)
 ```
 
