@@ -259,39 +259,42 @@ body, err := client.Payment.Edit(paymentId, data, nil)
 **Response:**
 ```json
 {
-  "id": "pay_CBYy6tLmJTzn3Q",
-  "entity": "payment",
-  "amount": 1000,
-  "currency": "INR",
-  "status": "authorized",
-  "order_id": null,
-  "invoice_id": null,
-  "international": false,
-  "method": "netbanking",
-  "amount_refunded": 0,
-  "refund_status": null,
-  "captured": false,
-  "description": null,
-  "card_id": null,
-  "bank": "UTIB",
-  "wallet": null,
-  "vpa": null,
-  "email": "testme@acme.com",
-  "notes": {
-    "key1": "value1",
-    "key2": "value2"
-  },
-  "fee": null,
-  "tax": null,
-  "error_code": null,
-  "error_description": null,
-  "error_source": null,
-  "error_step": null,
-  "error_reason": null,
-  "acquirer_data": {
-    "bank_transaction_id": "0125836177"
-  },
-  "created_at": 1553504328
+    "id": "pay_JpFbdMHunrN6LJ",
+    "entity": "payment",
+    "amount": 80000,
+    "currency": "INR",
+    "status": "captured",
+    "order_id": "order_JcbBWAhl9z0qJx",
+    "invoice_id": "inv_JcbBW8MrnNhuiC",
+    "international": false,
+    "method": "card",
+    "amount_refunded": 0,
+    "refund_status": null,
+    "captured": true,
+    "description": "Start Subscription",
+    "card_id": "card_JpFbdquXOLR4rg",
+    "bank": null,
+    "wallet": null,
+    "vpa": null,
+    "email": "you@example.com",
+    "contact": "+917000569565",
+    "customer_id": "cust_I3FToKbnExwDLu",
+    "token_id": "token_JPz75tHtcA0Yu4",
+    "notes": {
+        "key1": "value1",
+        "key2": "value2"
+    },
+    "fee": 2000,
+    "tax": 0,
+    "error_code": null,
+    "error_description": null,
+    "error_source": null,
+    "error_step": null,
+    "error_reason": null,
+    "acquirer_data": {
+        "auth_code": "159838"
+    },
+    "created_at": 1656929352
 }
 ```
 -------------------------------------------------------------------------------------------------------
@@ -395,7 +398,7 @@ data := map[string]interface{}{
   "notes": map[string]interface{}{
       "key1": "value1",
       "key2": "value2",
-    } 
+    }, 
 }
 body, err := client.Order.Create(data, nil)
 ```
