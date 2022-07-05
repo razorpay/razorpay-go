@@ -507,7 +507,7 @@ body, err := client.Payment.CreatePaymentJson(para_attr, nil)
 }
 ```
 -------------------------------------------------------------------------------------------------------
-### Create Payment UPI s2s / VPA token (Third party validation)
+### Create Payment UPI Using VPA token (Third party validation)
 
 ```go
 para_attr := map[string]interface{}{
@@ -560,7 +560,7 @@ body, err := client.Payment.CreateUpi(para_attr, nil)
 }
 ```
 -------------------------------------------------------------------------------------------------------
-### Create Payment UPI s2s / VPA token (Third party validation)
+### Create Payment UPI s2s (Third party validation)
 
 ```go
 para_attr := map[string]interface{}{
