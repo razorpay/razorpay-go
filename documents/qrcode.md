@@ -19,7 +19,7 @@ data := map[string]interface{}{
   "close_by": 1681615838,
   "notes": notes,
 }
-body, err := client.QrCode.create(data, nil)
+body, err := client.QrCode.Create(data, nil)
 ```
 
 **Parameters:**
@@ -150,17 +150,17 @@ data := map[string]interface{}{
   "count": "1",
 }
 
-body, err := client.QrCode.All(nil, nil)
+body, err := client.QrCode.All(data, nil)
 ```
 
 **Parameters:**
 
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
-| from  | timestamp | timestamp after which the payments were created  |
-| to    | timestamp | timestamp before which the payments were created |
-| count | integer   | number of payments to fetch (default: 10)        |
-| skip  | integer   | number of payments to be skipped (default: 0)    |
+| from  | timestamp | timestamp after which the qrcodes were created  |
+| to    | timestamp | timestamp before which the qrcodes were created |
+| count | integer   | number of qrcodes to fetch (default: 10)        |
+| skip  | integer   | number of qrcodes to be skipped (default: 0)    |
 
 **Response:**
 ```json
@@ -201,7 +201,7 @@ body, err := client.QrCode.All(nil, nil)
 ```go
 qrCodeId := "qr_HO2r1MDprYtWRT"
 
-body, err := client.QrCode.fetch(qrCodeId)
+body, err := client.QrCode.Fetch(qrCodeId, nil, nil)
 ```
 
 **Parameters:**
@@ -260,24 +260,24 @@ body, err := client.QrCode.All(para_attr, nil)
   "count": 1,
   "items": [
     {
-      "id": "qr_HMsgvioW64f0vh",
+      "id": "qr_HMsqRoeVwKbwAF",
       "entity": "qr_code",
-      "created_at": 1623660959,
-      "name": "Store_1",
-      "usage": "single_use",
+      "created_at": 1623661499,
+      "name": "Fresh Groceries",
+      "usage": "multiple_use",
       "type": "upi_qr",
-      "image_url": "https://rzp.io/i/DTa2eQR",
-      "payment_amount": 300,
+      "image_url": "https://rzp.io/i/eI9XD54Q",
+      "payment_amount": null,
       "status": "active",
-      "description": "For Store 1",
-      "fixed_amount": true,
-      "payments_amount_received": 0,
-      "payments_count_received": 0,
-      "notes": {
-        "purpose": "Test UPI QR code notes"
-      },
-      "customer_id": "cust_J3oSNi1KgzqVEX",
-      "close_by": 1681615838
+      "description": "Buy fresh groceries",
+      "fixed_amount": false,
+      "payments_amount_received": 1000,
+      "payments_count_received": 1,
+      "notes": [],
+      "customer_id": "cust_HKsR5se84c5LTO",
+      "close_by": 1624472999,
+      "close_reason": "paid",
+      "tax_invoice": null
     }
   ]
 }
@@ -307,23 +307,38 @@ body, err := client.QrCode.All(para_attr, nil)
   "count": 1,
   "items": [
     {
-      "id": "qr_HMsqRoeVwKbwAF",
-      "entity": "qr_code",
-      "created_at": 1623661499,
-      "name": "Fresh Groceries",
-      "usage": "multiple_use",
-      "type": "upi_qr",
-      "image_url": "https://rzp.io/i/eI9XD54Q",
-      "payment_amount": null,
-      "status": "active",
-      "description": "Buy fresh groceries",
-      "fixed_amount": false,
-      "payments_amount_received": 1000,
-      "payments_count_received": 1,
-      "notes": [],
+      "id": "pay_HMtDKn3TnF4D8x",
+      "entity": "payment",
+      "amount": 500,
+      "currency": "INR",
+      "status": "captured",
+      "order_id": null,
+      "invoice_id": null,
+      "international": false,
+      "method": "upi",
+      "amount_refunded": 0,
+      "refund_status": null,
+      "captured": true,
+      "description": "QRv2 Payment",
+      "card_id": null,
+      "bank": null,
+      "wallet": null,
+      "vpa": "gauri.kumari@okhdfcbank",
+      "email": "gauri.kumari@example.com",
+      "contact": "+919999999999",
       "customer_id": "cust_HKsR5se84c5LTO",
-      "close_by": 1624472999,
-      "close_reason": null
+      "notes": [],
+      "fee": 0,
+      "tax": 0,
+      "error_code": null,
+      "error_description": null,
+      "error_source": null,
+      "error_step": null,
+      "error_reason": null,
+      "acquirer_data": {
+        "rrn": "116514257019"
+      },
+      "created_at": 1623662800
     }
   ]
 }
@@ -333,7 +348,7 @@ body, err := client.QrCode.All(para_attr, nil)
 ### Fetch Payments for a QR Code
 
 ```go
-QrCodeID = "qr_HMsgvioW64f0vh"
+QrCodeID := "qr_HMsgvioW64f0vh"
 
 body, err := client.QrCode.FetchPayments(QrCodeID, nil, nil)
 ```
@@ -396,7 +411,7 @@ body, err := client.QrCode.FetchPayments(QrCodeID, nil, nil)
 ### Close a QR Code
 
 ```go
-qrCodeId = "qr_HMsVL8HOpbMcjU"
+qrCodeId := "qr_HMsVL8HOpbMcjU"
 
 body, err := client.QrCode.Close(qrCodeId);
 ```
@@ -430,6 +445,49 @@ body, err := client.QrCode.Close(qrCodeId);
   "close_by": 1681615838,
   "closed_at": 1623660445,
   "close_reason": "on_demand"
+}
+```
+-------------------------------------------------------------------------------------------------------
+### Refund a Payment
+
+```go
+data := map[string]interface{}{
+  "speed": "normal",
+  "notes": map[string]interface{}{
+    "key_1": "value1",
+    "key_2": "value2",
+  },
+}
+body, err := client.Payment.Refund("<paymentId>",1200, data, nil)
+```
+
+**Parameters:**
+
+| Name            | Type    | Description                                                                  |
+|-----------------|---------|------------------------------------------------------------------------------|
+| paymentId*  | string | The id of the payment to be refunded |
+| amount  | string | Amount to be refunded |
+| notes       | array | Key-value pair that can be used to store additional information about the QR code. Maximum 15 key-value pairs, 256 characters (maximum) each. |
+
+**Response:**
+```json
+{
+  "id": "rfnd_FP8QHiV938haTz",
+  "entity": "refund",
+  "amount": 500100,
+  "receipt": "Receipt No. 31",
+  "currency": "INR",
+  "payment_id": "pay_29QQoUBi66xm2f",
+  "notes": [],
+  "receipt": null,
+  "acquirer_data": {
+    "arn": null
+  },
+  "created_at": 1597078866,
+  "batch_id": null,
+  "status": "processed",
+  "speed_processed": "normal",
+  "speed_requested": "normal"
 }
 ```
 -------------------------------------------------------------------------------------------------------
