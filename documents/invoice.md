@@ -11,7 +11,7 @@ line_items["0"] = map[string]interface{}{
       "name": "Master Cloud Computing in 30 Days",
       "description": "Book by Ravena Ravenclaw",
       "amount": 399,
-      "currency": "USD",
+      "currency": "INR",
       "quantity": 1,
     }
 
@@ -23,7 +23,7 @@ data := map[string]interface{}{
     "name": "Gaurav Kumar",
     "contact": 9999999999,
     "email": "gaurav.kumar@example.com",
-    "billing_address": {
+    "billing_address": map[string]interface{}{
       "line1": "Ground & 1st Floor, SJR Cyber Laskar",
       "line2": "Hosur Road",
       "zipcode": 560068,
@@ -43,11 +43,26 @@ data := map[string]interface{}{
   "line_items": line_items,
   "sms_notify": 1,
   "email_notify": 1,
-  "currency": "USD",
-  "expire_by": 1589765167
+  "currency": "INR",
+  "expire_by": 1589765167,
 }
 body, err := client.Invoice.Create(data, nil)
 ```
+**Parameters:**
+
+| Name            | Type    | Description                                                                  |
+|-----------------|---------|------------------------------------------------------------------------------|
+|type*          | string | entity type (here its invoice)                                               |
+|description        | string  | A brief description of the invoice.                      |
+|customer_id           | string  | customer id for which invoice need be raised   |
+|draft           | string  |  Invoice is created in draft state when value is set to `1`   |
+| customer*     | object | All parameters listed [here](https://razorpay.com/docs/api/payments/invoices/#create-an-invoice) are supported           |
+| line_items    | object | All parameters listed [here](https://razorpay.com/docs/api/payments/invoices/#create-an-invoice) are supported |
+|expire_by           | integer  | Details of the line item that is billed in the invoice.  |
+|sms_notify           | integer  | Details of the line item that is billed in the invoice.  |
+|email_notify           | boolean  | Details of the line item that is billed in the invoice.  |
+|partial_payment | boolean  | Indicates whether customers can make partial payments on the invoice . Possible values: true - Customer can make partial payments. false (default) - Customer cannot make partial payments. |
+| currency*   | string  | The currency of the payment (defaults to INR)  |
 
 Request #2
 In this example, an invoice is created using existing `customer_id` and `item_id`
@@ -72,15 +87,14 @@ body, err := client.Invoice.Create(data, nil)
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
 |type*          | string | entity type (here its invoice)                                               |
-| currency*   | string  | The currency of the payment (defaults to INR)  |
-| partial_payment*    | boolean | Possible values is `0` or `1` |
 |description        | string  | A brief description of the invoice.                      |
 |customer_id           | string  | customer id for which invoice need be raised                     |
-|customer           | object  | customer details in a object format                     |
-|line_items           | object  | line items details in a object format                     |
-| expire_by    | integer | The timestamp, in Unix format, at which the invoice will expire. |
-| sms_notify    | boolean | Possible values is `0` or `1` |
-| email_notify    | boolean | Possible values is `0` or `1` |
+| customer*     | object | All parameters listed [here](https://razorpay.com/docs/api/payments/invoices/#create-an-invoice) are supported           |
+| line_items    | object | All parameters listed [here](https://razorpay.com/docs/api/payments/invoices/#create-an-invoice) are supported |
+| sms_notify  | boolean  | SMS notifications are to be sent by Razorpay (default : 1)  |
+| currency*  (conditionally mandatory) | string  | The 3-letter ISO currency code for the payment. Currently, only `INR` is supported. |
+| email_notify | boolean  | Email notifications are to be sent by Razorpay (default : 1)  |
+| expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
 
 
 **Response:**
@@ -239,7 +253,7 @@ data:= map[string]interface{}{
     "updated-key": "An updated note.",
   },
 }
-body, err := client.Invoice.Invoice.Update("<invoiceId>", data, nil)
+body, err := client.Invoice.Update("<invoiceId>", data, nil)
 
 ```
 
@@ -248,10 +262,114 @@ body, err := client.Invoice.Invoice.Update("<invoiceId>", data, nil)
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
 | invoiceId*          | string | The id of the invoice to be fetched                         |
+| line_items    | object | All parameters listed [here](https://razorpay.com/docs/api/payments/invoices/#update-an-invoice) are supported |
+| notes         | object      | A key-value pair                            |
 
 **Response:**
-For update invoice response please click [here](https://razorpay.com/docs/api/invoices/#update-an-invoice)
 
+```json
+{
+    "id": "inv_Jm44BTJyzbquiy",
+    "entity": "invoice",
+    "receipt": "dfdsf",
+    "invoice_number": "dfdsf",
+    "customer_id": "cust_JjoxLvdd8gjgyi",
+    "customer_details": {
+        "id": "cust_JjoxLvdd8gjgyi",
+        "name": "ypNsfYnGeGE",
+        "email": "ypnsfyngege@gmail.com",
+        "contact": "9999999999",
+        "gstin": null,
+        "billing_address": null,
+        "shipping_address": null,
+        "customer_name": "ypNsfYnGeGE",
+        "customer_email": "ypnsfyngege@gmail.com",
+        "customer_contact": "9999999999"
+    },
+    "order_id": null,
+    "line_items": [
+        {
+            "id": "li_JnhMrLhv1PMAoH",
+            "item_id": "item_JnQ2kRGq8Kbte3",
+            "ref_id": null,
+            "ref_type": null,
+            "name": "Book / English August - Updated name and quantity",
+            "description": "New descirption too. :).",
+            "amount": 20000,
+            "unit_amount": 20000,
+            "gross_amount": 20000,
+            "tax_amount": 0,
+            "taxable_amount": 20000,
+            "net_amount": 20000,
+            "currency": "INR",
+            "type": "invoice",
+            "tax_inclusive": false,
+            "hsn_code": null,
+            "sac_code": null,
+            "tax_rate": null,
+            "unit": null,
+            "quantity": 1,
+            "taxes": []
+        },
+        {
+            "id": "li_JnhXAk87ENeeo1",
+            "item_id": null,
+            "ref_id": null,
+            "ref_type": null,
+            "name": "Book / A Wild Sheep Chase",
+            "description": null,
+            "amount": 200,
+            "unit_amount": 200,
+            "gross_amount": 200,
+            "tax_amount": 0,
+            "taxable_amount": 200,
+            "net_amount": 200,
+            "currency": "INR",
+            "type": "invoice",
+            "tax_inclusive": false,
+            "hsn_code": null,
+            "sac_code": null,
+            "tax_rate": null,
+            "unit": null,
+            "quantity": 1,
+            "taxes": []
+        }
+    ],
+    "payment_id": null,
+    "status": "draft",
+    "expire_by": null,
+    "issued_at": null,
+    "paid_at": null,
+    "cancelled_at": null,
+    "expired_at": null,
+    "sms_status": null,
+    "email_status": null,
+    "date": 1656233665,
+    "terms": null,
+    "partial_payment": false,
+    "gross_amount": 20200,
+    "tax_amount": 0,
+    "taxable_amount": 20200,
+    "amount": 20200,
+    "amount_paid": null,
+    "amount_due": null,
+    "currency": "INR",
+    "currency_symbol": "₹",
+    "description": "dsfdsfsdf",
+    "notes": {
+        "updated-key": "An updated note."
+    },
+    "comment": null,
+    "short_url": null,
+    "view_less": true,
+    "billing_start": null,
+    "billing_end": null,
+    "type": "invoice",
+    "group_taxes_discounts": false,
+    "created_at": 1656233693,
+    "idempotency_key": null
+}
+```
 -------------------------------------------------------------------------------------------------------
 
 ### Issue an invoice

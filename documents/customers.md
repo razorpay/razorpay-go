@@ -9,6 +9,7 @@ data := map[string]interface{}{
     "contact": 9123456780,
     "email": "gaurav.kumar@example.com",
     "fail_existing": 0,
+    "gstin": "29XAbbA4369J1PA",
     "notes": map[string]interface{}{
       "notes_key_1": "Tea, Earl Grey, Hot",
       "notes_key_2": "Tea, Earl Grey… decaf.",
@@ -26,6 +27,7 @@ body, err := client.Customer.Create(data, nil)
 | email        | string      | Email of the customer                       |
 | fail_existing | string | If a customer with the same details already exists, the request throws an exception by default. Possible value is `0` or `1`|
 | contact      | string      | Contact number of the customer              |
+| gstin         | string      | Customer's GST number, if available. For example, 29XAbbA4369J1PA  |
 | notes         | object      | A key-value pair                            |
 
 **Response:**
@@ -51,10 +53,10 @@ body, err := client.Customer.Create(data, nil)
 ```go
 customerId := "cust_1Aa00000000003"
 
-data = map[string]interface{}{
+data := map[string]interface{}{
   "name": "Gaurav Kumar",
   "email": "Gaurav.Kumar@example.com",
-  "contact": 9000000000
+  "contact": 9000000000,
 }
 body, err := client.Customer.Edit(customerId, data, nil)
 ```
@@ -131,7 +133,7 @@ body, err := client.Customer.All(optional, nil)
 ```go
 customerId := "cust_1Aa00000000003"
 
-body, err := client.Customer.Fetch(customerId, nil)
+body, err := client.Customer.Fetch(customerId, nil, nil)
 ```
 
 **Parameters:**

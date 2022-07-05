@@ -11,7 +11,7 @@ data := map[string]interface{}{
   "notes": map[string]interface{}{
       "key1": "value1",
       "key2": "value2",
-    } 
+    },
 }
 body, err := client.Order.Create(data, nil)
 ```
@@ -42,6 +42,56 @@ body, err := client.Order.Create(data, nil)
   "attempts": 0,
   "notes": [],
   "created_at": 1582628071
+}
+```
+
+-------------------------------------------------------------------------------------------------------
+
+### Create order (Third party validation)
+
+```go
+data := map[string]interface{}{
+  "amount": 500,
+  "method": "netbanking",
+  "receipt": "BILL13375649",
+  "currency": "INR",
+  "bank_account": map[string]interface{}{
+    "account_number": "765432123456789",
+    "name": "Gaurav Kumar",
+    "ifsc": "HDFC0000053",
+  },
+}
+
+body, err := client.Order.Create(data, nil)
+```
+
+**Parameters:**
+
+| Name            | Type    | Description                                                                  |
+|-----------------|---------|------------------------------------------------------------------------------|
+| amount*          | integer | Amount of the order to be paid                                               |
+| method        | string  | The payment method used to make the payment. If this parameter is not passed, customers will be able to make payments using both netbanking and UPI payment methods. Possible values is `netbanking` or `upi`|
+| currency*        | string  | Currency of the order. Currently only `INR` is supported.       |
+| receipt         | string  | Your system order reference id.                                              |
+| notes         | object      | A key-value pair  |
+|bank_account | object  | All keys listed [here](https://razorpay.com/docs/payments/third-party-validation/#step-2-create-an-order) are supported |
+
+**Response:**
+
+```json
+{
+  "id": "order_GAWN9beXgaqRyO",
+  "entity": "order",
+  "amount": 500,
+  "amount_paid": 0,
+  "amount_due": 500,
+  "currency": "INR",
+  "receipt": "BILL13375649",
+  "offer_id": null,
+  "status": "created",
+  "attempts": 0,
+  "notes": [],
+  "created_at": 1573044247
 }
 ```
 
@@ -108,17 +158,24 @@ body, err := client.Order.Fetch("<orderId>", nil, nil)
 
 ```json
 {
-  "id":"order_DaaS6LOUAASb7Y",
-  "entity":"order",
-  "amount":2200,
-  "amount_paid":0,
-  "amount_due":2200,
-  "currency":"INR",
-  "receipt":"Receipt #211",
-  "status":"attempted",
-  "attempts":1,
-  "notes":[],
-  "created_at":1572505143
+  "amount": 50000,
+  "amount_due": 50000,
+  "amount_paid": 0,
+  "attempts": 0,
+  "created_at": 1656571893,
+  "currency": "INR",
+  "entity": "order",
+  "id": "order_Jnc6NatYAYnayr",
+  "notes": {
+    "key1": "value1",
+    "key2": "value2"
+  },
+  "offer_id": "offer_JTUADI4ZWBGWur",
+  "offers": [
+    "offer_JTUADI4ZWBGWur"
+  ],
+  "receipt": "some_receipt_id",
+  "status": "created"
 }
 ```
 -------------------------------------------------------------------------------------------------------
@@ -137,37 +194,45 @@ body, err := client.Order.Payments("<orderId>", nil, nil)
 **Response:**
 ```json
 {
-  "entity":"collection",
-  "count":1,
-  "items":[
-    {
-      "id":"pay_DaaSOvhgcOfzgR",
-      "entity":"payment",
-      "amount":2200,
-      "currency":"INR",
-      "status":"captured",
-      "order_id":"order_DaaS6LOUAASb7Y",
-      "invoice_id":null,
-      "international":false,
-      "method":"card",
-      "amount_refunded":0,
-      "refund_status":null,
-      "captured":true,
-      "description":"Beans in every imaginable flavour",
-      "card_id":"card_DZon6fd8J3IcA2",
-      "bank":null,
-      "wallet":null,
-      "vpa":null,
-      "email":"gaurav.kumar@example.com",
-      "contact":"+919999999988",
-      "notes":[],
-      "fee":44,
-      "tax":0,
-      "error_code":null,
-      "error_description":null,
-      "created_at":1572505160
-    }
-  ]
+    "entity": "collection",
+    "count": 1,
+    "items": [
+        {
+            "id": "pay_JmnuyQBkD6eOo7",
+            "entity": "payment",
+            "amount": 1000,
+            "currency": "INR",
+            "status": "captured",
+            "order_id": "order_J7lfDm8cppLIVV",
+            "invoice_id": "inv_J7lfDkGnM3zHYV",
+            "international": false,
+            "method": "upi",
+            "amount_refunded": 0,
+            "refund_status": null,
+            "captured": true,
+            "description": "Invoice #inv_J7lfDkGnM3zHYV",
+            "card_id": null,
+            "bank": null,
+            "wallet": null,
+            "vpa": "success@razorpay",
+            "email": "sofiya@gmail.com",
+            "contact": "+919702219003",
+            "notes": [],
+            "fee": 24,
+            "tax": 4,
+            "error_code": null,
+            "error_description": null,
+            "error_source": null,
+            "error_step": null,
+            "error_reason": null,
+            "acquirer_data": {
+                "rrn": "368096450516",
+                "upi_transaction_id": "97505784AB5852CEEBFE6BE418BB2373"
+            },
+            "created_at": 1656395165,
+            "account_id": "acc_Hn1ukn2d32Fqww"
+        }
+    ]
 }
 ```
 -------------------------------------------------------------------------------------------------------

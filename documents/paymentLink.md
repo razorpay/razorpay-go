@@ -69,12 +69,17 @@ body, err := client.PaymentLink.Create(data, nil)
 |upi_link*          | boolean | boolean Must be set to true   //   to creating UPI Payment Link only                                     |
 |amount*        | integer  | Amount to be paid using the Payment Link.                     |
 |currency           | string  |  A three-letter ISO code for the currency in which you want to accept the payment. For example, INR.                     |
+|accept_partial        | boolean  | Indicates whether customers can make partial payments using the Payment Link. Possible values: true - Customer can make partial payments. false (default) - Customer cannot make partial payments. // UPI Payment Link is not supported partial payment  |
 |description           | string  | A brief description of the Payment Link                     |
-|reference_id           | string  | AReference number tagged to a Payment Link.                      |
-|customer           | object  | name, email, contact                 |
+|first_min_partial_amount           | integer  |Minimum amount, in currency subunits, that must be paid by the customer as the first partial payment. // UPI Payment Link is not supported partial payment  |
+|reference_id           | string  | Reference number tagged to a Payment Link.                      |
+|customer           | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/payment-links/#sample-codes-for-upi-payment-links) are supported                 |
 |expire_by           | integer  | Timestamp, in Unix, at which the Payment Link will expire. By default, a Payment Link will be valid for six months from the date of creation.                     |
 |notify           | object  | sms or email (boolean)                     |
 |notes           |  object  | Key-value pair that can be used to store additional information about the entity. Maximum 15 key-value pairs, 256 characters (maximum) each. For example, "note_key": "Beam me up Scotty”                     |
+| callback_url | string | If specified, adds a redirect URL to the Payment Link. Once customers completes the payment, they are redirected to the specified URL. |
+| callback_method | string | If callback_url parameter is passed, callback_method must be passed with the value `get`. |
+| reminder_enable | boolean | Used to send reminders for the Payment Link. Possible values is `true` or `false` |
 
 **Response:**
 For create payment link response please click [here](https://razorpay.com/docs/api/payment-links/#create-payment-link)
@@ -127,7 +132,7 @@ data := map[string]interface{}{
       "policy_name": "Jeevan Saral",
     },
 }
-body, err := client.PaymentLink.Edit("<paymentLinkId>", data, nil)
+body, err := client.PaymentLink.Update("<paymentLinkId>", data, nil)
 ```
 
 **Parameters:**
@@ -239,8 +244,8 @@ body, err := client.PaymentLink.Create(data, nil)
 
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
-|amount*        | integer  | Amount to be paid using the Payment Link.                     |
-|options*           | object  |  Options to configure the transfer in the Payment Link. Parent parameter under which the order child parameter must be passed.                     |
+|amount*        | integer  | Amount to be paid using the Payment Link.      |
+|options*           | object  |  All parameters listed [here](https://razorpay.com/docs/api/payments/payment-links/transfer-payments#request-parameters) are supported |
 
 **Response:**
 ```json
@@ -248,22 +253,19 @@ body, err := client.PaymentLink.Create(data, nil)
   "accept_partial": false,
   "amount": 1500,
   "amount_paid": 0,
-  "callback_method": "",
-  "callback_url": "",
   "cancelled_at": 0,
-  "created_at": 1596526969,
+  "created_at": 1656659763,
   "currency": "INR",
   "customer": {
     "contact": "+919999999999",
     "email": "gaurav.kumar@example.com",
     "name": "Gaurav Kumar"
   },
-  "deleted_at": 0,
   "description": "Payment for policy no #23456",
   "expire_by": 0,
   "expired_at": 0,
   "first_min_partial_amount": 0,
-  "id": "plink_FMbhpT6nqDjDei",
+  "id": "plink_Jo13NauazdANzM",
   "notes": null,
   "notify": {
     "email": true,
@@ -273,11 +275,10 @@ body, err := client.PaymentLink.Create(data, nil)
   "reference_id": "#aasasw8",
   "reminder_enable": true,
   "reminders": [],
-  "short_url": "https://rzp.io/i/ORor1MT",
-  "source": "",
-  "source_id": "",
+  "short_url": "https://rzp.io/i/itsF28W",
   "status": "created",
-  "updated_at": 1596526969,
+  "updated_at": 1656659763,
+  "upi_link": false,
   "user_id": ""
 }
 ```
@@ -380,7 +381,7 @@ data := map[string]interface{}{
         "sms": true,
         "email": true,
       },
-      "reminder_enable": false
+      "reminder_enable": false,
     }
 body, err := client.PaymentLink.Create(data, nil)
 ```
@@ -861,7 +862,7 @@ body, err := client.PaymentLink.Create(data, nil)
 
 ### Implement thematic changes in payment links checkout section
 
-```
+```go
 data := map[string]interface{}{
   "amount": 1000,
   "currency": "INR",

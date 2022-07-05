@@ -4,12 +4,10 @@
 
 ```go
 data := map[string]interface{}{
-  "plan_id":"plan_JCPs6ZkAutbaCe",
+  "plan_id":"plan_JcwJfpjN6VHSGv",
   "total_count":3,
   "quantity": 1,
   "customer_notify":1,
-  "start_at":1649491485,
-  "expire_by":1683532925,
   "addons":[]interface{}{
     map[string]interface{}{
       "item":map[string]interface{}{
@@ -34,11 +32,12 @@ body, err := client.Subscription.Create(data, nil)
 | plan_id*          | string | The unique identifier for a plan that should be linked to the subscription.|
 | total_count*   | string | The number of billing cycles for which the customer should be charged  |
 | customer_notify    | boolean | Indicates whether the communication to the customer would be handled by you or us |
-| quantity    | integer | The number of times the customer should be charged the plan amount per invoice |
+| quantity      | integer | The number of times the customer should be charged the plan amount per invoice |
 | start_at    | integer | The timestamp, in Unix format, for when the subscription should start. If not passed, the subscription starts immediately after the authorization payment. |
 | expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
-| addons    | object | Array that contains details of any upfront amount you want to collect as part of the authorization transaction. |
+| addons    | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-a-subscription) are supported |
 | notes          | object | Notes you can enter for the contact for future reference.   |
+| offer_id   | string | The unique identifier of the offer that is linked to the subscription. |
 
 **Response:**
 ```json
@@ -116,9 +115,10 @@ body, err := client.Subscription.Create(data, nil)
 | quantity    | integer | The number of times the customer should be charged the plan amount per invoice |
 | start_at    | integer | The timestamp, in Unix format, for when the subscription should start. If not passed, the subscription starts immediately after the authorization payment. |
 | expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
-| addons    | object | Array that contains details of any upfront amount you want to collect as part of the authorization transaction. |
+| addons    | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-a-subscription-link) are supported |
 | notes          | object | Notes you can enter for the contact for future reference.   |
-| notify_info          | object | The customer's email and phone number to which notifications are to be sent. (PN: Use this array only if you have set the `customer_notify` parameter to 1. That is, Razorpay sends notifications to the customer.)  |
+| notify_info    | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-a-subscription-link) are supported |
+| offer_id   | string | The unique identifier of the offer that is linked to the subscription. |
 
 **Response:**
 ```json
@@ -167,10 +167,10 @@ body, err := client.Subscription.All(options, nil)
 
 | Name  | Type      | Description                                      |
 |-------|-----------|--------------------------------------------------|
-| from  | timestamp | timestamp after which the payments were created  |
-| to    | timestamp | timestamp before which the payments were created |
-| count | integer   | number of payments to fetch (default: 10)        |
-| skip  | integer   | number of payments to be skipped (default: 0)    |
+| from  | timestamp | timestamp after which the subscriptions were created  |
+| to    | timestamp | timestamp before which the subscriptions were created |
+| count | integer   | number of subscriptions to fetch (default: 10)        |
+| skip  | integer   | number of subscriptions to be skipped (default: 0)    |
 | plan_id  | string   | The unique identifier of the plan for which you want to retrieve all the subscriptions    |
 
 **Response:**
@@ -316,6 +316,12 @@ body, err := client.Subscription.Cancel("<subscriptionId>", data, nil)
 ### Update particular subscription
 
 ```go
+
+options := map[string]interface{}{
+    "quantity": 2,
+    "schedule_change_at":"cycle_end",
+}
+
 body, err := client.Subscription.Update("<subscriptionId>", options, nil)
 ```
 

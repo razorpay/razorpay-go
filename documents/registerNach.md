@@ -203,8 +203,7 @@ body, err := client.Invoice.CreateRegistrationLink(data, nil)
 
 | Name            | Type    | Description                                                   |
 |-----------------|---------|---------------------------------------------------------------|
-| customer   | object      | Details of the customer to whom the registration link will be sent. |
-| type*  | string | the value is `link`. |
+| customer   | object  | All keys listed [here](https://razorpay.com/docs/api/recurring-payments/paper-nach/auto-debit/#121-create-a-registration-link) are supported  |
 | amount*   | integer      | The amount to be captured (should be equal to the authorized amount, in paise) |
 | currency*   | string  | The currency of the payment (defaults to INR)  |
 | description*  | string      | A brief description of the payment.   |
@@ -328,6 +327,7 @@ body, err := client.Order.Create(data, nil)
 |-----------------|---------|------------------------------------------------------------------------------|
 | amount*   | integer      | The amount to be captured (should be equal to the authorized amount, in paise) |
 | currency*   | string  | The currency of the payment (defaults to INR)  |
+| payment_capture*  | boolean  | Indicates whether payment status should be changed to captured automatically or not. Possible values: true - Payments are captured automatically. false - Payments are not captured automatically. |
 | receipt      | string  | Your system order reference id.  |
 | notes | object  | A key-value pair  |
 
@@ -371,7 +371,7 @@ data:= map[string]interface{}{
     "note_key 2": "Tea. Earl Gray. Hot.",
   },
 }
-body, err := Client.Payment.CreateRecurringPayment(data, nil)
+body, err := client.Payment.CreateRecurringPayment(data, nil)
 ```
 **Parameters:**
 

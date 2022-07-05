@@ -142,8 +142,7 @@ body, err := client.Invoice.CreateRegistrationLink(data, nil)
 
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
-| customer   | object      | Details of the customer to whom the registration link will be sent. |
-| type*  | string | the value is `link`. |
+| customer   | object  | All keys listed [here](https://razorpay.com/docs/api/recurring-payments/cards/authorization-transaction/#121-create-a-registration-link) are supported  |
 | amount*   | integer      | The amount to be captured (should be equal to the authorized amount, in paise) |
 | currency*   | string  | The currency of the payment (defaults to INR)  |
 | description*  | string      | A brief description of the payment.   |
@@ -544,6 +543,22 @@ body, err := client.Card.Fetch("<cardId>", nil, nil)
 |-----------------|---------|------------------------------------------------------------------------------|
 | cardId*          | string | card id to be fetched                                               |
 
+**Response:**
+```json
+{
+    "id": "card_JXPULjlKqC5j0i",
+    "entity": "card",
+    "name": "Gaurav",
+    "last4": "4366",
+    "network": "Visa",
+    "type": "credit",
+    "issuer": "UTIB",
+    "international": false,
+    "emi": true,
+    "sub_type": "consumer",
+    "token_iin": null
+}
+```
 -------------------------------------------------------------------------------------------------------
 
 ## Delete tokens

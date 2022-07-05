@@ -32,6 +32,7 @@ Note: All methods below return a `map[string]interface{}` and `error`. All metho
 - [Order](documents/order.md)
 - [Payments](documents/payment.md)
 - [Settlements](documents/settlement.md)
+- [Fund](documents/fundAccount.md)
 - [Refunds](documents/refund.md)
 - [Invoice](documents/invoice.md)
 - [Item](documents/item.md)

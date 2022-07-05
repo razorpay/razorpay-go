@@ -70,47 +70,50 @@ body, err := client.Token.All("<customerId>", nil, nil)
 **Response:**
 ```json
 {
-   "entity":"collection",
-   "count":1,
-   "items":[
-      {
-         "id":"token_HouA2OQR5Z2jTL",
-         "entity":"token",
-         "token":"2JPRk664pZHUWG",
-         "bank":null,
-         "wallet":null,
-         "method":"card",
-         "card":{
-            "entity":"card",
-            "name":"Gaurav Kumar",
-            "last4":"8950",
-            "network":"Visa",
-            "type":"credit",
-            "issuer":"STCB",
-            "international":false,
-            "emi":false,
-            "sub_type":"consumer",
-            "expiry_month":12,
-            "expiry_year":2021,
-            "flows":{
-               "otp":true,
-               "recurring":true
-            }
-         },
-         "recurring":true,
-         "recurring_details":{
-            "status":"confirmed",
-            "failure_reason":null
-         },
-         "auth_type":null,
-         "mrn":null,
-         "used_at":1629779657,
-         "created_at":1629779657,
-         "expired_at":1640975399,
-         "dcc_enabled":false,
-         "billing_address":null
-      }
-   ]
+    "entity": "collection",
+    "count": 1,
+    "items": [
+        {
+            "id": "token_JfhcZfiZMCb8q2",
+            "entity": "token",
+            "token": "ACmuqGkEHBewEu",
+            "bank": null,
+            "wallet": null,
+            "method": "card",
+            "card": {
+                "entity": "card",
+                "name": "test",
+                "last4": "5449",
+                "network": "MasterCard",
+                "type": "credit",
+                "issuer": "UTIB",
+                "international": false,
+                "emi": false,
+                "sub_type": "consumer",
+                "token_iin": null,
+                "expiry_month": 2,
+                "expiry_year": 2024,
+                "flows": {
+                    "otp": true,
+                    "recurring": true
+                }
+            },
+            "recurring": true,
+            "recurring_details": {
+                "status": "confirmed",
+                "failure_reason": null
+            },
+            "auth_type": null,
+            "mrn": null,
+            "used_at": 1654844609,
+            "created_at": 1654844609,
+            "expired_at": 1709231399,
+            "status": null,
+            "notes": [],
+            "dcc_enabled": false,
+            "compliant_with_tokenisation_guidelines": false
+        }
+    ]
 }
 ```
 -------------------------------------------------------------------------------------------------------
@@ -180,6 +183,60 @@ body, err := client.Token.Delete("<customerId>", "<tokenId>", nil, nil)
 ```json
 {
     "deleted": true
+}
+```
+-------------------------------------------------------------------------------------------------------
+### Fetch VPA tokens of a customer id
+
+```go
+body, err := client.Token.All("<customerId>", nil, nil)
+```
+
+**Parameters:**
+
+| Name          | Type        | Description                                 |
+|---------------|-------------|---------------------------------------------|
+| customerId*          | string      | The id of the customer to be fetched |
+
+**Response:**
+```json
+{
+  "entity": "collection",
+  "count": 1,
+  "items": [
+    {
+      "id": "token_EeroOjvOvorT5L",
+      "entity": "token",
+      "token": "4ydxm47GQjrIEx",
+      "bank": null,
+      "wallet": null,
+      "method": "card",
+      "card": {
+        "entity": "card",
+        "name": "Gaurav Kumar",
+        "last4": "8430",
+        "network": "Visa",
+        "type": "credit",
+        "issuer": "HDFC",
+        "international": false,
+        "emi": true,
+        "expiry_month": 12,
+        "expiry_year": 2022,
+        "flows": {
+          "otp": true,
+          "recurring": true
+        }
+      },
+      "vpa": null,
+      "recurring": false,
+      "auth_type": null,
+      "mrn": null,
+      "used_at": 1586976724,
+      "created_at": 1586976724,
+      "expired_at": 1672511399,
+      "dcc_enabled": false
+    }
+  ]
 }
 ```
 -------------------------------------------------------------------------------------------------------
