@@ -62,7 +62,7 @@ data := map[string]interface{}{
     "auth_type": "netbanking",
     "max_amount": 9999900,
     "expire_at": 4102444799,
-    "notes": {
+    "notes": map[string]interface{}{
       "notes_key_1": "Tea, Earl Grey, Hot",
       "notes_key_2": "Tea, Earl Grey… decaf.",
     },
@@ -90,8 +90,49 @@ body, err := client.Order.Create(data, nil)
 | notes | object  | A key-value pair  |
 
 **Response:**
-For create order response please click [here](https://razorpay.com/docs/api/recurring-payments/emandate/auto-debit/#112-create-an-order)
 
+```json
+{
+  "id": "order_1Aa00000000001",
+  "entity": "order",
+  "amount": 0,
+  "amount_paid": 0,
+  "amount_due": 0,
+  "currency": "INR",
+  "receipt": "Receipt No. 1",
+  "offer_id": null,
+  "status": "created",
+  "attempts": 0,
+  "notes": {
+    "notes_key_1": "Beam me up Scotty",
+    "notes_key_2": "Engage"
+  },
+  "created_at": 1579700597,
+  "token": {
+    "method": "emandate",
+    "notes": {
+      "notes_key_1": "Tea, Earl Grey, Hot",
+      "notes_key_2": "Tea, Earl Grey… decaf."
+    },
+    "recurring_status": null,
+    "failure_reason": null,
+    "currency": "INR",
+    "max_amount": 9999900,
+    "auth_type": "aadhaar",
+    "expire_at": 4102444799,
+    "bank_account": {
+      "ifsc": "HDFC0000001",
+      "bank_name": "HDFC Bank",
+      "name": "Gaurav Kumar",
+      "account_number": "1121431121541121",
+      "account_type": "savings",
+      "beneficiary_email": "gaurav.kumar@example.com",
+      "beneficiary_mobile": "9123456789"
+    },
+    "first_payment_amount": 100
+  }
+}
+```
 -------------------------------------------------------------------------------------------------------
 
 ### Create an Authorization Payment
@@ -143,13 +184,14 @@ body, err := client.Invoice.CreateRegistrationLink(data, nil)
 
 | Name            | Type    | Description                                                   |
 |-----------------|---------|---------------------------------------------------------------|
-| customer   | object      | Details of the customer to whom the registration link will be sent. |
-| type*  | string | the value is `link`. |
-| amount*   | integer      | The payment amount in the smallest currency sub-unit. |
-| currency*   | string  | The 3-letter ISO currency code for the payment. Currently, only `INR` is supported.  |
+| customer   | object  | All keys listed [here](https://razorpay.com/docs/api/recurring-payments/emandate/auto-debit/#12-using-a-registration-link) are supported  |
+| type*  | object | the value is `link`. |
+| amount*   | integer      | The amount to be captured (should be equal to the authorized amount, in paise) |
+| currency*   | string  | The currency of the payment (defaults to INR)  |
 | description*  | string      | A brief description of the payment.   |
-| subscription_registration   | object  | All keys listed [here](https://razorpay.com/docs/api/recurring-payments/emandate/auto-debit/#121-create-a-registration-link) are supported  |
+| subscription_registration   | object  | All keys listed [here](https://razorpay.com/docs/api/recurring-payments/emandate/auto-debit/#12-using-a-registration-link) are supported  |
 | receipt      | string  | Your system order reference id.  |
+| payment_capture* |  boolean  | Indicates whether payment status should be changed to `captured` automatically or not. Possible values: true - Payments are captured automatically. false - Payments are not captured automatically.|
 | sms_notify  | boolean  | SMS notifications are to be sent by Razorpay (default : 1)  |
 | email_notify | boolean  | Email notifications are to be sent by Razorpay (default : 1)  |
 | expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
@@ -180,6 +222,7 @@ body, err := client.Order.Create(data, nil)
 |-----------------|---------|------------------------------------------------------------------------------|
 | amount*   | integer      | The amount to be captured (should be equal to the authorized amount, in paise) |
 | currency*   | string  | The currency of the payment (defaults to INR)  |
+| payment_capture*  | boolean  | Indicates whether payment status should be changed to captured automatically or not. Possible values: true - Payments are captured automatically. false - Payments are not captured automatically. |
 | receipt      | string  | Your system order reference id.  |
 | notes | object  | A key-value pair  |
 
