@@ -627,6 +627,7 @@ body, err := client.Order.Create(data, nil)
 |-----------------|---------|------------------------------------------------------------------------------|
 | amount*          | integer | Amount in currency subunits. For cards, the minimum value is `100` (₹1).                                              |
 | currency*        | string  | Currency of the order. Currently only `INR` is supported.                      |
+| payment_capture*  | boolean  | Indicates whether payment status should be changed to captured automatically or not. Possible values: true - Payments are captured automatically. false - Payments are not captured automatically. |
 | receipt         | string  | Your system order reference id.                                              |
 | notes           | object  | A key-value pair                                                             |
 **Response:**
