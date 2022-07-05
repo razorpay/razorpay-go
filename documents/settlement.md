@@ -288,13 +288,62 @@ body, err := client.Settlement.FetchAllOnDemandSettlement(options, nil)
 
 | Name  | Type      | Description                                      |
 |-------|-----------|--------------------------------------------------|
-| from  | timestamp | timestamp after which the payments were created  |
-| to    | timestamp | timestamp before which the payments were created |
-| count | integer   | number of payments to fetch (default: 10)        |
-| skip  | integer   | number of payments to be skipped (default: 0)    |
+| from  | timestamp | timestamp after which the settlements were created  |
+| to    | timestamp | timestamp before which the settlements were created |
+| count | integer   | number of settlements to fetch (default: 10)        |
+| skip  | integer   | number of settlements to be skipped (default: 0)    |
+| expand[]  | string   | Pass this if you want to fetch payout details as part of the response. possible value is `ondemand_payouts` |
 
-**Response:**<br>
-For all on-demand settlements response please click [here](https://razorpay.com/docs/api/settlements/instant/#fetch-all-instant-settlements)
+**Response:**
+
+```json
+{
+  "entity": "collection",
+  "count": 10,
+  "items": [
+    {
+      "id": "setlod_JngXLps9eKgYIM",
+      "entity": "settlement.ondemand",
+      "amount_requested": 200000,
+      "amount_settled": 199410,
+      "amount_pending": 0,
+      "amount_reversed": 0,
+      "fees": 590,
+      "tax": 90,
+      "currency": "INR",
+      "settle_full_balance": false,
+      "status": "processed",
+      "description": "Make vendor payments.",
+      "notes": {
+        "notes_key_1": "Tea, Earl Grey, Hot",
+        "notes_key_2": "Tea, Earl Grey… decaf."
+      },
+      "created_at": 1656587511,
+      "scheduled": false,
+      "ondemand_payouts": {
+        "entity": "collection",
+        "count": 1,
+        "items": [
+          {
+            "id": "setlodp_JngXLqBZNxBgIY",
+            "entity": "settlement.ondemand_payout",
+            "initiated_at": 1656587522,
+            "processed_at": 1656587533,
+            "reversed_at": null,
+            "amount": 200000,
+            "amount_settled": 199410,
+            "fees": 590,
+            "tax": 90,
+            "utr": "7312050628",
+            "status": "processed",
+            "created_at": 1656587511
+          }
+        ]
+      }
+    }
+  ]
+}
+```
 -------------------------------------------------------------------------------------------------------
 
 ### Fetch on-demand settlement by ID
@@ -308,10 +357,51 @@ body, err := client.Settlement.FetchOnDemandSettlementById("<settlementId>", nil
 | Name       | Type   | Description                       |
 |------------|--------|-----------------------------------|
 | settlementId* | string | Settlement Id of the On-demand settlement|
+| expand[]  | string   | Pass this if you want to fetch payout details as part of the response. possible value is `ondemand_payouts` |
 
-**Response:**<br>
-For on-demand settlement by ID response please click [here](https://razorpay.com/docs/api/settlements/instant/#fetch-instant-settlements-by-id)
-
+**Response:**
+```json
+{
+    "id": "setlod_JngXLps9eKgYIM",
+    "entity": "settlement.ondemand",
+    "amount_requested": 200000,
+    "amount_settled": 199410,
+    "amount_pending": 0,
+    "amount_reversed": 0,
+    "fees": 590,
+    "tax": 90,
+    "currency": "INR",
+    "settle_full_balance": false,
+    "status": "processed",
+    "description": "Make vendor payments.",
+    "notes": {
+        "notes_key_1": "Tea, Earl Grey, Hot",
+        "notes_key_2": "Tea, Earl Grey… decaf."
+    },
+    "created_at": 1656587511,
+    "scheduled": false,
+    "ondemand_payouts": {
+        "entity": "collection",
+        "count": 1,
+        "items": [
+            {
+                "id": "setlodp_JngXLqBZNxBgIY",
+                "entity": "settlement.ondemand_payout",
+                "initiated_at": 1656587522,
+                "processed_at": 1656587533,
+                "reversed_at": null,
+                "amount": 200000,
+                "amount_settled": 199410,
+                "fees": 590,
+                "tax": 90,
+                "utr": "7312050628",
+                "status": "processed",
+                "created_at": 1656587511
+            }
+        ]
+    }
+}
+```
 -------------------------------------------------------------------------------------------------------
 
 **PN: * indicates mandatory fields**
