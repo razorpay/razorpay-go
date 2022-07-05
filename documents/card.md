@@ -543,6 +543,21 @@ body, err := client.Card.Fetch("<cardId>", nil, nil)
 |-----------------|---------|------------------------------------------------------------------------------|
 | cardId*          | string | card id to be fetched                                               |
 
+```json
+{
+    "id": "card_JXPULjlKqC5j0i",
+    "entity": "card",
+    "name": "Gaurav",
+    "last4": "4366",
+    "network": "Visa",
+    "type": "credit",
+    "issuer": "UTIB",
+    "international": false,
+    "emi": true,
+    "sub_type": "consumer",
+    "token_iin": null
+}
+```
 -------------------------------------------------------------------------------------------------------
 
 ## Delete tokens
