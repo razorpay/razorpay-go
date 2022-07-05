@@ -543,6 +543,7 @@ body, err := client.Card.Fetch("<cardId>", nil, nil)
 |-----------------|---------|------------------------------------------------------------------------------|
 | cardId*          | string | card id to be fetched                                               |
 
+**Response:**
 ```json
 {
     "id": "card_JXPULjlKqC5j0i",
