@@ -80,12 +80,14 @@ body, err := client.Order.Create(data, nil)
 
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
-| amount*          | integer | Amount in currency subunits. For emandate, the amount has to be `0`.                                              |
+| amount*          | integer | Amount of the order to be paid                                               |
 | currency*        | string  | Currency of the order. Currently only `INR` is supported.                      |
 | method*        | string  | The authorization method. In this case the value will be `emandate`                      |
 | receipt         | string  | Your system order reference id.                                              |
+| customer_id*         | string  | The `customer_id` for the customer you want to charge.|
+| payment_capture  | boolean  | Indicates whether payment status should be changed to captured automatically or not. Possible values: true - Payments are captured automatically. false - Payments are not captured automatically. |
 | notes           | object  | A key-value pair                                                             |
-| token           | object  | A key-value pair                                                             |
+| token  | array  | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/emandate/create-authorization-transaction/#112-create-an-order) are supported|
 
 **Response:**
 Create order response please click [here](https://razorpay.com/docs/api/recurring-payments/emandate/authorization-transaction/#112-create-an-order)
