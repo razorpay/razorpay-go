@@ -19,7 +19,7 @@ body, err := client.Payment.Capture(paymentId, amount, data, nil)
 |-----------|---------|--------------------------------------------------------------------------------|
 | paymentId* | string  | Id of the payment to capture                                                   |
 | amount*    | integer | The amount to be captured (should be equal to the authorized amount, in paise) |
-| currency   | string  | The currency of the payment (defaults to INR)                                  |
+| currency*   | string  | The currency of the payment (defaults to INR)                                  |
 
 **Response:**
 ```json
@@ -78,6 +78,7 @@ body, err := client.Payment.All(data, nil)
 | to    | timestamp | timestamp before which the payments were created |
 | count | integer   | number of payments to fetch (default: 10)        |
 | skip  | integer   | number of payments to be skipped (default: 0)    |
+| expand[]   | string    |  Used to retrieve additional information about the payment. Possible value is `cards` or `emi`|
 
 **Response:**
 ```json
@@ -137,6 +138,7 @@ body, err := client.Payment.Fetch(paymentId, nil, nil)
 | Name       | Type   | Description                       |
 |------------|--------|-----------------------------------|
 | paymentId* | string | Id of the payment to be retrieved |
+| expand[]   | string    |  Used to retrieve additional information about the payment. Possible value is `cards` or `emi`|
 
 **Response:**
 ```json
@@ -257,39 +259,42 @@ body, err := client.Payment.Edit(paymentId, data, nil)
 **Response:**
 ```json
 {
-  "id": "pay_CBYy6tLmJTzn3Q",
-  "entity": "payment",
-  "amount": 1000,
-  "currency": "INR",
-  "status": "authorized",
-  "order_id": null,
-  "invoice_id": null,
-  "international": false,
-  "method": "netbanking",
-  "amount_refunded": 0,
-  "refund_status": null,
-  "captured": false,
-  "description": null,
-  "card_id": null,
-  "bank": "UTIB",
-  "wallet": null,
-  "vpa": null,
-  "email": "testme@acme.com",
-  "notes": {
-    "key1": "value1",
-    "key2": "value2"
-  },
-  "fee": null,
-  "tax": null,
-  "error_code": null,
-  "error_description": null,
-  "error_source": null,
-  "error_step": null,
-  "error_reason": null,
-  "acquirer_data": {
-    "bank_transaction_id": "0125836177"
-  },
-  "created_at": 1553504328
+    "id": "pay_JpFbdMHunrN6LJ",
+    "entity": "payment",
+    "amount": 80000,
+    "currency": "INR",
+    "status": "captured",
+    "order_id": "order_JcbBWAhl9z0qJx",
+    "invoice_id": "inv_JcbBW8MrnNhuiC",
+    "international": false,
+    "method": "card",
+    "amount_refunded": 0,
+    "refund_status": null,
+    "captured": true,
+    "description": "Start Subscription",
+    "card_id": "card_JpFbdquXOLR4rg",
+    "bank": null,
+    "wallet": null,
+    "vpa": null,
+    "email": "you@example.com",
+    "contact": "+917000569565",
+    "customer_id": "cust_I3FToKbnExwDLu",
+    "token_id": "token_JPz75tHtcA0Yu4",
+    "notes": {
+        "key1": "value1",
+        "key2": "value2"
+    },
+    "fee": 2000,
+    "tax": 0,
+    "error_code": null,
+    "error_description": null,
+    "error_source": null,
+    "error_step": null,
+    "error_reason": null,
+    "acquirer_data": {
+        "auth_code": "159838"
+    },
+    "created_at": 1656929352
 }
 ```
 -------------------------------------------------------------------------------------------------------
@@ -326,7 +331,7 @@ For expanded card or emi details for payments response please click [here](https
 ```go
 paymentId := "pay_CBYy6tLmJTzn3Q"
 
-body, err := client.Payment.FetchCardDetails(paymentId, nil)
+body, err := client.Payment.FetchCardDetails(paymentId, nil, nil)
 ```
 
 **Parameters:**
@@ -338,16 +343,17 @@ body, err := client.Payment.FetchCardDetails(paymentId, nil)
 **Response:**
 ```json
 {
-  "id": "card_6krZ6bcjoeqyV9",
+  "id": "card_JXPULjlKqC5j0i",
   "entity": "card",
-  "name": "Gaurav",
-  "last4": "3335",
+  "name": "ankit",
+  "last4": "4366",
   "network": "Visa",
-  "type": "debit",
-  "issuer": "SBIN",
+  "type": "credit",
+  "issuer": "UTIB",
   "international": false,
-  "emi": null,
-  "sub_type": "business"
+  "emi": true,
+  "sub_type": "consumer",
+  "token_iin": null
 }
 ```
 -------------------------------------------------------------------------------------------------------
@@ -378,6 +384,7 @@ body, err := client.Payment.FetchPaymentDowntimeById(downtimeId, nil)
 
 **Response:**
 For payment downtime by id response please click [here](https://razorpay.com/docs/api/payments/downtime/#fetch-payment-downtime-details-by-id)
+
 -------------------------------------------------------------------------------------------------------
 
 ### Payment capture settings API
@@ -391,7 +398,7 @@ data := map[string]interface{}{
   "notes": map[string]interface{}{
       "key1": "value1",
       "key2": "value2",
-    } 
+    }, 
 }
 body, err := client.Order.Create(data, nil)
 ```
@@ -436,7 +443,7 @@ para_attr := map[string]interface{}{
   "contact": 9090909090,
   "method": "card",
   "card": map[string]interface{}{
-    "number": 4111111111111111,
+    "number": "4111111111111111",
     "name": "Gaurav",
     "expiry_month": 11,
     "expiry_year": 23,
@@ -466,6 +473,7 @@ body, err := client.Payment.CreatePaymentJson(para_attr, nil)
 }
 ```
 -------------------------------------------------------------------------------------------------------
+
 ### Create Payment Json (Third party validation)
 
 ```go
@@ -560,6 +568,7 @@ body, err := client.Payment.CreateUpi(para_attr, nil)
 }
 ```
 -------------------------------------------------------------------------------------------------------
+
 ### Create Payment UPI s2s (Third party validation)
 
 ```go
@@ -611,6 +620,74 @@ body, err := client.Payment.CreateUpi(para_attr, nil)
 ```
 -------------------------------------------------------------------------------------------------------
 
+### OTP Generate
+
+```go
+body, err := client.Payment.OtpGenerate(paymentId, nil, nil)
+```
+
+**Parameters:**
+
+| Name        | Type    | Description                          |
+|-------------|---------|--------------------------------------|
+| paymentId*    | integer | Unique identifier of the payment                                               |
+
+Doc reference [doc](https://razorpay.com/docs/payments/payment-gateway/s2s-integration/json/v2/build-integration/cards/#otp-generation)
+
+**Response:** <br>
+
+```json
+{
+ "razorpay_payment_id": "pay_FVmAstJWfsD3SO",
+ "next": [
+  {
+   "action": "otp_submit",
+   "url": "https://api.razorpay.com/v1/payments/pay_FVmAstJWfsD3SO/otp_submit/ac2d415a8be7595de09a24b41661729fd9028fdc?key_id=<YOUR_KEY_ID>"
+  },
+  {
+   "action": "otp_resend",
+   "url": "https://api.razorpay.com/v1/payments/pay_FVmAstJWfsD3SO/otp_resend/json?key_id=<YOUR_KEY_ID>"
+  }
+ ],
+ "metadata": {
+  "issuer": "HDFC",
+  "network": "MC",
+  "last4": "1111",
+  "iin": "411111"
+ }
+}
+```
+-------------------------------------------------------------------------------------------------------
+
+### OTP Submit
+
+```go
+data := map[string]interface{}{
+	"otp" : "123456",
+}
+body, err := client.Payment.OtpSubmit(paymentId, data, nil)
+```
+
+**Parameters:**
+
+| Name        | Type    | Description                          |
+|-------------|---------|--------------------------------------|
+| paymentId*    | integer | Unique identifier of the payment                                               |
+| data.otp*    | object | The customer receives the OTP using their preferred notification medium - SMS or email |
+
+Doc reference [doc](https://razorpay.com/docs/payments/payment-gateway/s2s-integration/json/v2/build-integration/cards/#response-on-submitting-otp)
+
+**Response:** <br>
+Success
+```json
+{
+ "razorpay_payment_id": "pay_D5jmY2H6vC7Cy3",
+ "razorpay_order_id": "order_9A33XWu170gUtm",
+ "razorpay_signature": "9ef4dffbfd84f1318f6739a3ce19f9d85851857ae648f114332d8401e0949a3d"
+}
+```
+-------------------------------------------------------------------------------------------------------
+
 ### Valid VPA (Third party validation)
 
 ```go
@@ -649,6 +726,31 @@ body, err := client.Payment.FetchMethods(nil, nil)
 **Response:** <br>
  please refer this [doc](https://razorpay.com/docs/payments/third-party-validation/s2s-integration/methods-api/#fetch-payment-methods) for response
 
+-------------------------------------------------------------------------------------------------------
+### OTP Resend
+
+```go
+body, err := client.Payment.OtpResend(paymentId, nil, nil)
+```
+
+**Parameters:**
+
+| Name        | Type    | Description                          |
+|-------------|---------|--------------------------------------|
+| paymentId*    | integer | Unique identifier of the payment                                               |
+
+Doc reference [doc](https://razorpay.com/docs/payments/payment-methods/cards/authentication/native-otp/#otp-resend)
+
+**Response:** <br>
+
+```json
+{
+  "next": [
+    "otp_submit",
+    "otp_resend"
+  ],
+  "razorpay_payment_id": "pay_JWaNvYmrx75sXo"
+}
 ```
 -------------------------------------------------------------------------------------------------------
 

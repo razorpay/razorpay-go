@@ -20,9 +20,9 @@ body, err := client.Subscription.CreateAddon(subscriptionId, data, nil)
 
 | Name  | Type      | Description                                      |
 |-------|-----------|--------------------------------------------------|
-| subscriptionId*  | string | The subscription ID to which the add-on is being added. |
-| items*  | object | Details of the add-on you want to create. |
-| quantity  | integer | This specifies the number of units of the add-on to be charged to the customer. Defaults to 1 |
+| subscriptionId*  | boolean | The subscription ID to which the add-on is being added. |
+| items  | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-an-add-on) |
+| quantity  | integer | This specifies the number of units of the add-on to be charged to the customer. |
 
 **Response:**
 ```json
@@ -116,7 +116,7 @@ body, err := client.Addon.All(options, nil)
 
 ```go
 addonId := "ao_00000000000001"
-body, err := client.Addon.Fetch(addonId, nil, nil)
+body, err := client.Addon.Fetch("ao_JSg0XYEbNjYQ5n", nil, nil)
 ```
 
 **Parameters:**
@@ -127,31 +127,31 @@ body, err := client.Addon.Fetch(addonId, nil, nil)
 **Response:**
 ```json
 {
-  "id":"ao_00000000000001",
-  "entity":"addon",
-  "item":{
-    "id":"item_00000000000001",
-    "active":true,
-    "name":"Extra appala (papadum)",
-    "description":"1 extra oil fried appala with meals",
-    "amount":30000,
-    "unit_amount":30000,
-    "currency":"INR",
-    "type":"addon",
-    "unit":null,
-    "tax_inclusive":false,
-    "hsn_code":null,
-    "sac_code":null,
-    "tax_rate":null,
-    "tax_id":null,
-    "tax_group_id":null,
-    "created_at":1581597318,
-    "updated_at":1581597318
+  "id": "ao_JSg0XYEbNjYQ5n",
+  "entity": "addon",
+  "item": {
+      "id": "item_JSg0XXytK8F6LL",
+      "active": true,
+      "name": "Delivery charges",
+      "description": null,
+      "amount": 30000,
+      "unit_amount": 30000,
+      "currency": "INR",
+      "type": "addon",
+      "unit": null,
+      "tax_inclusive": false,
+      "hsn_code": null,
+      "sac_code": null,
+      "tax_rate": null,
+      "tax_id": null,
+      "tax_group_id": null,
+      "created_at": 1652000505,
+      "updated_at": 1652000505
   },
-  "quantity":2,
-  "created_at":1581597318,
-  "subscription_id":"sub_00000000000001",
-  "invoice_id":null
+  "quantity": 1,
+  "created_at": 1652000505,
+  "subscription_id": "sub_JSg0XQg5MZ3uLJ",
+  "invoice_id": "inv_JSg0Xzyzpkk2fV"
 }
 ```
 -------------------------------------------------------------------------------------------------------
@@ -159,6 +159,8 @@ body, err := client.Addon.Fetch(addonId, nil, nil)
 ### Delete an addon
 
 ```go
+addonId := "ao_JSg0XYEbNjYQ5n";
+
 body, err := client.Addon.Delete(addonId, nil, nil)
 ```
 

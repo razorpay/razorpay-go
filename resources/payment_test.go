@@ -219,3 +219,36 @@ func TestPaymentFetchRefund(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
+
+func TestOtpGenerate(t *testing.T) {
+	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/otp_generate"
+	teardown, fixture := utils.StartMockServer(url, "fake_otp_generate")
+	defer teardown()
+	body, err := utils.Client.Payment.OtpGenerate(TestPaymentID, nil, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
+
+func TestOtpSubmit(t *testing.T) {
+	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/otp/submit"
+	teardown, fixture := utils.StartMockServer(url, "fake_otp_submit")
+	defer teardown()
+	data := map[string]interface{}{
+	  "otp" : "123456",
+	}
+	body, err := utils.Client.Payment.OtpSubmit(TestPaymentID, data, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
+
+func TestOtpResend(t *testing.T) {
+	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/otp/resend"
+	teardown, fixture := utils.StartMockServer(url, "fake_otp_resend")
+	defer teardown()
+	body, err := utils.Client.Payment.OtpResend(TestPaymentID, nil, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}

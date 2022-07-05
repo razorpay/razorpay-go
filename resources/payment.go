@@ -131,4 +131,18 @@ func (p *Payment) ValidateVpa(data map[string]interface{}, extraHeaders map[stri
 func (p *Payment) FetchMethods(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s", constants.METHODS_URL)
 	return p.Request.Get(url, data, extraHeaders)
+
+func (p *Payment) OtpGenerate(paymentId string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error){
+	url := fmt.Sprintf("%s/%s/otp_generate", constants.PAYMENT_URL, url.PathEscape(paymentId))
+    return p.Request.Post(url, queryParams, extraHeaders)
+}
+
+func (p *Payment) OtpSubmit(paymentId string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error){
+	url := fmt.Sprintf("%s/%s/otp/submit", constants.PAYMENT_URL, url.PathEscape(paymentId))
+    return p.Request.Post(url, data, extraHeaders)
+}
+
+func (p *Payment) OtpResend(paymentId string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error){
+	url := fmt.Sprintf("%s/%s/otp/resend", constants.PAYMENT_URL, url.PathEscape(paymentId))
+    return p.Request.Post(url, queryParams, extraHeaders)
 }
