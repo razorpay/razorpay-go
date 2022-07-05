@@ -473,6 +473,101 @@ body, err := client.Payment.CreatePaymentJson(para_attr, nil)
 }
 ```
 -------------------------------------------------------------------------------------------------------
+### OTP Generate
+
+```go
+body, err := client.Payment.OtpGenerate(paymentId, nil, nil)
+```
+
+**Parameters:**
+
+| Name        | Type    | Description                          |
+|-------------|---------|--------------------------------------|
+| paymentId*    | integer | Unique identifier of the payment                                               |
+
+Doc reference [doc](https://razorpay.com/docs/payments/payment-gateway/s2s-integration/json/v2/build-integration/cards/#otp-generation)
+
+**Response:** <br>
+
+```json
+{
+ "razorpay_payment_id": "pay_FVmAstJWfsD3SO",
+ "next": [
+  {
+   "action": "otp_submit",
+   "url": "https://api.razorpay.com/v1/payments/pay_FVmAstJWfsD3SO/otp_submit/ac2d415a8be7595de09a24b41661729fd9028fdc?key_id=<YOUR_KEY_ID>"
+  },
+  {
+   "action": "otp_resend",
+   "url": "https://api.razorpay.com/v1/payments/pay_FVmAstJWfsD3SO/otp_resend/json?key_id=<YOUR_KEY_ID>"
+  }
+ ],
+ "metadata": {
+  "issuer": "HDFC",
+  "network": "MC",
+  "last4": "1111",
+  "iin": "411111"
+ }
+}
+```
+-------------------------------------------------------------------------------------------------------
+
+### OTP Submit
+
+```go
+data := map[string]interface{}{
+	"otp" : "123456",
+}
+body, err := client.Payment.OtpSubmit(paymentId, data, nil)
+```
+
+**Parameters:**
+
+| Name        | Type    | Description                          |
+|-------------|---------|--------------------------------------|
+| paymentId*    | integer | Unique identifier of the payment                                               |
+| data.otp*    | object | The customer receives the OTP using their preferred notification medium - SMS or email |
+
+Doc reference [doc](https://razorpay.com/docs/payments/payment-gateway/s2s-integration/json/v2/build-integration/cards/#response-on-submitting-otp)
+
+**Response:** <br>
+Success
+```json
+{
+ "razorpay_payment_id": "pay_D5jmY2H6vC7Cy3",
+ "razorpay_order_id": "order_9A33XWu170gUtm",
+ "razorpay_signature": "9ef4dffbfd84f1318f6739a3ce19f9d85851857ae648f114332d8401e0949a3d"
+}
+```
+-------------------------------------------------------------------------------------------------------
+
+### OTP Resend
+
+```go
+body, err := client.Payment.OtpResend(paymentId, nil, nil)
+```
+
+**Parameters:**
+
+| Name        | Type    | Description                          |
+|-------------|---------|--------------------------------------|
+| paymentId*    | integer | Unique identifier of the payment                                               |
+
+Doc reference [doc](https://razorpay.com/docs/payments/payment-methods/cards/authentication/native-otp/#otp-resend)
+
+**Response:** <br>
+
+```json
+{
+  "next": [
+    "otp_submit",
+    "otp_resend"
+  ],
+  "razorpay_payment_id": "pay_JWaNvYmrx75sXo"
+}
+```
+
+-------------------------------------------------------------------------------------------------------
 
 **PN: * indicates mandatory fields**
 <br>
