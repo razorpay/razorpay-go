@@ -443,7 +443,7 @@ para_attr := map[string]interface{}{
   "contact": 9090909090,
   "method": "card",
   "card": map[string]interface{}{
-    "number": 4111111111111111,
+    "number": "4111111111111111",
     "name": "Gaurav",
     "expiry_month": 11,
     "expiry_year": 23,
