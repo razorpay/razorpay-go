@@ -35,8 +35,8 @@ body, err := client.Subscription.Create(data, nil)
 | quantity      | integer | The number of times the customer should be charged the plan amount per invoice |
 | start_at    | integer | The timestamp, in Unix format, for when the subscription should start. If not passed, the subscription starts immediately after the authorization payment. |
 | expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
-| addons    | array  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-a-subscription) are supported |
-| notes          | array | Notes you can enter for the contact for future reference.   |
+| addons    | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-a-subscription) are supported |
+| notes          | object | Notes you can enter for the contact for future reference.   |
 | offer_id   | string | The unique identifier of the offer that is linked to the subscription. |
 
 **Response:**
@@ -115,9 +115,9 @@ body, err := client.Subscription.Create(data, nil)
 | quantity    | integer | The number of times the customer should be charged the plan amount per invoice |
 | start_at    | integer | The timestamp, in Unix format, for when the subscription should start. If not passed, the subscription starts immediately after the authorization payment. |
 | expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
-| addons    | array  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-a-subscription-link) are supported |
-| notes          | array | Notes you can enter for the contact for future reference.   |
-| notify_info    | array  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-a-subscription-link) are supported |
+| addons    | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-a-subscription-link) are supported |
+| notes          | object | Notes you can enter for the contact for future reference.   |
+| notify_info    | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/subscriptions/#create-a-subscription-link) are supported |
 | offer_id   | string | The unique identifier of the offer that is linked to the subscription. |
 
 **Response:**

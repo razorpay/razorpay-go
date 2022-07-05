@@ -552,14 +552,14 @@ body, err := client.Payment.CreateUpi(para_attr, nil)
 | email*        | string      | Email of the customer                       |
 | customer_id*   | string      | The id of the customer to be fetched |
 | contact*      | string      | Contact number of the customer              |
-| notes | array  | A key-value pair  |
+| notes | object  | A key-value pair  |
 | description | string  | Descriptive text of the payment. |
 | save | boolean  |  Specifies if the VPA should be stored as tokens.Possible value is `0`, `1`  |
 | callback_url   | string      | URL where Razorpay will submit the final payment status. |
 | ip*   | string      | The client's browser IP address. For example `117.217.74.98` |
 | referer*   | string      | Value of `referer` header passed by the client's browser. For example, `https://example.com/` |
 | user_agent*   | string      | Value of `user_agent` header passed by the client's browser. For example, `Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36` |
-| upi* (for Upi only)  | array      | All keys listed [here](https://razorpay.com/docs/payments/third-party-validation/s2s-integration/upi/collect#step-14-initiate-a-payment) are supported  |
+| upi* (for Upi only)  | object      | All keys listed [here](https://razorpay.com/docs/payments/third-party-validation/s2s-integration/upi/collect#step-14-initiate-a-payment) are supported  |
 
 **Response:** <br>
 ```json
@@ -602,14 +602,14 @@ body, err := client.Payment.CreateUpi(para_attr, nil)
 | email*        | string      | Email of the customer                       |
 | customer_id*   | string      | The id of the customer to be fetched |
 | contact*      | string      | Contact number of the customer              |
-| notes | array  | A key-value pair  |
+| notes | object  | A key-value pair  |
 | description | string  | Descriptive text of the payment. |
 | save | boolean  |  Specifies if the VPA should be stored as tokens.Possible value is `0`, `1`  |
 | callback_url   | string      | URL where Razorpay will submit the final payment status. |
 | ip*   | string      | The client's browser IP address. For example `117.217.74.98` |
 | referer*   | string      | Value of `referer` header passed by the client's browser. For example, `https://example.com/` |
 | user_agent*   | string      | Value of `user_agent` header passed by the client's browser. For example, `Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36` |
-| upi* (for Upi only)  | array      | All keys listed [here](https://razorpay.com/docs/payments/third-party-validation/s2s-integration/upi/intent/#step-2-initiate-a-payment) are supported  |
+| upi* (for Upi only)  | object      | All keys listed [here](https://razorpay.com/docs/payments/third-party-validation/s2s-integration/upi/intent/#step-2-initiate-a-payment) are supported  |
 
 **Response:** <br>
 ```json

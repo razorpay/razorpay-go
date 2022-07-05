@@ -467,7 +467,7 @@ body, err := client.Payment.Refund("<paymentId>",1200, data, nil)
 |-----------------|---------|------------------------------------------------------------------------------|
 | paymentId*  | string | The id of the payment to be refunded |
 | amount  | string | Amount to be refunded |
-| notes       | array | Key-value pair that can be used to store additional information about the QR code. Maximum 15 key-value pairs, 256 characters (maximum) each. |
+| notes       | object | Key-value pair that can be used to store additional information about the QR code. Maximum 15 key-value pairs, 256 characters (maximum) each. |
 
 **Response:**
 ```json

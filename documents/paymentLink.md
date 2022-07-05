@@ -76,7 +76,7 @@ body, err := client.PaymentLink.Create(data, nil)
 |customer           | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/payment-links/#sample-codes-for-upi-payment-links) are supported                 |
 |expire_by           | integer  | Timestamp, in Unix, at which the Payment Link will expire. By default, a Payment Link will be valid for six months from the date of creation.                     |
 |notify           | object  | sms or email (boolean)                     |
-|notes           | json object  | Key-value pair that can be used to store additional information about the entity. Maximum 15 key-value pairs, 256 characters (maximum) each. For example, "note_key": "Beam me up Scotty”                     |
+|notes           |  object  | Key-value pair that can be used to store additional information about the entity. Maximum 15 key-value pairs, 256 characters (maximum) each. For example, "note_key": "Beam me up Scotty”                     |
 | callback_url | string | If specified, adds a redirect URL to the Payment Link. Once customers completes the payment, they are redirected to the specified URL. |
 | callback_method | string | If callback_url parameter is passed, callback_method must be passed with the value `get`. |
 | reminder_enable | boolean | Used to send reminders for the Payment Link. Possible values is `true` or `false` |

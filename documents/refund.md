@@ -21,7 +21,7 @@ body, err := client.Payment.Refund("<paymentId>",1200, data, nil)
 |  paymentId*   | string      | The id of the payment                       |
 |  amount       | integer      | The amount to be captured (should be equal to the authorized amount, in paise) |                       |
 |  speed        | string      | Here, it must be normal                |
-|  notes        | array       | A key-value pair                |
+|  notes        | object       | A key-value pair                |
 |  receipt      | string      | A unique identifier provided by you for your internal reference. |
 
 **Response:**
@@ -272,7 +272,7 @@ body, err := client.Refund.Update("<refundId>", data, nil)
 | Name  | Type      | Description                                      |
 |-------|-----------|--------------------------------------------------|
 | refundId*   | string    | The id of the refund to be fetched     |
-| notes* | array  | A key-value pair                                 |
+| notes* | object  | A key-value pair                                 |
 
 **Response:**
 ```json

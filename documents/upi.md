@@ -140,16 +140,16 @@ body, err := client.Invoice.CreateRegistrationLink(data, nil)
 
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
-| customer   | array      | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/upi/create-authorization-transaction/#121-create-a-registration-link) are supported |
+| customer   | object      | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/upi/create-authorization-transaction/#121-create-a-registration-link) are supported |
 | type*        | string  | In this case, the value is `link`.                      |
 | currency*        | string  | The 3-letter ISO currency code for the payment. Currently, only `INR` is supported. |
 | amount*         | integer  | The payment amount in the smallest currency sub-unit.                 |
 | description*    | string  | A description that appears on the hosted page. For example, `12:30 p.m. Thali meals (Gaurav Kumar`).                                                             |
-| subscription_registration      | array  | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/upi/create-authorization-transaction/#121-create-a-registration-link) are supported |
+| subscription_registration      | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/upi/create-authorization-transaction/#121-create-a-registration-link) are supported |
 | sms_notify  | boolean  | SMS notifications are to be sent by Razorpay (default : 1)  |
 | email_notify | boolean  | Email notifications are to be sent by Razorpay (default : 1)  |
 | expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
-| notes | array  | A key-value pair  |
+| notes | object  | A key-value pair  |
 
 **Response:**
 ```json

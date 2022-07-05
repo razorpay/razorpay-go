@@ -198,7 +198,9 @@ body, err := client.Invoice.CreateRegistrationLink(data, nil)
 | notes | object  | A key-value pair  |
 
 **Response:**
-For create registration link response please click [here](https://razorpay.com/docs/api/payments/recurring-payments/emandate/auto-debit/#121-create-a-registration-link)
+For create registration link response 
+please click [here](https://razorpay.com/docs/api/payments/recurring-payments/emandate/auto-debit/#121-create-a-registration-link)
+
 -------------------------------------------------------------------------------------------------------
 
 ## Create an order to charge the customer

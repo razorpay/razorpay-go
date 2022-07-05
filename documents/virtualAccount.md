@@ -181,7 +181,7 @@ body, err := client.VirtualAccount.Create(data, nil)
 
 | Name          | Type        | Description                                 |
 |---------------|-------------|---------------------------------------------|
-| receivers*    | array      | All parameters listed [here](https://razorpay.com/docs/payments/payments/payment-methods/bharatqr/api/#create) are supported |
+| receivers*    | object      | All parameters listed [here](https://razorpay.com/docs/payments/payments/payment-methods/bharatqr/api/#create) are supported |
 | description  | string      | A brief description of the payment.   |
 | amount_expected  | integer   | The maximum amount you expect to receive in this virtual account. Pass `69999` for ₹699.99.   |
 | customer_id  | string      | Unique identifier of the customer to whom the virtual account must be tagged.                    |
@@ -229,6 +229,7 @@ body, err := client.VirtualAccount.Fetch("<virtualId>", nil, nil)
 
 **Response:**
 For fetch virtual account by id response please click [here](https://razorpay.com/docs/api/smart-collect/#fetch-a-virtual-account-by-id)
+
 -------------------------------------------------------------------------------------------------------
 
 ### Fetch all virtual account
@@ -421,7 +422,7 @@ body, err := client.Payment.Refund("pay_JKpA1zAwaOi0xH",1200, data, nil)
 | paymentId*  | string    | The id of the payment to be updated  |
 |  amount       | integer      | The amount to be captured (should be equal to the authorized amount, in paise) |                       |
 |  speed        | string      | Here, it must be normal                |
-|  notes        | array       | A key-value pair                |
+|  notes        | object       | A key-value pair                |
 |  receipt      | string      | A unique identifier provided by you for your internal reference. |
 
 **Response:**
@@ -469,7 +470,6 @@ body, err :=  client.VirtualAccount.AddReceiver("<virtualID>", data, nil)
 |-------|-----------|--------------------------------------------------|
 | virtualId*  | string    | The id of the virtual to be updated  |
 | types*  | object | All parameters listed [here](https://razorpay.com/docs/api/payments/smart-collect/#add-receiver-to-an-existing-virtual-account) are supported |
-
 | vpa    | object | All parameters listed [here](https://razorpay.com/docs/api/payments/smart-collect/#add-receiver-to-an-existing-virtual-account) are supported |
 
 **Response:**
