@@ -244,10 +244,10 @@ body, err := client.VirtualAccount.All(data, nil)
 
 | Name  | Type      | Description                                      |
 |-------|-----------|--------------------------------------------------|
-| from  | timestamp | timestamp after which the payments were created  |
-| to    | timestamp | timestamp before which the payments were created |
-| count | integer   | number of payments to fetch (default: 10)        |
-| skip  | integer   | number of payments to be skipped (default: 0)    |
+| from  | timestamp | Timestamp, in seconds, from when virtual accounts are to be fetched.  |
+| to    | timestamp | Timestamp, in seconds, till when virtual accounts are to be fetched. |
+| count | integer   | Number of virtual accounts to be fetched. The default value is 10 and the maximum value is 100. |
+| skip  | integer   | Number of records to be skipped while fetching the virtual accounts. This can be used for pagination, in combination with `count`.    |
 
 **Response:**
 ```json
