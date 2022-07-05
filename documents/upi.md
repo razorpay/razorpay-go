@@ -22,6 +22,7 @@ body, err := client.Customer.Create(data, nil)
 | name*          | string      | Name of the customer                        |
 | email        | string      | Email of the customer                       |
 | contact      | string      | Contact number of the customer              |
+| fail_existing | string | If a customer with the same details already exists, the request throws an exception by default. Possible value is `0` or `1`|
 | notes         | object      | A key-value pair                            |
 
 **Response:**
@@ -139,13 +140,16 @@ body, err := client.Invoice.CreateRegistrationLink(data, nil)
 
 | Name            | Type    | Description                                                                  |
 |-----------------|---------|------------------------------------------------------------------------------|
-| customer          | object | Details of the customer to whom the registration link will be sent.           |
+| customer   | array      | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/upi/create-authorization-transaction/#121-create-a-registration-link) are supported |
 | type*        | string  | In this case, the value is `link`.                      |
 | currency*        | string  | The 3-letter ISO currency code for the payment. Currently, only `INR` is supported. |
 | amount*         | integer  | The payment amount in the smallest currency sub-unit.                 |
 | description*    | string  | A description that appears on the hosted page. For example, `12:30 p.m. Thali meals (Gaurav Kumar`).                                                             |
-| subscription_registration           | object  | Details of the authorization payment.                      |
-| notes           | object  | A key-value pair                                                             |
+| subscription_registration      | array  | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/upi/create-authorization-transaction/#121-create-a-registration-link) are supported |
+| sms_notify  | boolean  | SMS notifications are to be sent by Razorpay (default : 1)  |
+| email_notify | boolean  | Email notifications are to be sent by Razorpay (default : 1)  |
+| expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
+| notes | array  | A key-value pair  |
 
 **Response:**
 ```json
@@ -447,6 +451,7 @@ body, err := client.Order.Create(data, nil)
 | amount*          | integer | Amount of the order to be paid                                               |
 | currency*        | string  | Currency of the order. Currently only `INR` is supported.                      |
 | receipt         | string  | Your system order reference id.                                              |
+| payment_capture*  | boolean  | Indicates whether payment status should be changed to captured automatically or not. Possible values: true - Payments are captured automatically. false - Payments are not captured automatically. |
 | notes           | object  | A key-value pair                                                             |
 
 **Response:**
@@ -489,7 +494,7 @@ data:= map[string]interface{}{
     "note_key 2": "Tea. Earl Gray. Hot.",
   },
 }
-body, err := Client.Payment.CreateRecurringPayment(data, nil)
+body, err := client.Payment.CreateRecurringPayment(data, nil);
 ```
 
 **Parameters:**
