@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.0] - 2022-07-05
 
 ### Added
-- Added Third party validation & Otp API for Payment (createUpi, validateVpa, otpGenerate, otpSubmit, otpResend)
+- Added Third party validation & Otp API for Payment (CreateUpi, ValidateVpa, OtpGenerate, OtpSubmit, OtpResend)
 - Update Documention
 
 ## [1.0.0] - 2022-04-29
