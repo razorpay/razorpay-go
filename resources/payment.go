@@ -125,7 +125,7 @@ func (p *Payment) CreateUpi(data map[string]interface{}, extraHeaders map[string
 
 func (p *Payment) ValidateVpa(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s/validate/vpa", constants.PAYMENT_URL)
-	return p.Request.Get(url, data, extraHeaders)
+	return p.Request.Post(url, data, extraHeaders)
 }
 
 func (p *Payment) FetchMethods(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
