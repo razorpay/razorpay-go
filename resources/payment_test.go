@@ -16,7 +16,8 @@ const DowntimeId = "down_F7LroRQAAFuswd"
 const RefundId = "fake_refund_id"
 
 func TestPaymentAll(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.PAYMENT_URL, "payment_collection")
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL
+	teardown, fixture := utils.StartMockServer(url, "payment_collection")
 	defer teardown()
 	body, err := utils.Client.Payment.All(nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -25,7 +26,8 @@ func TestPaymentAll(t *testing.T) {
 }
 
 func TestPaymentAllWithOptions(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.PAYMENT_URL, "payment_collection_with_one_payment")
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL
+	teardown, fixture := utils.StartMockServer(url, "payment_collection_with_one_payment")
 	defer teardown()
 	queryParams := map[string]interface{}{
 		"count": 1,
@@ -37,7 +39,7 @@ func TestPaymentAllWithOptions(t *testing.T) {
 }
 
 func TestPaymentFetch(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID
 	teardown, fixture := utils.StartMockServer(url, "payment_collection_with_one_payment")
 	defer teardown()
 	body, err := utils.Client.Payment.Fetch(TestPaymentID, nil, nil)
@@ -47,7 +49,7 @@ func TestPaymentFetch(t *testing.T) {
 }
 
 func TestPaymentCapture(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/capture"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/capture"
 	teardown, fixture := utils.StartMockServer(url, "fake_captured_payment")
 	defer teardown()
 	body, err := utils.Client.Payment.Capture(TestPaymentID, TestCaptureAmount, nil, nil)
@@ -57,7 +59,7 @@ func TestPaymentCapture(t *testing.T) {
 }
 
 func TestPaymentRefundCreate(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/refund"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/refund"
 	teardown, fixture := utils.StartMockServer(url, "fake_refund")
 	defer teardown()
 	body, err := utils.Client.Payment.Refund(TestPaymentID, TestRefundAmount, nil, nil)
@@ -66,7 +68,7 @@ func TestPaymentRefundCreate(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 func TestPaymentTransfer(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/transfers"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/transfers"
 	teardown, fixture := utils.StartMockServer(url, "transfers_collection_with_payment_id")
 	defer teardown()
 	params := map[string]interface{}{
@@ -85,7 +87,7 @@ func TestPaymentTransfer(t *testing.T) {
 }
 
 func TestPaymentTransferFetch(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/transfers"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/transfers"
 	teardown, fixture := utils.StartMockServer(url, "transfers_collection_with_payment_id")
 	defer teardown()
 	body, err := utils.Client.Payment.Transfers(TestPaymentID, nil, nil)
@@ -95,7 +97,7 @@ func TestPaymentTransferFetch(t *testing.T) {
 }
 
 func TestPaymentBankTransferFetch(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/bank_transfer"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/bank_transfer"
 	teardown, fixture := utils.StartMockServer(url, "fake_bank_transfer")
 	defer teardown()
 	body, err := utils.Client.Payment.BankTransfer(TestPaymentID, nil, nil)
@@ -105,17 +107,17 @@ func TestPaymentBankTransferFetch(t *testing.T) {
 }
 
 func TestPaymentCreateJsonPayment(t *testing.T) {
-	url := constants.PAYMENT_URL + "/create/json"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/create/json"
 	teardown, fixture := utils.StartMockServer(url, "fake_payment_json")
 	defer teardown()
 	data := map[string]interface{}{
-		"amount": 100,
+		"amount":   100,
 		"currency": "INR",
 		"order_id": "order_EAkbvXiCJlwhHR",
-		"email": "gaurav.kumar@example.com",
-		"contact": 9090909090,
-		"method": "upi",
-	  }
+		"email":    "gaurav.kumar@example.com",
+		"contact":  9090909090,
+		"method":   "upi",
+	}
 	body, err := utils.Client.Payment.CreatePaymentJson(data, nil)
 	jsonByteArray, _ := json.Marshal(body)
 	assert.Equal(t, err, nil)
@@ -123,25 +125,25 @@ func TestPaymentCreateJsonPayment(t *testing.T) {
 }
 
 func TestPaymentCreateRecurringPayment(t *testing.T) {
-	url := constants.PAYMENT_URL + "/create/recurring"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/create/recurring"
 	teardown, fixture := utils.StartMockServer(url, "fake_recurring_payment")
 	defer teardown()
 
 	data := map[string]interface{}{
-		"email": "gaurav.kumar@example.com",
-		"contact": "9876543567",
-		"amount": 10000,
-		"currency": "INR",
-		"order_id": "order_JIPONOfVuBVB4B",
+		"email":       "gaurav.kumar@example.com",
+		"contact":     "9876543567",
+		"amount":      10000,
+		"currency":    "INR",
+		"order_id":    "order_JIPONOfVuBVB4B",
 		"customer_id": "cust_DzYEzfJLV03rkp",
-		"token": "token_JIOj6ss6Ug43Gg",
-		"recurring": "1",
+		"token":       "token_JIOj6ss6Ug43Gg",
+		"recurring":   "1",
 		"notes": map[string]interface{}{
-		  "note_key_1": "Tea. Earl grey. Hot.",
-		  "note_key_2": "Tea. Earl grey. Decaf.",
+			"note_key_1": "Tea. Earl grey. Hot.",
+			"note_key_2": "Tea. Earl grey. Decaf.",
 		},
 		"description": "Creating recurring payment for Gaurav Kumar",
-	  }
+	}
 
 	body, err := utils.Client.Payment.CreateRecurringPayment(data, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -150,7 +152,7 @@ func TestPaymentCreateRecurringPayment(t *testing.T) {
 }
 
 func TestPaymentEdit(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID
 	teardown, fixture := utils.StartMockServer(url, "fake_payment_json")
 	defer teardown()
 
@@ -168,7 +170,7 @@ func TestPaymentEdit(t *testing.T) {
 }
 
 func TestPaymentFetchCardDetails(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/card"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/card"
 	teardown, fixture := utils.StartMockServer(url, "fetch_card_details")
 	defer teardown()
 	body, err := utils.Client.Payment.FetchCardDetails(TestPaymentID, nil, nil)
@@ -178,7 +180,7 @@ func TestPaymentFetchCardDetails(t *testing.T) {
 }
 
 func TestPaymentFetchPaymentDowntime(t *testing.T) {
-	url := constants.PAYMENT_URL + "/downtimes"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/downtimes"
 	teardown, fixture := utils.StartMockServer(url, "downtimes_collection")
 	defer teardown()
 	body, err := utils.Client.Payment.FetchPaymentDowntime(nil, nil)
@@ -188,7 +190,7 @@ func TestPaymentFetchPaymentDowntime(t *testing.T) {
 }
 
 func TestPaymentFetchPaymentDowntimeById(t *testing.T) {
-	url := constants.PAYMENT_URL + "/downtimes" + "/" + DowntimeId
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/downtimes" + "/" + DowntimeId
 	teardown, fixture := utils.StartMockServer(url, "fake_downtime")
 	defer teardown()
 	body, err := utils.Client.Payment.FetchPaymentDowntimeById(DowntimeId, nil, nil)
@@ -198,11 +200,11 @@ func TestPaymentFetchPaymentDowntimeById(t *testing.T) {
 }
 
 func TestPaymentFetchMultipleRefund(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/refunds"  
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/refunds"
 	teardown, fixture := utils.StartMockServer(url, "refund_collection")
 	defer teardown()
 	data := map[string]interface{}{
-     "count" : 2,
+		"count": 2,
 	}
 	body, err := utils.Client.Payment.FetchMultipleRefund(TestPaymentID, data, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -211,7 +213,7 @@ func TestPaymentFetchMultipleRefund(t *testing.T) {
 }
 
 func TestPaymentFetchRefund(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/refunds" + "/" + RefundId
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/refunds" + "/" + RefundId
 	teardown, fixture := utils.StartMockServer(url, "fake_refund")
 	defer teardown()
 	body, err := utils.Client.Payment.FetchRefund(TestPaymentID, RefundId, nil, nil)
@@ -221,7 +223,7 @@ func TestPaymentFetchRefund(t *testing.T) {
 }
 
 func TestOtpGenerate(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/otp_generate"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/otp_generate"
 	teardown, fixture := utils.StartMockServer(url, "fake_otp_generate")
 	defer teardown()
 	body, err := utils.Client.Payment.OtpGenerate(TestPaymentID, nil, nil)
@@ -231,11 +233,11 @@ func TestOtpGenerate(t *testing.T) {
 }
 
 func TestOtpSubmit(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/otp/submit"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/otp/submit"
 	teardown, fixture := utils.StartMockServer(url, "fake_otp_submit")
 	defer teardown()
 	data := map[string]interface{}{
-	  "otp" : "123456",
+		"otp": "123456",
 	}
 	body, err := utils.Client.Payment.OtpSubmit(TestPaymentID, data, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -244,7 +246,7 @@ func TestOtpSubmit(t *testing.T) {
 }
 
 func TestOtpResend(t *testing.T) {
-	url := constants.PAYMENT_URL + "/" + TestPaymentID + "/otp/resend"
+	url := "/" + constants.VERSION_V1 + constants.PAYMENT_URL + "/" + TestPaymentID + "/otp/resend"
 	teardown, fixture := utils.StartMockServer(url, "fake_otp_resend")
 	defer teardown()
 	body, err := utils.Client.Payment.OtpResend(TestPaymentID, nil, nil)

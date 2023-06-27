@@ -1,0 +1,34 @@
+{
+    "id":"trf_KCe6qrD10dBTjC",
+    "entity":"transfer",
+    "status":"processed",
+    "source":"pay_KCe1JlTbft4ohX",
+    "recipient":"acc_KBrxrJOWlPiJob",
+    "amount":55000,
+    "currency":"INR",
+    "amount_reversed":0,
+    "fees":162,
+    "tax":24,
+    "notes":{
+       "account":"Seller Account"
+    },
+    "linked_account_notes":[
+       "account"
+    ],
+    "on_hold":true,
+    "on_hold_until":null,
+    "settlement_status":"on_hold",
+    "recipient_settlement_id":null,
+    "created_at":1662037466,
+    "processed_at":1662037468,
+    "error":{
+       "code":null,
+       "description":null,
+       "reason":null,
+       "field":null,
+       "step":null,
+       "id":"trf_KCe6qrD10dBTjC",
+       "source":null,
+       "metadata":null
+    }
+ }

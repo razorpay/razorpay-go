@@ -1,0 +1,63 @@
+{
+    "entity":"collection",
+    "count":2,
+    "items":[
+      {
+        "id":"plan_00000000000001",
+        "entity":"plan",
+        "interval":1,
+        "period":"weekly",
+        "item":{
+          "id":"item_00000000000001",
+          "active":true,
+          "name":"Test plan - Weekly",
+          "description":"Description for the test plan - Weekly",
+          "amount":69900,
+          "unit_amount":69900,
+          "currency":"INR",
+          "type":"plan",
+          "unit":null,
+          "tax_inclusive":false,
+          "hsn_code":null,
+          "sac_code":null,
+          "tax_rate":null,
+          "tax_id":null,
+          "tax_group_id":null,
+          "created_at":1580220492,
+          "updated_at":1580220492
+        },
+        "notes":{
+          "notes_key_1":"Tea, Earl Grey, Hot",
+          "notes_key_2":"Tea, Earl Grey… decaf."
+        },
+        "created_at":1580220492
+      },
+      {
+        "id":"plan_00000000000002",
+        "entity":"plan",
+        "interval":1,
+        "period":"monthly",
+        "item":{
+          "id":"item_00000000000002",
+          "active":true,
+          "name":"Test plan - Monthly",
+          "description":null,
+          "amount":79900,
+          "unit_amount":79900,
+          "currency":"INR",
+          "type":"plan",
+          "unit":null,
+          "tax_inclusive":false,
+          "hsn_code":null,
+          "sac_code":null,
+          "tax_rate":null,
+          "tax_id":null,
+          "tax_group_id":null,
+          "created_at":1580220483,
+          "updated_at":1580220483
+        },
+        "notes":[],
+        "created_at":1580220483
+      }
+    ]
+  }

@@ -14,7 +14,7 @@ const TestVirtualID = "fake_virtual_id"
 const PayerID = "fake_payer_id"
 
 func TestVirtualAll(t *testing.T) {
-	url := constants.VIRTUAL_ACCOUNT_URL
+	url := "/" + constants.VERSION_V1 + constants.VIRTUAL_ACCOUNT_URL
 	teardown, fixture := utils.StartMockServer(url, "fake_virtual_collection")
 	defer teardown()
 	body, err := utils.Client.VirtualAccount.All(nil, nil)
@@ -24,7 +24,7 @@ func TestVirtualAll(t *testing.T) {
 }
 
 func TestVirtualFetch(t *testing.T) {
-	url := constants.VIRTUAL_ACCOUNT_URL + "/" + TestVirtualID
+	url := "/" + constants.VERSION_V1 + constants.VIRTUAL_ACCOUNT_URL + "/" + TestVirtualID
 	teardown, fixture := utils.StartMockServer(url, "fake_virtual")
 	defer teardown()
 	body, err := utils.Client.VirtualAccount.Fetch(TestVirtualID, nil, nil)
@@ -34,18 +34,18 @@ func TestVirtualFetch(t *testing.T) {
 }
 
 func TestVirtualCreate(t *testing.T) {
-	url := constants.VIRTUAL_ACCOUNT_URL
+	url := "/" + constants.VERSION_V1 + constants.VIRTUAL_ACCOUNT_URL
 	teardown, fixture := utils.StartMockServer(url, "fake_virtual")
 	defer teardown()
 	line_item := map[string]interface{}{
-	"name":   "name",
-	"amount": 1000,
+		"name":   "name",
+		"amount": 1000,
 	}
 	lineItems := []map[string]interface{}{line_item}
 	data := map[string]interface{}{
-	"type":        "bank_account",
-	"decsription": "test",
-	"line_items":  lineItems,
+		"type":        "bank_account",
+		"decsription": "test",
+		"line_items":  lineItems,
 	}
 	body, err := utils.Client.VirtualAccount.Create(data, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -54,7 +54,7 @@ func TestVirtualCreate(t *testing.T) {
 }
 
 func TestVirtualClose(t *testing.T) {
-	url := fmt.Sprintf("%s/%s/close", constants.VIRTUAL_ACCOUNT_URL, TestVirtualID)
+	url := fmt.Sprintf("/%s%s/%s/close", constants.VERSION_V1, constants.VIRTUAL_ACCOUNT_URL, TestVirtualID)
 	teardown, fixture := utils.StartMockServer(url, "virtual_collection")
 	defer teardown()
 	body, err := utils.Client.VirtualAccount.Close(TestVirtualID, nil, nil)
@@ -64,16 +64,16 @@ func TestVirtualClose(t *testing.T) {
 }
 
 func TestVirtualAddReceiver(t *testing.T) {
-	url := fmt.Sprintf("%s/%s/receivers", constants.VIRTUAL_ACCOUNT_URL, TestVirtualID)
+	url := fmt.Sprintf("/%s%s/%s/receivers", constants.VERSION_V1, constants.VIRTUAL_ACCOUNT_URL, TestVirtualID)
 	teardown, fixture := utils.StartMockServer(url, "fake_receiver")
 	defer teardown()
 	line_item := make(map[string]interface{})
-    line_item["0"] = "vpa"
+	line_item["0"] = "vpa"
 
 	data := map[string]interface{}{
 		"types": line_item,
 		"vpa": map[string]interface{}{
-		"descriptor": "gauravkumar",
+			"descriptor": "gauravkumar",
 		},
 	}
 	body, err := utils.Client.VirtualAccount.AddReceiver(TestVirtualID, data, nil)
@@ -83,15 +83,15 @@ func TestVirtualAddReceiver(t *testing.T) {
 }
 
 func TestVirtualAllowedPayer(t *testing.T) {
-	url := fmt.Sprintf("%s/%s/allowed_payers", constants.VIRTUAL_ACCOUNT_URL, TestVirtualID)
+	url := fmt.Sprintf("/%s%s/%s/allowed_payers", constants.VERSION_V1, constants.VIRTUAL_ACCOUNT_URL, TestVirtualID)
 	teardown, fixture := utils.StartMockServer(url, "fake_allowed_payer")
 	defer teardown()
 	data := map[string]interface{}{
-	 "type": "bank_account",
-	 "bank_account": map[string]interface{}{
-		"ifsc": "UTIB0000013",
-		"account_number": 914211112235679,
-	 },
+		"type": "bank_account",
+		"bank_account": map[string]interface{}{
+			"ifsc":           "UTIB0000013",
+			"account_number": 914211112235679,
+		},
 	}
 	body, err := utils.Client.VirtualAccount.AllowedPayer(TestVirtualID, data, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -100,7 +100,7 @@ func TestVirtualAllowedPayer(t *testing.T) {
 }
 
 func TestVirtualDeleteAllowedPayer(t *testing.T) {
-	url := fmt.Sprintf("%s/%s/allowed_payers/%s", constants.VIRTUAL_ACCOUNT_URL, TestVirtualID, PayerID)
+	url := fmt.Sprintf("/%s%s/%s/allowed_payers/%s", constants.VERSION_V1, constants.VIRTUAL_ACCOUNT_URL, TestVirtualID, PayerID)
 	teardown, fixture := utils.StartMockServer(url, "fake_allowed_payer")
 	defer teardown()
 	body, err := utils.Client.VirtualAccount.DeleteAllowedPayer(TestVirtualID, PayerID, nil, nil)
@@ -108,4 +108,3 @@ func TestVirtualDeleteAllowedPayer(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
-

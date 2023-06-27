@@ -12,7 +12,7 @@ import (
 const TestPaymentLinkID = "payment_id"
 
 func TestPaymentLinkAll(t *testing.T) {
-	url := constants.PaymentLink_URL
+	url := "/" + constants.VERSION_V1 + constants.PaymentLink_URL
 	teardown, fixture := utils.StartMockServer(url, "paymentlink_collection")
 	defer teardown()
 	body, err := utils.Client.PaymentLink.All(nil, nil)
@@ -22,7 +22,7 @@ func TestPaymentLinkAll(t *testing.T) {
 }
 
 func TestPaymentLinkFetch(t *testing.T) {
-	url := constants.PaymentLink_URL + "/" + TestPaymentLinkID
+	url := "/" + constants.VERSION_V1 + constants.PaymentLink_URL + "/" + TestPaymentLinkID
 	teardown, fixture := utils.StartMockServer(url, "paymentlink_collection")
 	defer teardown()
 	body, err := utils.Client.PaymentLink.Fetch(TestPaymentLinkID, nil, nil)
@@ -32,7 +32,7 @@ func TestPaymentLinkFetch(t *testing.T) {
 }
 
 func TestPaymentLinkCreate(t *testing.T) {
-	url := constants.PaymentLink_URL
+	url := "/" + constants.VERSION_V1 + constants.PaymentLink_URL
 	teardown, fixture := utils.StartMockServer(url, "fake_paymentlink")
 	defer teardown()
 	line_item := map[string]interface{}{
@@ -52,7 +52,7 @@ func TestPaymentLinkCreate(t *testing.T) {
 }
 
 func TestPaymentLinkCancel(t *testing.T) {
-	url := constants.PaymentLink_URL + "/" + TestPaymentLinkID + "/cancel"
+	url := "/" + constants.VERSION_V1 + constants.PaymentLink_URL + "/" + TestPaymentLinkID + "/cancel"
 	teardown, fixture := utils.StartMockServer(url, "fake_paymentlink")
 	defer teardown()
 	body, err := utils.Client.PaymentLink.Cancel(TestPaymentLinkID, nil, nil)
@@ -62,7 +62,7 @@ func TestPaymentLinkCancel(t *testing.T) {
 }
 
 func TestPaymentLinkNotifyBy(t *testing.T) {
-	url := constants.PaymentLink_URL + "/" + TestPaymentLinkID + "/notify_by/email"
+	url := "/" + constants.VERSION_V1 + constants.PaymentLink_URL + "/" + TestPaymentLinkID + "/notify_by/email"
 	teardown, fixture := utils.StartMockServer(url, "fake_paymentlink")
 	defer teardown()
 	body, err := utils.Client.PaymentLink.NotifyBy(TestPaymentLinkID, "email", nil, nil)
@@ -72,16 +72,16 @@ func TestPaymentLinkNotifyBy(t *testing.T) {
 }
 
 func TestPaymentLinkUpdate(t *testing.T) {
-	url := constants.PaymentLink_URL + "/" + TestPaymentLinkID
+	url := "/" + constants.VERSION_V1 + constants.PaymentLink_URL + "/" + TestPaymentLinkID
 	teardown, fixture := utils.StartMockServer(url, "fake_paymentlink")
 	defer teardown()
 	data := map[string]interface{}{
-        "reference_id": "TS35",
-        "expire_by": 1653347540,
-        "reminder_enable":false,
-        "notes":map[string]interface{}{
-          "policy_name": "Jeevan Saral",
-        },
+		"reference_id":    "TS35",
+		"expire_by":       1653347540,
+		"reminder_enable": false,
+		"notes": map[string]interface{}{
+			"policy_name": "Jeevan Saral",
+		},
 	}
 	body, err := utils.Client.PaymentLink.Update(TestPaymentLinkID, data, nil)
 	jsonByteArray, _ := json.Marshal(body)
