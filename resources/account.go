@@ -3,7 +3,6 @@ package resources
 import (
 	"fmt"
 	"net/url"
-	"os"
 
 	"github.com/razorpay/razorpay-go/constants"
 	"github.com/razorpay/razorpay-go/requests"
@@ -12,11 +11,6 @@ import (
 //Account ...
 type Account struct {
 	Request *requests.Request
-}
-
-type FileUpload struct {
-	File   *os.File
-	Fields map[string]string
 }
 
 func (acc *Account) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
