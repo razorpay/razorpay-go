@@ -15,6 +15,7 @@ var Request *requests.Request
 //Client provides various helper methods to make HTTP requests to Razorpay's APIs.
 type Client struct {
 	Addon          *resources.Addon
+	Account        *resources.Account
 	Card           *resources.Card
 	Customer       *resources.Customer
 	Invoice        *resources.Invoice
@@ -33,7 +34,8 @@ type Client struct {
 	Settlement     *resources.Settlement
 	Stakeholder    *resources.Stakeholder
 	Item           *resources.Item
-	Account        *resources.Account
+	Iin            *resources.Iin
+	Webhook        *resources.Webhook
 }
 
 // NewClient creates and returns a new Razorpay client. key and secret
@@ -65,6 +67,8 @@ func NewClient(key string, secret string) *Client {
 	settlement := resources.Settlement{Request: Request}
 	stakeholder := resources.Stakeholder{Request: Request}
 	item := resources.Item{Request: Request}
+	iin := resources.Iin{Request: Request}
+	webhook := resources.Webhook{Request: Request}
 	client := Client{
 		Account:        &account,
 		Addon:          &addon,
@@ -86,6 +90,8 @@ func NewClient(key string, secret string) *Client {
 		Settlement:     &settlement,
 		Stakeholder:    &stakeholder,
 		Item:           &item,
+		Iin:            &iin,
+		Webhook:        &webhook,
 	}
 	return &client
 }

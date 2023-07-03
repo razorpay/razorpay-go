@@ -37,11 +37,15 @@ func (t *Token) Delete(customerID string, tokenID string, queryParams map[string
 
 func (t *Token) FetchCardPropertiesByToken(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("/%s/tokens/fetch", constants.VERSION_V1)
-	fmt.Println(url)
 	return t.Request.Post(url, data, extraHeaders)
 }
 
 func (t *Token) DeleteToken(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("/%s/tokens/delete", constants.VERSION_V1)
+	return t.Request.Post(url, data, extraHeaders)
+}
+
+func (t *Token) ProcessPaymentOnAlternatePAorPG(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("/%s/tokens/service_provider_tokens/token_transactional_data", constants.VERSION_V1)
 	return t.Request.Post(url, data, extraHeaders)
 }

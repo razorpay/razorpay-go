@@ -47,4 +47,8 @@ const (
 	PRODUCT_URL = "/products"
 	//TNC_URL ... terms and conditions api base path
 	TNC = "/tnc"
+	//IIN_URL ... iin api base path
+	IIN = "/iins"
+	//WEBHOOK ... webhook api base path
+	WEBHOOK = "/webhooks"
 )
