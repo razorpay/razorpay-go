@@ -82,10 +82,15 @@ func (request *Request) addRequestHeadersInternal(req *http.Request, headers map
 	}
 }
 
-func (request *Request) addRequestHeaders(req *http.Request, headers map[string]string) {
+func (request *Request) addRequestHeaders(req *http.Request, headers map[string]string, contentType ...string) {
 	//Set the Defaults First in case unavailable
 	req.Header.Set("User-Agent", fmt.Sprintf("%s/%s", request.SDKName, request.Version))
-	req.Header.Set("Content-Type", "application/json")
+
+	if len(contentType) == 0 {
+		req.Header.Set("Content-Type", "application/json")
+	} else {
+		req.Header.Set("Content-Type", contentType[0])
+	}
 
 	// Set the already added headers
 	request.addRequestHeadersInternal(req, request.Headers)
@@ -229,7 +234,7 @@ func (request *Request) Delete(path string, queryParams map[string]interface{}, 
 	return request.doRequestResponse(req)
 }
 
-func (request *Request) File(path string, params FileUploadParams) (map[string]interface{}, error) {
+func (request *Request) File(path string, params FileUploadParams, extraHeaders map[string]string) (map[string]interface{}, error) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
@@ -262,10 +267,11 @@ func (request *Request) File(path string, params FileUploadParams) (map[string]i
 	if err != nil {
 		log.Fatal(err)
 	}
-	// Set the necessary headers
-	req.Header.Add("Content-Type", "multipart/form-data")
-	req.Header.Set("Content-Type", writer.FormDataContentType())
+	contentType := writer.FormDataContentType()
+
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+
+	request.addRequestHeaders(req, extraHeaders, contentType)
 
 	return request.doRequestResponse(req)
 }

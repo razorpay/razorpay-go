@@ -404,7 +404,7 @@ params := requests.FileUploadParams{
     Fields: fields,
 }
 
-body, err := client.Account.UploadAccountDoc(accountId, params)
+body, err := client.Account.UploadAccountDoc(accountId, params, nil)
 ```
 
 **Parameters:**

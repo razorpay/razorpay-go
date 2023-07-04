@@ -288,7 +288,7 @@ params := requests.FileUploadParams{
     Fields: fields,
 }
 
-body, err := client.Stakeholder.UploadStakeholderDoc(accountId, stakeholderId, params)
+body, err := client.Stakeholder.UploadStakeholderDoc(accountId, stakeholderId, params, nil)
 ```
 
 **Parameters:**
