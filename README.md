@@ -27,11 +27,14 @@ Note: All methods below return a `map[string]interface{}` and `error`. All metho
 
 ## Supported Resources
 
+- [Account](documents/account.md)
 - [Customer](documents/customers.md)
 - [Token](documents/token.md)
 - [Order](documents/order.md)
 - [Payments](documents/payment.md)
+- [Product Configuration](documents/productConfiguration.md)
 - [Settlements](documents/settlement.md)
+- [Stakeholder](documents/stakeholder.md)
 - [Fund](documents/fundAccount.md)
 - [Refunds](documents/refund.md)
 - [Invoice](documents/invoice.md)
@@ -50,6 +53,8 @@ Note: All methods below return a `map[string]interface{}` and `error`. All metho
 - [UPI](documents/upi.md)
 - [Register Emandate and Charge First Payment Together](documents/registerEmandate.md)
 - [Register NACH and Charge First Payment Together](documents/registerNach.md)
+- [Token](documents/token.md)
+- [Webhook](documents/webhook.md)
 
 ## License
 
