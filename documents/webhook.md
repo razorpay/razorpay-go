@@ -138,7 +138,7 @@ accountId := "acc_GP4lfNA0iIMn5B"
 
 webhookId := "HK890egfiItP3H"
 
-body, err := client.Webhook.Delete(webhookId, accountId, nil, nil)
+body, err := client.Webhook.Fetch(webhookId, accountId, nil, nil)
 ```
 
 **Parameters:**
