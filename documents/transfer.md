@@ -251,7 +251,7 @@ body, err := client.Payment.Transfers("<paymentId>", nil, nil)
 
 ```go
 data := map[string]interface{}{
-  "expand[]": "status",
+  "expand[]": "transfers",
 }
 body, err := client.Order.Fetch("<orderId>", data, nil)
 ```
