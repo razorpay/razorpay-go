@@ -4,9 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
+	"log"
+	"mime/multipart"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -17,6 +22,11 @@ import (
 type Auth struct {
 	Key    string
 	Secret string
+}
+
+type FileUploadParams struct {
+	File   *os.File
+	Fields map[string]string
 }
 
 //TIMEOUT ... client timeout
@@ -72,10 +82,15 @@ func (request *Request) addRequestHeadersInternal(req *http.Request, headers map
 	}
 }
 
-func (request *Request) addRequestHeaders(req *http.Request, headers map[string]string) {
+func (request *Request) addRequestHeaders(req *http.Request, headers map[string]string, contentType ...string) {
 	//Set the Defaults First in case unavailable
 	req.Header.Set("User-Agent", fmt.Sprintf("%s/%s", request.SDKName, request.Version))
-	req.Header.Set("Content-Type", "application/json")
+
+	if len(contentType) == 0 {
+		req.Header.Set("Content-Type", "application/json")
+	} else {
+		req.Header.Set("Content-Type", contentType[0])
+	}
 
 	// Set the already added headers
 	request.addRequestHeadersInternal(req, request.Headers)
@@ -92,8 +107,8 @@ func processResponse(response *http.Response) (map[string]interface{}, error) {
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
 
-	if len(body) == 0 || len(body) == 2{
-		resp :=  make(map[string]interface{})
+	if len(body) == 0 || len(body) == 2 {
+		resp := make(map[string]interface{})
 		return resp, nil
 	}
 
@@ -215,6 +230,48 @@ func (request *Request) Delete(path string, queryParams map[string]interface{}, 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
 
 	request.addRequestHeaders(req, extraHeaders)
+
+	return request.doRequestResponse(req)
+}
+
+func (request *Request) File(path string, params FileUploadParams, extraHeaders map[string]string) (map[string]interface{}, error) {
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	// Add the file field to the multipart form data
+	filePart, err := writer.CreateFormFile("file", filepath.Base(params.File.Name()))
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Copy the file contents to the form file part
+	_, err = io.Copy(filePart, params.File)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Add additional form fields
+	for fieldName, fieldValue := range params.Fields {
+		err = writer.WriteField(fieldName, fieldValue)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	// Close the writer to finalize the form data
+	err = writer.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Create the HTTP request
+	url := fmt.Sprintf("%s%s", request.BaseURL, path)
+
+	req, err := http.NewRequest("POST", url, body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	contentType := writer.FormDataContentType()
+
+	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+
+	request.addRequestHeaders(req, extraHeaders, contentType)
 
 	return request.doRequestResponse(req)
 }

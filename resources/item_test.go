@@ -12,7 +12,7 @@ import (
 const TestItemID = "item_id"
 
 func TestItemAll(t *testing.T) {
-	url := constants.ITEM_URL
+	url := "/" + constants.VERSION_V1 + constants.ITEM_URL
 	teardown, fixture := utils.StartMockServer(url, "item_collection")
 	defer teardown()
 	body, err := utils.Client.Item.All(nil, nil)
@@ -22,7 +22,7 @@ func TestItemAll(t *testing.T) {
 }
 
 func TestItemFetch(t *testing.T) {
-	url := constants.ITEM_URL + "/" + TestItemID
+	url := "/" + constants.VERSION_V1 + constants.ITEM_URL + "/" + TestItemID
 	teardown, fixture := utils.StartMockServer(url, "fake_item")
 	defer teardown()
 	body, err := utils.Client.Item.Fetch(TestItemID, nil, nil)
@@ -32,13 +32,14 @@ func TestItemFetch(t *testing.T) {
 }
 
 func TestItemCreate(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.ITEM_URL, "fake_item")
+	url := "/" + constants.VERSION_V1 + constants.ITEM_URL
+	teardown, fixture := utils.StartMockServer(url, "fake_item")
 	defer teardown()
 	params := map[string]interface{}{
-        "name":"Book / English August",
-        "description":"An indian story, Booker prize winner.",
-        "amount": 20000,
-        "currency": "INR",
+		"name":        "Book / English August",
+		"description": "An indian story, Booker prize winner.",
+		"amount":      20000,
+		"currency":    "INR",
 	}
 	body, err := utils.Client.Item.Create(params, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -47,12 +48,12 @@ func TestItemCreate(t *testing.T) {
 }
 
 func TestItemUpdate(t *testing.T) {
-	url := constants.ITEM_URL + "/" + TestItemID
+	url := "/" + constants.VERSION_V1 + constants.ITEM_URL + "/" + TestItemID
 	teardown, fixture := utils.StartMockServer(url, "fake_item")
 	defer teardown()
 	data := map[string]interface{}{
-        "name":"Book / Ignited Minds - Updated name!",
-        "description":"New descirption too.",
+		"name":        "Book / Ignited Minds - Updated name!",
+		"description": "New descirption too.",
 	}
 	body, err := utils.Client.Item.Update(TestItemID, data, nil)
 	jsonByteArray, _ := json.Marshal(body)

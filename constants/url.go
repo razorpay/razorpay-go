@@ -1,8 +1,10 @@
 package constants
 
 const (
+	VERSION_V1 = "v1"
+	VERSION_V2 = "v2"
 	//BASE_URL ... base api url
-	BASE_URL = "https://api.razorpay.com/v1"
+	BASE_URL = "https://api.razorpay.com"
 	//ORDER_URL ...orders api base path
 	ORDER_URL = "/orders"
 	//INVOICE_URL ...invoices api base path
@@ -37,4 +39,16 @@ const (
 	ITEM_URL = "/items"
 	//METHODS ... methods api base path
 	METHODS_URL = "/methods"
+	//ACCOUNT_URL ... account api base path
+	ACCOUNT_URL = "/accounts"
+	//STAKEHOLDER_URL ... stakeholder api base path
+	STAKEHOLDER_URL = "/stakeholders"
+	//STAKEHOLDER_URL ... stakeholder api base path
+	PRODUCT_URL = "/products"
+	//TNC_URL ... terms and conditions api base path
+	TNC = "/tnc"
+	//IIN_URL ... iin api base path
+	IIN = "/iins"
+	//WEBHOOK ... webhook api base path
+	WEBHOOK = "/webhooks"
 )

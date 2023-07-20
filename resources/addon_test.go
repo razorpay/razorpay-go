@@ -2,6 +2,7 @@ package resources_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -12,7 +13,7 @@ import (
 const TestAddonID = "ao_8sg8LU73Y3ieav"
 
 func TestFetchAddon(t *testing.T) {
-	url := constants.ADDON_URL + "/" + TestAddonID
+	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.ADDON_URL, TestAddonID)
 	teardown, fixture := utils.StartMockServer(url, "fake_addon")
 	defer teardown()
 	body, err := utils.Client.Addon.Fetch(TestAddonID, nil, nil)
@@ -22,7 +23,7 @@ func TestFetchAddon(t *testing.T) {
 }
 
 func TestAddonDelete(t *testing.T) {
-	url := constants.ADDON_URL + "/" + TestAddonID
+	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.ADDON_URL, TestAddonID)
 	teardown, fixture := utils.StartMockServer(url, "fake_addon")
 	defer teardown()
 	body, err := utils.Client.Addon.Delete(TestAddonID, nil, nil)
@@ -32,7 +33,8 @@ func TestAddonDelete(t *testing.T) {
 }
 
 func TestAddonAll(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.ADDON_URL, "addon_collection")
+	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.ADDON_URL)
+	teardown, fixture := utils.StartMockServer(url, "addon_collection")
 	defer teardown()
 	body, err := utils.Client.Addon.All(nil, nil)
 	jsonByteArray, _ := json.Marshal(body)

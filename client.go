@@ -15,6 +15,7 @@ var Request *requests.Request
 //Client provides various helper methods to make HTTP requests to Razorpay's APIs.
 type Client struct {
 	Addon          *resources.Addon
+	Account        *resources.Account
 	Card           *resources.Card
 	Customer       *resources.Customer
 	Invoice        *resources.Invoice
@@ -22,6 +23,7 @@ type Client struct {
 	Order          *resources.Order
 	Payment        *resources.Payment
 	Plan           *resources.Plan
+	Product        *resources.Product
 	Refund         *resources.Refund
 	Subscription   *resources.Subscription
 	Token          *resources.Token
@@ -30,7 +32,10 @@ type Client struct {
 	QrCode         *resources.QrCode
 	FundAccount    *resources.FundAccount
 	Settlement     *resources.Settlement
+	Stakeholder    *resources.Stakeholder
 	Item           *resources.Item
+	Iin            *resources.Iin
+	Webhook        *resources.Webhook
 }
 
 // NewClient creates and returns a new Razorpay client. key and secret
@@ -42,6 +47,7 @@ func NewClient(key string, secret string) *Client {
 		Version: getVersion(), SDKName: getSDKName(),
 		BaseURL: constants.BASE_URL}
 
+	account := resources.Account{Request: Request}
 	addon := resources.Addon{Request: Request}
 	card := resources.Card{Request: Request}
 	customer := resources.Customer{Request: Request}
@@ -49,6 +55,7 @@ func NewClient(key string, secret string) *Client {
 	paymentLink := resources.PaymentLink{Request: Request}
 	order := resources.Order{Request: Request}
 	payment := resources.Payment{Request: Request}
+	product := resources.Product{Request: Request}
 	plan := resources.Plan{Request: Request}
 	refund := resources.Refund{Request: Request}
 	subscription := resources.Subscription{Request: Request}
@@ -58,8 +65,12 @@ func NewClient(key string, secret string) *Client {
 	qrCode := resources.QrCode{Request: Request}
 	fundAccount := resources.FundAccount{Request: Request}
 	settlement := resources.Settlement{Request: Request}
+	stakeholder := resources.Stakeholder{Request: Request}
 	item := resources.Item{Request: Request}
+	iin := resources.Iin{Request: Request}
+	webhook := resources.Webhook{Request: Request}
 	client := Client{
+		Account:        &account,
 		Addon:          &addon,
 		Card:           &card,
 		Customer:       &customer,
@@ -68,6 +79,7 @@ func NewClient(key string, secret string) *Client {
 		Order:          &order,
 		Payment:        &payment,
 		Plan:           &plan,
+		Product:        &product,
 		Refund:         &refund,
 		Subscription:   &subscription,
 		Token:          &token,
@@ -76,7 +88,10 @@ func NewClient(key string, secret string) *Client {
 		QrCode:         &qrCode,
 		FundAccount:    &fundAccount,
 		Settlement:     &settlement,
+		Stakeholder:    &stakeholder,
 		Item:           &item,
+		Iin:            &iin,
+		Webhook:        &webhook,
 	}
 	return &client
 }

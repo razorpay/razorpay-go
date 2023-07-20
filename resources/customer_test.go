@@ -12,7 +12,7 @@ import (
 const TestCustomerID = "fake_customer_id"
 
 func TestCustomerFetch(t *testing.T) {
-	url := constants.CUSTOMER_URL + "/" + TestCustomerID
+	url := "/" + constants.VERSION_V1 + constants.CUSTOMER_URL + "/" + TestCustomerID
 	teardown, fixture := utils.StartMockServer(url, "fake_customer")
 	defer teardown()
 	body, err := utils.Client.Customer.Fetch(TestCustomerID, nil, nil)
@@ -22,7 +22,8 @@ func TestCustomerFetch(t *testing.T) {
 }
 
 func TestCustomerCreate(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.CUSTOMER_URL, "fake_customer")
+	url := "/" + constants.VERSION_V1 + constants.CUSTOMER_URL
+	teardown, fixture := utils.StartMockServer(url, "fake_customer")
 	defer teardown()
 	params := map[string]interface{}{
 		"name":  "test",
@@ -35,7 +36,7 @@ func TestCustomerCreate(t *testing.T) {
 }
 
 func TestCustomerEdit(t *testing.T) {
-	url := constants.CUSTOMER_URL + "/" + TestCustomerID
+	url := "/" + constants.VERSION_V1 + constants.CUSTOMER_URL + "/" + TestCustomerID
 	teardown, fixture := utils.StartMockServer(url, "fake_customer")
 	defer teardown()
 	params := map[string]interface{}{
@@ -48,10 +49,11 @@ func TestCustomerEdit(t *testing.T) {
 }
 
 func TestCustomerAll(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.CUSTOMER_URL, "customers_collection")
+	url := "/" + constants.VERSION_V1 + constants.CUSTOMER_URL
+	teardown, fixture := utils.StartMockServer(url, "customers_collection")
 	defer teardown()
 	data := map[string]interface{}{
-		"count": 1,	
+		"count": 1,
 	}
 	body, err := utils.Client.Customer.All(data, nil)
 	jsonByteArray, _ := json.Marshal(body)

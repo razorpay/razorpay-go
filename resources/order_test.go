@@ -2,6 +2,7 @@ package resources_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -12,7 +13,8 @@ import (
 const TestOrderID = "fake_order_id"
 
 func TestOrderAll(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.ORDER_URL, "order_collection")
+	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.ORDER_URL)
+	teardown, fixture := utils.StartMockServer(url, "order_collection")
 	defer teardown()
 	body, err := utils.Client.Order.All(nil, nil)
 	jsonByteArray, _ := json.Marshal(body)
@@ -21,7 +23,8 @@ func TestOrderAll(t *testing.T) {
 }
 
 func TestOrderWithOptions(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.ORDER_URL, "order_collection_with_one_order")
+	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.ORDER_URL)
+	teardown, fixture := utils.StartMockServer(url, "order_collection_with_one_order")
 	defer teardown()
 	queryParams := map[string]interface{}{
 		"count": 1,
@@ -33,7 +36,7 @@ func TestOrderWithOptions(t *testing.T) {
 }
 
 func TestOrderFetch(t *testing.T) {
-	url := constants.ORDER_URL + "/" + TestOrderID
+	url := "/" + constants.VERSION_V1 + constants.ORDER_URL + "/" + TestOrderID
 	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
 	body, err := utils.Client.Order.Fetch(TestOrderID, nil, nil)
@@ -42,7 +45,7 @@ func TestOrderFetch(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 func TestOrderPayments(t *testing.T) {
-	url := constants.ORDER_URL + "/" + TestOrderID + "/payments"
+	url := "/" + constants.VERSION_V1 + constants.ORDER_URL + "/" + TestOrderID + "/payments"
 	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
 	body, err := utils.Client.Order.Payments(TestOrderID, nil, nil)
@@ -52,7 +55,8 @@ func TestOrderPayments(t *testing.T) {
 }
 
 func TestOrderCreate(t *testing.T) {
-	teardown, fixture := utils.StartMockServer(constants.ORDER_URL, "fake_order")
+	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.ORDER_URL)
+	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
 	params := map[string]interface{}{
 		"amount":   100,
@@ -66,14 +70,14 @@ func TestOrderCreate(t *testing.T) {
 }
 
 func TestOrderUpdate(t *testing.T) {
-	url := constants.ORDER_URL + "/" + TestOrderID
+	url := "/" + constants.VERSION_V1 + constants.ORDER_URL + "/" + TestOrderID
 	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
 	params := map[string]interface{}{
 		"notes": map[string]interface{}{
-                        "notes_key_1": "value1",
-                        "notes_key_2": "value2",
-                      },
+			"notes_key_1": "value1",
+			"notes_key_2": "value2",
+		},
 	}
 	body, err := utils.Client.Order.Update(TestOrderID, params, nil)
 	jsonByteArray, _ := json.Marshal(body)
