@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -274,4 +275,54 @@ func (request *Request) File(path string, params FileUploadParams, extraHeaders 
 	request.addRequestHeaders(req, extraHeaders, contentType)
 
 	return request.doRequestResponse(req)
+}
+
+var urlMap = []string{
+	constants.ORDER_URL,
+	constants.INVOICE_URL,
+	constants.PAYMENT_URL,
+	constants.PaymentLink_URL,
+	constants.REFUND_URL,
+	constants.CARD_URL,
+	constants.CUSTOMER_URL,
+	constants.ADDON_URL,
+	constants.TRANSFER_URL,
+	constants.VIRTUAL_ACCOUNT_URL,
+	constants.SUBSCRIPTION_URL,
+	constants.PLAN_URL,
+	constants.QRCODE_URL,
+	constants.FUND_ACCOUNT_URL,
+	constants.SETTLEMENT_URL,
+	constants.ITEM_URL,
+	constants.METHODS_URL,
+	constants.ACCOUNT_URL,
+	constants.STAKEHOLDER_URL,
+	constants.PRODUCT_URL,
+	constants.TNC,
+	constants.IIN,
+	constants.WEBHOOK,
+}
+
+func SearchInSlice(needle string) bool {
+
+	for _, b := range urlMap {
+		if b == needle {
+			return true
+		}
+	}
+	return false
+}
+
+func IsEntityExist(url string) bool {
+
+	if url == "" {
+		return false
+	}
+
+	entity := strings.Split(url, "/")
+	urlEntity := fmt.Sprintf("/%s", entity[1])
+	if SearchInSlice(urlEntity) {
+		return true
+	}
+	return false
 }
