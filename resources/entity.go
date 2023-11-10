@@ -16,7 +16,7 @@ func (e *Entity) Do(endpoint string, method string, data map[string]interface{},
 
 	url := fmt.Sprintf("/%s", endpoint)
 
-	if requests.IsEntityExist(endpoint) {
+	if requests.DoesEntityExist(endpoint) {
 		log.Println("Warning: The entity already has a specific function. Consider using it instead.")
 	}
 

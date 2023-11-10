@@ -313,14 +313,20 @@ func SearchInSlice(needle string) bool {
 	return false
 }
 
-func IsEntityExist(url string) bool {
+//IsEntityExist checks if a specific entity exists in a given URL.
+func DoesEntityExist(url string) bool {
 
 	if url == "" {
 		return false
 	}
 
-	entity := strings.Split(url, "/")
-	urlEntity := fmt.Sprintf("/%s", entity[1])
+	// Split the URL by "/" to extract the entity.
+	entitySegments := strings.Split(url, "/")
+
+	// Formulate the entity URL by adding a "/" at the beginning.
+	urlEntity := fmt.Sprintf("/%s", entitySegments[1])
+
+	// Check if the entity URL exists in a predefined slice using the SearchInSlice function.
 	if SearchInSlice(urlEntity) {
 		return true
 	}
