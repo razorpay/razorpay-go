@@ -277,38 +277,35 @@ func (request *Request) File(path string, params FileUploadParams, extraHeaders 
 	return request.doRequestResponse(req)
 }
 
-var urlMap = []string{
-	constants.ORDER_URL,
-	constants.INVOICE_URL,
-	constants.PAYMENT_URL,
-	constants.PaymentLink_URL,
-	constants.REFUND_URL,
-	constants.CARD_URL,
-	constants.CUSTOMER_URL,
-	constants.ADDON_URL,
-	constants.TRANSFER_URL,
-	constants.VIRTUAL_ACCOUNT_URL,
-	constants.SUBSCRIPTION_URL,
-	constants.PLAN_URL,
-	constants.QRCODE_URL,
-	constants.FUND_ACCOUNT_URL,
-	constants.SETTLEMENT_URL,
-	constants.ITEM_URL,
-	constants.METHODS_URL,
-	constants.ACCOUNT_URL,
-	constants.STAKEHOLDER_URL,
-	constants.PRODUCT_URL,
-	constants.TNC,
-	constants.IIN,
-	constants.WEBHOOK,
+var urlMap = map[string]string{
+	"orders":            constants.ORDER_URL,
+	"invoices":          constants.INVOICE_URL,
+	"payments":          constants.PAYMENT_URL,
+	"payment_links":     constants.PaymentLink_URL,
+	"refunds":           constants.REFUND_URL,
+	"cards":             constants.CARD_URL,
+	"customers":         constants.CUSTOMER_URL,
+	"addons":            constants.ADDON_URL,
+	"transfers":         constants.TRANSFER_URL,
+	"virtual_accounts":  constants.VIRTUAL_ACCOUNT_URL,
+	"subscription":      constants.SUBSCRIPTION_URL,
+	"plans":             constants.PLAN_URL,
+	"payments/qr_codes": constants.QRCODE_URL,
+	"fund_accounts":     constants.FUND_ACCOUNT_URL,
+	"settlements":       constants.SETTLEMENT_URL,
+	"items":             constants.ITEM_URL,
+	"methos":            constants.METHODS_URL,
+	"accounts":          constants.ACCOUNT_URL,
+	"stakeholders":      constants.STAKEHOLDER_URL,
+	"products":          constants.PRODUCT_URL,
+	"tnc":               constants.TNC,
+	"iins":              constants.IIN,
+	"webhooks":          constants.WEBHOOK,
 }
 
 func SearchInSlice(needle string) bool {
-
-	for _, b := range urlMap {
-		if b == needle {
-			return true
-		}
+	if _, ok := urlMap[needle]; ok {
+		return true
 	}
 	return false
 }
@@ -323,12 +320,6 @@ func DoesEntityExist(url string) bool {
 	// Split the URL by "/" to extract the entity.
 	entitySegments := strings.Split(url, "/")
 
-	// Formulate the entity URL by adding a "/" at the beginning.
-	urlEntity := fmt.Sprintf("/%s", entitySegments[1])
-
 	// Check if the entity URL exists in a predefined slice using the SearchInSlice function.
-	if SearchInSlice(urlEntity) {
-		return true
-	}
-	return false
+	return SearchInSlice(entitySegments[1])
 }
