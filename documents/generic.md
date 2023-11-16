@@ -1,9 +1,13 @@
 ## Generic Entity
 
 
+```go
+client := razorpay.NewClient("key", "secret")
+```
+
 ### Method Signature
 ```go
-body, _ := client.Entity.Do(url, method, data, headers)
+body, err := client.Entity.Do(url, method, data, headers)
 ```    
 
 **Parameters:**
@@ -17,7 +21,7 @@ body, _ := client.Entity.Do(url, method, data, headers)
 
 -------------------------------------------------------------------------------------------------------
 
-### Create a contacts
+### Create a contacts using POST
 
 ```go
 
@@ -33,7 +37,7 @@ data := map[string]interface{}{
   },
 }
 
-body, _ := client.Entity.Do("v1/contacts", http.MethodPost, data, nil)
+body, err := client.Entity.Do("v1/contacts", http.MethodPost, data, nil)
 ```
 
 **Response:**
@@ -59,6 +63,89 @@ body, _ := client.Entity.Do("v1/contacts", http.MethodPost, data, nil)
 
 -------------------------------------------------------------------------------------------------------
 
+### Fetch an order using GET
+
+```go
+
+body, err := client.Entity.Do("v1/orders/order_00000000000001", http.MethodGet, nil, nil)
+```
+
+**Response:**
+
+```json
+{
+  "amount": 307,
+  "amount_due": 0,
+  "amount_paid": 307,
+  "attempts": 1,
+  "created_at": 1695625101,
+  "currency": "INR",
+  "entity": "order",
+  "id": "order_00000000000001",
+  "notes": [],
+  "offer_id": null,
+  "receipt": "851617",
+  "status": "paid"
+}
+```
+
+-------------------------------------------------------------------------------------------------------
+
+### Fetch payments of a linked account using headers
+
+```go
+headers := map[string]string{
+  "X-Razorpay-Account": "acc_00000000000001",
+}
+
+body, _ := client.Entity.Do("v1/payments/pay_00000000000001", http.MethodGet, nil, headers)
+```
+
+**Response:**
+
+```json
+{
+  "entity": "collection",
+  "count": 2,
+  "items": [
+    {
+      "id": "pay_00000000000001",
+      "entity": "payment",
+      "amount": 10000,
+      "currency": "INR",
+      "status": "captured",
+      "order_id": "order_00000000000001",
+      "invoice_id": null,
+      "international": false,
+      "method": "netbanking",
+      "amount_refunded": 0,
+      "refund_status": null,
+      "captured": true,
+      "description": "#JJCqaOhFihfkVE",
+      "card_id": null,
+      "bank": "YESB",
+      "wallet": null,
+      "vpa": null,
+      "email": "john.example@example.com",
+      "contact": "9999999999",
+      "notes": [],
+      "fee": 236,
+      "tax": 36,
+      "error_code": null,
+      "error_description": null,
+      "error_source": null,
+      "error_step": null,
+      "error_reason": null,
+      "acquirer_data": {
+        "bank_transaction_id": "2118867"
+      },
+      "created_at": 1649932775
+    }
+  ]
+}
+```
+
+-------------------------------------------------------------------------------------------------------
 
 **PN: * indicates mandatory fields**
 <br>
