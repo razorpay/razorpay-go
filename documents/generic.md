@@ -15,8 +15,8 @@ body, err := client.Entity.Do(url, method, data, headers)
 | Name          | Type        | Description                                 |
 |---------------|-------------|---------------------------------------------|
 | url*          | string      | The endpoint to which the request will be made. This should include the version information (e.g., "v1/contacts" or "v2/accounts")  |
-| method*       | string      | The HTTP method for the request |
-| data          | string      | The data to be sent with the request (e.g., 'GET', 'POST', 'PUT', 'PATCH', 'DELETE').|
+| method*       | string      | The HTTP method for the request (e.g., 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'). |
+| data          | object    | The data to be sent with the request.|
 | headers         | object      | The headers to be included in the request. |
 
 -------------------------------------------------------------------------------------------------------
