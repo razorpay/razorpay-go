@@ -35,5 +35,5 @@ func (e *Entity) Do(endpoint string, method string, data map[string]interface{},
 
 	}
 
-	return nil, errors.New("Unsupported method or error occurred")
+	return nil, errors.New("Unsupported method or error occurred") 
 }
