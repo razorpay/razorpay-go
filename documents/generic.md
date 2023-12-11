@@ -1,4 +1,4 @@
-## Generic Entity
+## Generic Access Point
 
 
 ```go
