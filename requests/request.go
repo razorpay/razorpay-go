@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -274,4 +275,51 @@ func (request *Request) File(path string, params FileUploadParams, extraHeaders 
 	request.addRequestHeaders(req, extraHeaders, contentType)
 
 	return request.doRequestResponse(req)
+}
+
+var urlMap = map[string]string{
+	"orders":            constants.ORDER_URL,
+	"invoices":          constants.INVOICE_URL,
+	"payments":          constants.PAYMENT_URL,
+	"payment_links":     constants.PaymentLink_URL,
+	"refunds":           constants.REFUND_URL,
+	"cards":             constants.CARD_URL,
+	"customers":         constants.CUSTOMER_URL,
+	"addons":            constants.ADDON_URL,
+	"transfers":         constants.TRANSFER_URL,
+	"virtual_accounts":  constants.VIRTUAL_ACCOUNT_URL,
+	"subscriptions":      constants.SUBSCRIPTION_URL,
+	"plans":             constants.PLAN_URL,
+	"payments/qr_codes": constants.QRCODE_URL,
+	"fund_accounts":     constants.FUND_ACCOUNT_URL,
+	"settlements":       constants.SETTLEMENT_URL,
+	"items":             constants.ITEM_URL,
+	"methods":            constants.METHODS_URL,
+	"accounts":          constants.ACCOUNT_URL,
+	"stakeholders":      constants.STAKEHOLDER_URL,
+	"products":          constants.PRODUCT_URL,
+	"tnc":               constants.TNC,
+	"iins":              constants.IIN,
+	"webhooks":          constants.WEBHOOK,
+}
+
+func SearchInSlice(needle string) bool {
+	if _, ok := urlMap[needle]; ok {
+		return true
+	}
+	return false
+}
+
+//IsEntityExist checks if a specific entity exists in a given URL.
+func DoesEntityExist(url string) bool {
+
+	if url == "" {
+		return false
+	}
+
+	// Split the URL by "/" to extract the entity.
+	entitySegments := strings.Split(url, "/")
+
+	// Check if the entity URL exists in a predefined slice using the SearchInSlice function.
+	return SearchInSlice(entitySegments[1])
 }
