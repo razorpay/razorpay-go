@@ -1,34 +1,14 @@
 name: SecurityChecks
 on:
-  pull_request:
-    types:
-      - opened
+  pull_request: {}
   push:
     branches: ["master"]
   schedule:
     - cron: '30 20 * * *'
-
-  workflow_call:
-    inputs:
-      SEMGREP_MANDATORY:
-        description: 'Run semgrep as mandatory or not'
-        default: 'true'
-        required: false
-        type: string
-      RUNNER_NAME:
-        description: 'Github runner name'
-        default: 'self-hosted'
-        required: true
-        type: string
-    secrets:
-      SEMGREP_APP_TOKEN:
-        description: 'needed for semgrep'
-        required: true
-
 jobs:
   semgrep:
     name: Semgrep
-    runs-on: [ 'k8s-runner',  '${{ inputs.RUNNER_NAME }}' ]
+    runs-on: [ubuntu-latest]
     container:
       image: returntocorp/semgrep
     steps:
@@ -37,3 +17,35 @@ jobs:
         run: semgrep ci
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+
+  workflow_status:
+    runs-on: [ ubuntu-latest ]                               # nosemgrep : semgrep.dev/s/swati31196:github_provided_runner
+    name: Update Status Check
+    needs: [ semgrep ]
+    if: always()
+    env:
+      githubCommit: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Set github commit id
+        run: |
+          if [ "${{ github.event_name }}" = "push" ] || [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "githubCommit=${{ github.sha }}" >> $GITHUB_ENV
+          fi
+          exit 0
+      - name: Failed
+        id: failed
+        if: (contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')) && github.ref != 'refs/heads/master'
+        run: |
+          echo 'Failing the workflow for github security status check.'
+          curl -X POST -H "Content-Type: application/json" -H "Authorization: token ${{ github.token }}" \
+          -d '{ "state" : "failure" , "context" : "github/security-status-check" , "description" : "github/security-status-check", "target_url" : "https://github.com/${{ github.repository }}" }' \
+          https://api.github.com/repos/${{ github.repository }}/statuses/${{ env.githubCommit }}
+          exit 1
+      - name: Success
+        if: steps.failed.conclusion == 'skipped' || github.ref != 'refs/heads/master'
+        run: |
+          echo 'Status check has passed!'
+          curl -X POST -H "Content-Type: application/json" -H "Authorization: token ${{ github.token }}" \
+          -d '{ "state" : "success" , "context" : "github/security-status-check" , "description" : "github/security-status-check", "target_url" : "https://github.com/${{ github.repository }}" }' \
+          https://api.github.com/repos/${{ github.repository }}/statuses/${{ env.githubCommit }}
+          exit 0
