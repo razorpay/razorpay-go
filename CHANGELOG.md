@@ -4,12 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2023-12-14
+feat: Added generic access point
+
 ## [1.2.0] - 2023-07-20
 
 ### Added
 feat: Added new API endpoints
 
-- Added account onboarding API Create, Fetch, Edit, Delete
+- Added account on boarding API Create, Fetch, Edit, Delete
 - Added stakeholders API Create, Fetch, All, Edit
 - Added product configuration API RequestProductConfiguration, Fetch, Edit, FetchTnc
 - Added webhooks API Create, Fetch, All, Edit, Delete
@@ -20,7 +23,7 @@ feat: Added new API endpoints
 
 ### Added
 - Added Third party validation & Otp API for Payment (CreateUpi, ValidateVpa, OtpGenerate, OtpSubmit, OtpResend)
-- Update Documention
+- Update Documentation
 
 ## [1.0.0] - 2022-04-29
 
