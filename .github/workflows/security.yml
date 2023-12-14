@@ -1,8 +1,10 @@
 name: SecurityChecks
 on:
-  pull_request: {}
+  pull_request:
+    types:
+      - opened
   push:
-    branches: ["update_semgrep"]
+    branches: ["master"]
   schedule:
     - cron: '30 20 * * *'
 
