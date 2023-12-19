@@ -55,7 +55,6 @@ Note: All methods below return a `map[string]interface{}` and `error`. All metho
 - [Register NACH and Charge First Payment Together](documents/registerNach.md)
 - [Token](documents/token.md)
 - [Webhook](documents/webhook.md)
-- [Generic](documents/generic.md)
 
 ## License
 
