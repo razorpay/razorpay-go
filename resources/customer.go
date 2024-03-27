@@ -38,3 +38,23 @@ func (cust *Customer) All(queryParams map[string]interface{}, extraHeaders map[s
 	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.CUSTOMER_URL)
 	return cust.Request.Get(url, queryParams, extraHeaders)
 }
+
+func (cust *Customer) AddBankAccount(customerID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("/%s%s/%s/bank_account", constants.VERSION_V1, constants.CUSTOMER_URL, url.PathEscape(customerID))
+	return cust.Request.Post(url, data, extraHeaders)
+}
+
+func (cust *Customer) DeleteBankAccount(customerID string, bankAccountId string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("/%s%s/%s/bank_account/%s", constants.VERSION_V1, constants.CUSTOMER_URL, url.PathEscape(customerID), url.PathEscape(bankAccountId))
+	return cust.Request.Delete(url, queryParams, extraHeaders)
+}
+
+func (cust *Customer) RequestEligibilityCheck(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("/%s%s/eligibility", constants.VERSION_V1, constants.CUSTOMER_URL)
+	return cust.Request.Post(url, data, extraHeaders)
+}
+
+func (cust *Customer) FetchEligibility(eligibilityId string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("/%s%s/eligibility/%s", constants.VERSION_V1, constants.CUSTOMER_URL, url.PathEscape(eligibilityId))
+	return cust.Request.Get(url, queryParams, extraHeaders)
+}
