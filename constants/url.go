@@ -51,4 +51,6 @@ const (
 	IIN = "/iins"
 	//WEBHOOK ... webhook api base path
 	WEBHOOK = "/webhooks"
+
+	DOCUMENT = "/documents"
 )
