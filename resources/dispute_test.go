@@ -13,7 +13,7 @@ import (
 const TestDisputeID = "fake_dispute_id"
 
 func TestDisputeFetch(t *testing.T) {
-	url := "/" + constants.VERSION_V1 + constants.DISPUTE + "/" + TestDisputeID
+	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.DISPUTE, TestDisputeID)
 	teardown, fixture := utils.StartMockServer(url, "fake_dispute")
 	defer teardown()
 	body, err := utils.Client.Dispute.Fetch(TestDisputeID, nil, nil)
@@ -23,7 +23,7 @@ func TestDisputeFetch(t *testing.T) {
 }
 
 func TestDisputeAll(t *testing.T) {
-	url := "/" + constants.VERSION_V1 + constants.DISPUTE
+	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.DISPUTE)
 	teardown, fixture := utils.StartMockServer(url, "dispute_collection")
 	defer teardown()
 	body, err := utils.Client.Dispute.All(nil, nil)
@@ -33,7 +33,7 @@ func TestDisputeAll(t *testing.T) {
 }
 
 func TestDisputeAccept(t *testing.T) {
-	url := "/" + constants.VERSION_V1 + constants.DISPUTE + "/" + TestDisputeID + "/accept"
+	url := fmt.Sprintf("/%s%s/%s/accept", constants.VERSION_V1, constants.DISPUTE, TestDisputeID)
 	teardown, fixture := utils.StartMockServer(url, "fake_dispute")
 	defer teardown()
 	body, err := utils.Client.Dispute.Accept(TestDisputeID, nil, nil)
@@ -43,7 +43,7 @@ func TestDisputeAccept(t *testing.T) {
 }
 
 func TestDisputeContest(t *testing.T) {
-	url := "/" + constants.VERSION_V1 + constants.DISPUTE + "/" + TestDisputeID + "/contest"
+	url := fmt.Sprintf("/%s%s/%s/contest", constants.VERSION_V1, constants.DISPUTE, TestDisputeID)
 	teardown, fixture := utils.StartMockServer(url, "fake_dispute")
 	defer teardown()
 
