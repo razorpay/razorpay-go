@@ -86,7 +86,7 @@ func TestOrderUpdate(t *testing.T) {
 }
 
 func TestViewRtoReview(t *testing.T) {
-	url := "/" + constants.VERSION_V1 + constants.ORDER_URL + "/" + TestOrderID + "/rto_review"
+	url := fmt.Sprintf("/%s%s/%s/rto_review", constants.VERSION_V1, constants.ORDER_URL, TestOrderID)
 	teardown, fixture := utils.StartMockServer(url, "fake_rto_review")
 	defer teardown()
 	body, err := utils.Client.Order.ViewRtoReview(TestOrderID, nil, nil)
@@ -96,7 +96,7 @@ func TestViewRtoReview(t *testing.T) {
 }
 
 func TestEditFulfillment(t *testing.T) {
-	url := "/" + constants.VERSION_V1 + constants.ORDER_URL + "/" + TestOrderID + "/fulfillment"
+	url := fmt.Sprintf("/%s%s/%s/fulfillment", constants.VERSION_V1, constants.ORDER_URL, TestOrderID)
 	teardown, fixture := utils.StartMockServer(url, "fake_fulfillment")
 	defer teardown()
 	params := map[string]interface{}{
