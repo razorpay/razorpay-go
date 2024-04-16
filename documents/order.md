@@ -277,6 +277,75 @@ body, err := client.Order.Update("<orderId>", data, nil)
 ```
 -------------------------------------------------------------------------------------------------------
 
+### View RTO/Risk Reasons
+
+```go
+orderId = "order_DaaS6LOUAASb7Y"
+
+body, err := client.Order.ViewRtoReview(TestOrderID, nil, nil)
+```
+**Parameters**
+
+| Name     | Type   | Description                         |
+|----------|--------|-------------------------------------|
+| orderId* | string | The unique identifier of an order to access the fulfillment information. |
+
+**Response:**
+```json
+{
+  "risk_tier": "high",
+  "rto_reasons": [
+    {
+      "reason": "short_shipping_address",
+      "description": "Short shipping address",
+      "bucket": "address"
+    },
+    {
+      "reason": "address_pincode_state_mismatch",
+      "description": "Incorrect pincode state entered",
+      "bucket": "address"
+    }
+  ]
+}
+```
+-------------------------------------------------------------------------------------------------------
+
+### Update the Fulfillment Details
+
+```go
+params := map[string]interface{}{
+  "payment_method": "upi",
+  "shipping": map[string]interface{}{
+    "waybill":  "123456789",
+    "status":   "rto",
+    "provider": "Bluedart",
+  },
+}
+
+body, err := client.Order.EditFulfillment(orderId, params, nil)
+```
+**Parameters**
+
+| Name     | Type   | Description                         |
+|----------|--------|-------------------------------------|
+| orderId* | string | The unique identifier of an order to access the fulfillment information. |
+| payment_method | string | Payment Method opted by the customer to complete the payment. Possible values is `upi`, `card`, `wallet`, `netbanking`, `cod`, `emi`, `cardless_emi`, `paylater`, `recurring`, `other`. |
+| shipping | object  | Contains the shipping data. [here](https://razorpay.com/docs/payments/magic-checkout/rto-intelligence/#step-3-update-the-fulfillment-details) are supported |
+
+**Response:**
+```json
+{
+  "entity": "order.fulfillment",
+  "order_id": "EKwxwAgItXXXX",
+  "payment_method": "upi",
+  "shipping": {
+    "waybill": "123456789",
+    "status": "rto",
+    "provider": "Bluedart"
+  }
+}
+```
+-------------------------------------------------------------------------------------------------------
 
 **PN: * indicates mandatory fields**
 <br>

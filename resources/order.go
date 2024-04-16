@@ -41,3 +41,13 @@ func (order *Order) Payments(orderID string, queryParams map[string]interface{},
 	url := fmt.Sprintf("/%s%s/%s/payments", constants.VERSION_V1, constants.ORDER_URL, orderID)
 	return order.Request.Get(url, queryParams, extraHeaders)
 }
+
+func (order *Order) ViewRtoReview(orderID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("/%s%s/%s/rto_review", constants.VERSION_V1, constants.ORDER_URL, orderID)
+	return order.Request.Post(url, data, extraHeaders)
+}
+
+func (order *Order) EditFulfillment(orderID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("/%s%s/%s/fulfillment", constants.VERSION_V1, constants.ORDER_URL, orderID)
+	return order.Request.Post(url, data, extraHeaders)
+}

@@ -84,3 +84,32 @@ func TestOrderUpdate(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
+
+func TestViewRtoReview(t *testing.T) {
+	url := fmt.Sprintf("/%s%s/%s/rto_review", constants.VERSION_V1, constants.ORDER_URL, TestOrderID)
+	teardown, fixture := utils.StartMockServer(url, "fake_rto_review")
+	defer teardown()
+	body, err := utils.Client.Order.ViewRtoReview(TestOrderID, nil, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
+
+func TestEditFulfillment(t *testing.T) {
+	url := fmt.Sprintf("/%s%s/%s/fulfillment", constants.VERSION_V1, constants.ORDER_URL, TestOrderID)
+	teardown, fixture := utils.StartMockServer(url, "fake_fulfillment")
+	defer teardown()
+	params := map[string]interface{}{
+		"payment_method": "upi",
+		"shipping": map[string]interface{}{
+			"waybill":  "123456789",
+			"status":   "rto",
+			"provider": "Bluedart",
+		},
+	}
+
+	body, err := utils.Client.Order.EditFulfillment(TestOrderID, params, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
