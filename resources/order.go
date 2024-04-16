@@ -44,7 +44,6 @@ func (order *Order) Payments(orderID string, queryParams map[string]interface{},
 
 func (order *Order) ViewRtoReview(orderID string, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("/%s%s/%s/rto_review", constants.VERSION_V1, constants.ORDER_URL, orderID)
-	fmt.Println(url)
 	return order.Request.Post(url, data, extraHeaders)
 }
 
