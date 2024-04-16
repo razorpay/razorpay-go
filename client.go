@@ -36,6 +36,7 @@ type Client struct {
 	Item           *resources.Item
 	Iin            *resources.Iin
 	Webhook        *resources.Webhook
+	Document       *resources.Document
 	Dispute        *resources.Dispute
 }
 
@@ -70,6 +71,7 @@ func NewClient(key string, secret string) *Client {
 	item := resources.Item{Request: Request}
 	iin := resources.Iin{Request: Request}
 	webhook := resources.Webhook{Request: Request}
+	document := resources.Document{Request: Request}
 	dispute := resources.Dispute{Request: Request}
 	client := Client{
 		Account:        &account,
@@ -94,6 +96,7 @@ func NewClient(key string, secret string) *Client {
 		Item:           &item,
 		Iin:            &iin,
 		Webhook:        &webhook,
+		Document:       &document,
 		Dispute:        &dispute,
 	}
 	return &client
