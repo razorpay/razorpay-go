@@ -28,8 +28,7 @@ func TestDocumentCreate(t *testing.T) {
 	teardown, fixture := utils.StartMockServer(url, "fake_document")
 	defer teardown()
 
-	filePath := "../testData/fake_document.json"
-	file, err := os.Open(filePath)
+	file, err := os.Open("../testdata/fake_document.json")
 	fields := map[string]string{
 		"purpose": "dispute_evidence",
 	}
