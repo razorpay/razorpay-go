@@ -66,8 +66,6 @@ func TestDisputeContest(t *testing.T) {
 
 	body, err := utils.Client.Dispute.Contest(TestDisputeID, params, nil)
 	jsonByteArray, _ := json.Marshal(body)
-	jsonByteArrayi, _ := json.Marshal(params)
-	fmt.Println(string(jsonByteArrayi))
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
