@@ -36,6 +36,7 @@ type Client struct {
 	Item           *resources.Item
 	Iin            *resources.Iin
 	Webhook        *resources.Webhook
+	Dispute        *resources.Dispute
 }
 
 // NewClient creates and returns a new Razorpay client. key and secret
@@ -69,6 +70,7 @@ func NewClient(key string, secret string) *Client {
 	item := resources.Item{Request: Request}
 	iin := resources.Iin{Request: Request}
 	webhook := resources.Webhook{Request: Request}
+	dispute := resources.Dispute{Request: Request}
 	client := Client{
 		Account:        &account,
 		Addon:          &addon,
@@ -92,6 +94,7 @@ func NewClient(key string, secret string) *Client {
 		Item:           &item,
 		Iin:            &iin,
 		Webhook:        &webhook,
+		Dispute:        &dispute,
 	}
 	return &client
 }
