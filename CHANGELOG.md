@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2024-04-17
+feat: Added new API endpoints
+
+Added support for AddBankAccount, DeleteBankAccount, RequestEligibilityCheck & FetchEligibility on customer
+Added support for Dispute
+Added support for Document
+Added support for fetch all IINs Supporting native otps & fetch all IINs with business sub-type using `All`
+Added support for ViewRtoReview & EditFulfillment on order
+
 ## [1.3.1] - 2023-12-19
 Rollback: Generic access point due to some performance concern
 
