@@ -19,6 +19,5 @@ func (i *Iin) Fetch(tokenIin string, queryParams map[string]interface{}, extraHe
 
 func (i *Iin) All(queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("/%s%s/list", constants.VERSION_V1, constants.IIN)
-	fmt.Print(url)
 	return i.Request.Get(url, queryParams, extraHeaders)
 }
