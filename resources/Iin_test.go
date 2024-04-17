@@ -20,3 +20,18 @@ func TestFetchIin(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
+
+func TestFetchAll(t *testing.T) {
+	url := "/" + constants.VERSION_V1 + constants.IIN + "/list"
+	teardown, fixture := utils.StartMockServer(url, "iin_collection")
+	defer teardown()
+
+	data := map[string]interface{}{
+		"sub_type": "business",
+	}
+
+	body, err := utils.Client.Iin.All(data, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
