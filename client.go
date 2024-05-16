@@ -4,16 +4,17 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/razorpay/razorpay-go/constants"
+	"github.com/razorpay/razorpay-go/config"
 	"github.com/razorpay/razorpay-go/requests"
 	"github.com/razorpay/razorpay-go/resources"
 )
 
-//Request ...
+// Request ...
 var Request *requests.Request
 
-//Client provides various helper methods to make HTTP requests to Razorpay's APIs.
+// Client provides various helper methods to make HTTP requests to Razorpay's APIs.
 type Client struct {
+	config         config.Config
 	Addon          *resources.Addon
 	Account        *resources.Account
 	Card           *resources.Card
@@ -45,9 +46,10 @@ type Client struct {
 func NewClient(key string, secret string) *Client {
 	auth := requests.Auth{Key: key, Secret: secret}
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
+	cfg := config.New()
 	Request = &requests.Request{Auth: auth, HTTPClient: httpClient,
 		Version: getVersion(), SDKName: getSDKName(),
-		BaseURL: constants.BASE_URL}
+		BaseURL: cfg.GetDNS(auth.Key)}
 
 	account := resources.Account{Request: Request}
 	addon := resources.Addon{Request: Request}
@@ -74,6 +76,7 @@ func NewClient(key string, secret string) *Client {
 	document := resources.Document{Request: Request}
 	dispute := resources.Dispute{Request: Request}
 	client := Client{
+		config:         cfg,
 		Account:        &account,
 		Addon:          &addon,
 		Card:           &card,

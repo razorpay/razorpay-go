@@ -1,8 +1,8 @@
 # Razorpay Go Client
 
-Golang bindings for interacting with the Razorpay API
+Golang's bindings for interacting with the Razorpay API
 
-This is primarily meant for merchants who wish to perform interactions with the Razorpay API programatically 
+This is primarily meant for merchants who wish to perform interactions with the Razorpay API programmatically
 
 Read up here for getting started and understanding the payment flow with Razorpay: <https://razorpay.com/docs/get-started/>
 
@@ -11,19 +11,21 @@ Read up here for getting started and understanding the payment flow with Razorpa
 Documentation of Razorpay's API and their usage is available at <https://docs.razorpay.com>
 
 ## Usage
-You need to setup your key and secret using the following:
+You need to set up your key and secret using the following:
 You can find your API keys at <https://dashboard.razorpay.com/#/app/keys>.
 
 ```go
 import (
-razorpay "github.com/razorpay/razorpay-go"
+    razorpay "github.com/razorpay/razorpay-go"
 )
 
 client := razorpay.NewClient("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
 
 ```
 
-Note: All methods below return a `map[string]interface{}` and `error`. All methods accept an `extraHeaders` param of type `map[string]string`, allowing you to optinally set extra HTTP headers on the request.
+Note: All methods below return a `map[string]interface{}` and `error`.
+        All methods accept an `extraHeaders` param of a type `map[string]string`,
+        allowing you to optionally set extra HTTP headers on the request.
 
 ## Supported Resources
 
@@ -61,4 +63,5 @@ Note: All methods below return a `map[string]interface{}` and `error`. All metho
 
 ## License
 
-The Razorpay Go SDK is released under the MIT License. See [LICENSE](LICENSE) file for more details.
+The Razorpay Go SDK is released under the MIT License.
+        See [LICENSE](LICENSE) file for more details.
