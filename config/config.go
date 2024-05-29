@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 )
 
@@ -24,6 +25,8 @@ const (
 	Timeout = time.Second
 )
 
+var lock *sync.RWMutex
+
 // Config holds the configuration needed by the SDK to operate optimally
 type Config struct {
 	DNS DNSConfig `json:"dns"`
@@ -37,35 +40,45 @@ func new() Config {
 }
 
 // New returns Config struct loaded with the remote configuration available in URL specified
-func New() Config {
+func New(cb callback) *Config {
 	cfg := new()
+
+	NewConfigRefresher(&cfg, refreshInterval, cb).Start()
+
+	return &cfg
+}
+
+func (c *Config) load() {
+	lock.Lock()
+	defer lock.Unlock()
+
 	req, err := http.NewRequest(http.MethodGet, URL, nil)
 	if err != nil {
 		log.Println("failed to create config fetch request:", err)
-		return cfg
+		return
 	}
 
 	client := &http.Client{Timeout: Timeout}
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Println("failed to fetch remote config:", err)
-		return cfg
+		return
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("failed to read the config response:", err)
-		return cfg
+		return
 	}
 
-	if err = json.Unmarshal(body, &cfg); err != nil {
+	if err = json.Unmarshal(body, c); err != nil {
 		log.Println("failed to unmarshal the config:", err)
+		return
 	}
-	return cfg
 }
 
 // GetDNS given the key it returns with the DNS address
-func (c Config) GetDNS(key string) string {
+func (c *Config) GetDNS(key string) string {
 	return c.DNS.get(key)
 }
