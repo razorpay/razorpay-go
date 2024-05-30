@@ -8,9 +8,9 @@ import (
 func TestConfig_GetDNS(t *testing.T) {
 	cfg := new()
 
-	assert.Equal(t, DefaultDNS, cfg.GetDNS("rzp_live_1234567890123"))
-	assert.Equal(t, DefaultDNS, cfg.GetDNS("rzp_live_12"))
-	assert.Equal(t, DefaultDNS, cfg.GetDNS("rzp_live_sg123123123123123"))
+	assert.Equal(t, DefaultDNS, cfg.GetDNS("rzp_live_34567890123"))
+	assert.Equal(t, DefaultDNS, cfg.GetDNS("rzp_live_in_34567890123"))
+	assert.Equal(t, DefaultDNS, cfg.GetDNS("rzp_live_sg_23123123123"))
 
 	customINDNS := "api-in.razorpay.com"
 	customSGDNS := "api-sg.razorpay.com"
@@ -21,7 +21,7 @@ func TestConfig_GetDNS(t *testing.T) {
 		"SG": customSGDNS,
 	}}
 
-	assert.Equal(t, customINDNS, cfg.GetDNS("rzp_live_1234567890123"))
-	assert.Equal(t, customINDNS, cfg.GetDNS("rzp_live_12"))
-	assert.Equal(t, customSGDNS, cfg.GetDNS("rzp_live_sg123123123123123"))
+	assert.Equal(t, customINDNS, cfg.GetDNS("rzp_live_34567890123"))
+	assert.Equal(t, customINDNS, cfg.GetDNS("rzp_live_in_34567890123"))
+	assert.Equal(t, customSGDNS, cfg.GetDNS("rzp_live_sg_23123123123"))
 }

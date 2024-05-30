@@ -25,7 +25,7 @@ const (
 	Timeout = time.Second
 )
 
-var lock *sync.RWMutex
+var lock = &sync.RWMutex{}
 
 // Config holds the configuration needed by the SDK to operate optimally
 type Config struct {

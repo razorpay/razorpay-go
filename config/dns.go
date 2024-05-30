@@ -30,12 +30,16 @@ func (dns DNSConfig) get(key string) string {
 // if no match is found, then it returns default country code
 func deriveCountryCode(key string) string {
 	tokens := strings.Split(key, "_")
-	identifier := tokens[len(tokens)-1]
 
-	// check for the default format and then return the default country code
-	if len(identifier) <= 14 {
+	if len(tokens) < 4 {
 		return DefaultCountryCode
 	}
 
-	return strings.ToUpper(identifier[:2])
+	countryCode := tokens[len(tokens)-2]
+	// check for the default format and then return the default country code
+	if len(countryCode) != 2 {
+		return DefaultCountryCode
+	}
+
+	return strings.ToUpper(countryCode)
 }

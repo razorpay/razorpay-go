@@ -30,7 +30,7 @@ func TestDNS(t *testing.T) {
 			expect: "https://api-in.razorpay.com",
 		},
 		{
-			key: "rzp_test_sgqwertyuioplkjh",
+			key: "rzp_test_sg_qwertyuioplkjh",
 			dns: DNSConfig{
 				"IN": "https://api.razorpay.com",
 				"SG": "https://api-sg.razorpay.com",
