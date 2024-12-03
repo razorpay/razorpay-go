@@ -18,7 +18,7 @@ import (
 	"github.com/razorpay/razorpay-go/errors"
 )
 
-//Auth holds the values required to authenticate the requests made to Razorpay APIs
+// Auth holds the values required to authenticate the requests made to Razorpay APIs
 type Auth struct {
 	Key    string
 	Secret string
@@ -29,7 +29,7 @@ type FileUploadParams struct {
 	Fields map[string]string
 }
 
-//TIMEOUT ... client timeout
+// TIMEOUT ... client timeout
 const TIMEOUT = 10
 
 // Request encapsulates all the information required to make an HTTP request
@@ -97,7 +97,7 @@ func (request *Request) addRequestHeaders(req *http.Request, headers map[string]
 	request.addRequestHeadersInternal(req, headers)
 }
 
-//SetTimeout ...
+// SetTimeout ...
 func (request *Request) SetTimeout(timeout int16) {
 	timeoutSeconds := int64(timeout) * int64(time.Second)
 	request.HTTPClient = &http.Client{Timeout: time.Duration(timeoutSeconds)}
@@ -155,7 +155,7 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	return processResponse(response)
 }
 
-//Get ...
+// Get ...
 func (request *Request) Get(path string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
 
@@ -170,8 +170,8 @@ func (request *Request) Get(path string, queryParams map[string]interface{}, ext
 	return request.doRequestResponse(req)
 }
 
-//Post ...
-func (request *Request) Post(path string, payload map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+// Post ...
+func (request *Request) Post(path string, payload interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
 
@@ -186,7 +186,7 @@ func (request *Request) Post(path string, payload map[string]interface{}, extraH
 	return request.doRequestResponse(req)
 }
 
-//Patch ...
+// Patch ...
 func (request *Request) Patch(path string, payload map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
@@ -202,7 +202,7 @@ func (request *Request) Patch(path string, payload map[string]interface{}, extra
 	return request.doRequestResponse(req)
 }
 
-//Put ...
+// Put ...
 func (request *Request) Put(path string, payload map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
@@ -218,7 +218,7 @@ func (request *Request) Put(path string, payload map[string]interface{}, extraHe
 	return request.doRequestResponse(req)
 }
 
-//Delete ...
+// Delete ...
 func (request *Request) Delete(path string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
