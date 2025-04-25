@@ -275,3 +275,48 @@ func (request *Request) File(path string, params FileUploadParams, extraHeaders 
 
 	return request.doRequestResponse(req)
 }
+
+// Call makes an HTTP request to the Razorpay API
+func (request *Request) Call(method, path string, params interface{}, result interface{}) error {
+	var jsonStr []byte
+	var err error
+
+	// Handle different types of params
+	switch p := params.(type) {
+	case map[string]interface{}:
+		// If it's already a map, use it directly
+		jsonStr, err = json.Marshal(p)
+	case nil:
+		// If params is nil, use empty map
+		jsonStr, err = json.Marshal(map[string]interface{}{})
+	default:
+		// For any other type (struct), convert to map first
+		jsonStr, err = json.Marshal(p)
+	}
+
+	if err != nil {
+		return err
+	}
+
+	url := fmt.Sprintf("%s%s", request.BaseURL, path)
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonStr))
+	if err != nil {
+		return err
+	}
+
+	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	request.addRequestHeaders(req, nil)
+
+	resp, err := request.doRequestResponse(req)
+	if err != nil {
+		return err
+	}
+
+	// Convert response to result struct
+	jsonData, err := json.Marshal(resp)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(jsonData, result)
+}

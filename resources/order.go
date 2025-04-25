@@ -2,9 +2,11 @@ package resources
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/razorpay/razorpay-go/constants"
 	"github.com/razorpay/razorpay-go/requests"
+	"github.com/razorpay/razorpay-go/types"
 )
 
 //Order ...
@@ -19,15 +21,19 @@ func (order *Order) All(queryParams map[string]interface{}, extraHeaders map[str
 }
 
 // Fetch fetches an order having the given orderID.
-func (order *Order) Fetch(orderID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+func (order *Order) Fetch(orderID string, queryParams map[string]interface{}, extraHeaders map[string]string) (*types.OrderResponse, error) {
 	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.ORDER_URL, orderID)
-	return order.Request.Get(url, queryParams, extraHeaders)
+	var result *types.OrderResponse
+	err := order.Request.Call(http.MethodGet, url, queryParams, &result)
+	return result, err
 }
 
 // Create creates a new order for the given data
-func (order *Order) Create(data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+func (order *Order) Create(data *types.OrderRequest, extraHeaders map[string]string) (*types.OrderResponse, error) {
 	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.ORDER_URL)
-	return order.Request.Post(url, data, extraHeaders)
+	var result *types.OrderResponse
+	err := order.Request.Call(http.MethodPost, url, data, &result)
+	return result, err
 }
 
 // Update updates an order having the given orderID.
