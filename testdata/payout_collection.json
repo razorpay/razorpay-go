@@ -1,6 +1,6 @@
 {
     "entity": "collection",
-    "count": 1,
+    "count": 3,
     "items": [
         {
             "id": "pout_00000000000001",
@@ -33,6 +33,70 @@
             "reference_id": "Acme Transaction ID 12345",
             "narration": "Acme Corp Fund Transfer",
             "created_at": 1566985740
+        },
+        {
+            "id": "pout_00000000000002",
+            "entity": "payout",
+            "fund_account_id": "fa_00000000000002",
+            "fund_account": {
+                "id": "fa_00000000000002",
+                "entity": "fund_account",
+                "contact_id": "cont_00000000000002",
+                "account_type": "bank_account",
+                "bank_account": {
+                    "name": "John Doe",
+                    "ifsc": "RAZR0000002",
+                    "account_number": "7878780080316317"
+                },
+                "active": true
+            },
+            "amount": 2000000,
+            "currency": "INR",
+            "notes": {
+                "notes_key_1": "Payment for services",
+                "notes_key_2": "Monthly salary"
+            },
+            "fees": 0,
+            "tax": 0,
+            "status": "completed",
+            "utr": "UTR123456789",
+            "mode": "NEFT",
+            "purpose": "salary",
+            "reference_id": "Salary Payment 12345",
+            "narration": "Monthly Salary Payment",
+            "created_at": 1566985741
+        },
+        {
+            "id": "pout_00000000000003",
+            "entity": "payout",
+            "fund_account_id": "fa_00000000000003",
+            "fund_account": {
+                "id": "fa_00000000000003",
+                "entity": "fund_account",
+                "contact_id": "cont_00000000000003",
+                "account_type": "bank_account",
+                "bank_account": {
+                    "name": "Jane Smith",
+                    "ifsc": "RAZR0000003",
+                    "account_number": "7878780080316318"
+                },
+                "active": true
+            },
+            "amount": 1500000,
+            "currency": "INR",
+            "notes": {
+                "notes_key_1": "Vendor payment",
+                "notes_key_2": "Q2 payment"
+            },
+            "fees": 0,
+            "tax": 0,
+            "status": "failed",
+            "utr": null,
+            "mode": "RTGS",
+            "purpose": "vendor_payment",
+            "reference_id": "Vendor Payment 12345",
+            "narration": "Q2 Vendor Payment",
+            "created_at": 1566985742
         }
     ]
 }
