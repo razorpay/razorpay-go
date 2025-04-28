@@ -58,6 +58,7 @@ Note: All methods below return a `map[string]interface{}` and `error`. All metho
 - [Document](documents/document.md)
 - [Dispute](documents/dispute.md)
 - [Iin](documents/iin.md)
+- [Payout](documents/payout.md)
 
 ## License
 
