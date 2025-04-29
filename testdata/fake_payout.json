@@ -2,31 +2,27 @@
     "id": "pout_00000000000001",
     "entity": "payout",
     "fund_account_id": "fa_00000000000001",
-    "fund_account": {
-        "id": "fa_00000000000001",
-        "entity": "fund_account",
-        "contact_id": "cont_00000000000001",
-        "account_type": "bank_account",
-        "bank_account": {
-            "name": "Gaurav Kumar",
-            "ifsc": "RAZR0000001",
-            "account_number": "7878780080316316"
-        },
-        "active": true
-    },
     "amount": 1000000,
     "currency": "INR",
     "notes": {
-        "notes_key_1": "Tea, Earl Grey, Hot",
-        "notes_key_2": "Tea, Earl Grey… decaf."
+      "notes_key_1": "Tea,EarlGrey,Hot",
+      "notes_key_2": "Tea,EarlGrey…decaf."
     },
     "fees": 0,
     "tax": 0,
-    "status": "processing",
-    "utr": null,
+    "status": "processed",
+    "utr": "123456789012345",
     "mode": "IMPS",
     "purpose": "refund",
-    "reference_id": "Acme Transaction ID 12345",
-    "narration": "Acme Corp Fund Transfer",
-    "created_at": 1566985740
-}
+    "reference_id": "AcmeTransactionID12345",
+    "narration": "AcmeCorpFundTransfer",
+    "batch_id": "",
+    "status_details": {
+      "description": "Payoutprocessedsuccessfully",
+      "source": "bank",
+      "reason": ""
+    },
+    "created_at": 1234567890,
+    "fee_type": "free_payout"
+  }
+  

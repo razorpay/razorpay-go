@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -274,4 +275,78 @@ func (request *Request) File(path string, params FileUploadParams, extraHeaders 
 	request.addRequestHeaders(req, extraHeaders, contentType)
 
 	return request.doRequestResponse(req)
+}
+
+// Call makes an HTTP request to the Razorpay API
+// method: HTTP method (GET, POST, etc.)
+// path: API endpoint path
+// payload: Request body data (for POST, PUT, etc.)
+// params: Query parameters (for GET, etc.)
+// result: Pointer to struct to unmarshal response into
+func (request *Request) Call(method, path string, payload interface{}, params interface{}, result interface{}) error {
+	var jsonStr []byte
+	var err error
+
+	// Handle payload serialization
+	if payload != nil {
+		jsonStr, err = json.Marshal(payload)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Build URL with query parameters
+	url := fmt.Sprintf("%s%s", request.BaseURL, path)
+	if params != nil {
+		queryParams := make(map[string]string)
+		switch p := params.(type) {
+		case map[string]interface{}:
+			for k, v := range p {
+				queryParams[k] = fmt.Sprintf("%v", v)
+			}
+		case map[string]string:
+			queryParams = p
+		}
+		if len(queryParams) > 0 {
+			url += "?" + buildQueryString(queryParams)
+		}
+	}
+
+	// Create request
+	var req *http.Request
+	if jsonStr != nil {
+		req, err = http.NewRequest(method, url, bytes.NewBuffer(jsonStr))
+	} else {
+		req, err = http.NewRequest(method, url, nil)
+	}
+	if err != nil {
+		return err
+	}
+
+	// Add authentication and headers
+	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	request.addRequestHeaders(req, nil)
+
+	// Make request
+	resp, err := request.doRequestResponse(req)
+	if err != nil {
+		return err
+	}
+
+	// Convert response to result struct
+	jsonData, err := json.Marshal(resp)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(jsonData, result)
+}
+
+// buildQueryString builds a URL query string from a map of parameters
+func buildQueryString(params map[string]string) string {
+	var parts []string
+	for k, v := range params {
+		parts = append(parts, fmt.Sprintf("%s=%s", url.QueryEscape(k), url.QueryEscape(v)))
+	}
+	return strings.Join(parts, "&")
 }
