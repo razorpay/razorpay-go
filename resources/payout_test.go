@@ -9,8 +9,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// TestPayoutID is a constant representing a test payout ID
 const TestPayoutID = "pout_00000000000001"
 
+// TestPayoutAll is a function to test fetching all payouts
 func TestPayoutAll(t *testing.T) {
 	url := "/" + constants.VERSION_V1 + constants.PAYOUT_URL
 	teardown, fixture := utils.StartMockServer(url, "payout_collection")
@@ -24,6 +26,7 @@ func TestPayoutAll(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 
+// TestPayoutFetch is a function to test fetching a specific payout
 func TestPayoutFetch(t *testing.T) {
 	url := "/" + constants.VERSION_V1 + constants.PAYOUT_URL + "/" + TestPayoutID
 	teardown, fixture := utils.StartMockServer(url, "fake_payout")
@@ -34,6 +37,7 @@ func TestPayoutFetch(t *testing.T) {
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
 
+// TestPayoutCreate is a function to test creating a new payout
 func TestPayoutCreate(t *testing.T) {
 	url := "/" + constants.VERSION_V1 + constants.PAYOUT_URL
 	teardown, fixture := utils.StartMockServer(url, "fake_payout")
