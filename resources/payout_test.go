@@ -36,7 +36,10 @@ func TestPayoutFetch(t *testing.T) {
 	teardown, fixture := utils.StartMockServer(url, "fake_payout")
 	defer teardown()
 
-	body, err := utils.Client.Payout.Fetch(TestPayoutID, nil, nil)
+	queryParams := map[string]interface{}{
+		"expand[]": "fund_account",
+	}
+	body, err := utils.Client.Payout.Fetch(TestPayoutID, queryParams, nil)
 	assert.Nil(t, err)
 	assert.NotNil(t, body)
 

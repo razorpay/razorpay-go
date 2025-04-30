@@ -136,7 +136,7 @@ type Payout struct {
 func (payout *Payout) All(queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.PAYOUT_URL)
 	var result map[string]interface{}
-	err := payout.Request.Call(http.MethodGet, url, nil, queryParams, &result)
+	err := payout.Request.Call(http.MethodGet, url, queryParams, &result, extraHeaders)
 	return result, err
 }
 
@@ -144,7 +144,7 @@ func (payout *Payout) All(queryParams map[string]interface{}, extraHeaders map[s
 func (payout *Payout) Fetch(payoutID string, queryParams map[string]interface{}, extraHeaders map[string]string) (*PayoutResponse, error) {
 	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.PAYOUT_URL, payoutID)
 	var result *PayoutResponse
-	err := payout.Request.Call(http.MethodGet, url, nil, queryParams, &result)
+	err := payout.Request.Call(http.MethodGet, url, queryParams, &result, extraHeaders)
 	return result, err
 }
 
@@ -152,6 +152,6 @@ func (payout *Payout) Fetch(payoutID string, queryParams map[string]interface{},
 func (payout *Payout) Create(data *PayoutRequest, extraHeaders map[string]string) (*PayoutResponse, error) {
 	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.PAYOUT_URL)
 	var result *PayoutResponse
-	err := payout.Request.Call(http.MethodPost, url, data, nil, &result)
+	err := payout.Request.Call(http.MethodPost, url, data, &result, extraHeaders)
 	return result, err
 }
