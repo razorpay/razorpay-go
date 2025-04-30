@@ -2,10 +2,16 @@
   "id": "fake_order_id",
   "entity": "order",
   "amount": 500,
-  "attempts": 1,
+  "amount_paid": 0,
+  "amount_due": 0,
   "currency": "INR",
+  "receipt": "12121",
+  "offer_id": null,
   "status": "attempted",
-  "notes": [],
-  "created_at": 1400826750,
-  "receipt": "12121"
+  "attempts": 1,
+  "notes": {
+    "key1": "key1",
+    "key2": "key2"
+  },
+  "created_at": 1400826750
 }

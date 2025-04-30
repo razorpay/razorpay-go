@@ -14,8 +14,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/razorpay/razorpay-go/constants"
-	"github.com/razorpay/razorpay-go/errors"
+	"github.com/razorpay/razorpay-go/v2/constants"
+	"github.com/razorpay/razorpay-go/v2/errors"
 )
 
 //Auth holds the values required to authenticate the requests made to Razorpay APIs
@@ -274,4 +274,49 @@ func (request *Request) File(path string, params FileUploadParams, extraHeaders 
 	request.addRequestHeaders(req, extraHeaders, contentType)
 
 	return request.doRequestResponse(req)
+}
+
+// Call makes an HTTP request to the Razorpay API
+func (request *Request) Call(method, path string, payload interface{}, result interface{}, extraHeaders map[string]string) error {
+	var jsonStr []byte
+	var err error
+
+	// Handle different types of payload
+	switch p := payload.(type) {
+	case map[string]interface{}:
+		// If it's already a map, use it directly
+		jsonStr, err = json.Marshal(p)
+	case nil:
+		// If payload is nil, use empty map
+		jsonStr, err = json.Marshal(map[string]interface{}{})
+	default:
+		// For any other type (struct), convert to map first
+		jsonStr, err = json.Marshal(p)
+	}
+
+	if err != nil {
+		return err
+	}
+
+	url := fmt.Sprintf("%s%s", request.BaseURL, path)
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonStr))
+	if err != nil {
+		return err
+	}
+
+	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	request.addRequestHeaders(req, extraHeaders)
+
+	resp, err := request.doRequestResponse(req)
+	if err != nil {
+		return err
+	}
+
+	// Convert response to result struct
+	jsonData, err := json.Marshal(resp)
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(jsonData, result)
 }
