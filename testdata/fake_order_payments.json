@@ -1,0 +1,45 @@
+{
+    "entity":"collection",
+    "count":1,
+    "items":[
+      {
+        "id":"fake_order_id",
+        "entity":"payment",
+        "amount":100,
+        "currency":"INR",
+        "status":"failed",
+        "order_id":"fake_order_id",
+        "invoice_id":null,
+        "international":false,
+        "method":"upi",
+        "amount_refunded":0,
+        "refund_status":null,
+        "captured":false,
+        "description":null,
+        "card_id":null,
+        "bank":null,
+        "wallet":null,
+        "vpa":"failure@razorpay",
+        "email":"void@razorpay.com",
+        "contact":"+919999999999",
+        "notes":{
+          "notes_key_1":"Tea, Earl Grey, Hot",
+          "notes_key_2":"Tea, Earl Grey… decaf."
+        },
+        "fee":null,
+        "tax":null,
+        "error_code":"BAD_REQUEST_ERROR",
+        "error_description":"Payment was unsuccessful due to a temporary issue. If amount got deducted, it will be refunded within 5-7 working days.",
+        "error_source":"gateway",
+        "error_step":"payment_response",
+        "error_reason":"payment_failed",
+        "acquirer_data":{
+          "rrn":null
+        },
+        "created_at":1701688684,
+        "upi":{
+          "vpa":"failure@razorpay"
+        }
+      }
+    ]
+  }

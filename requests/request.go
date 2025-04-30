@@ -14,8 +14,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/razorpay/razorpay-go/constants"
-	"github.com/razorpay/razorpay-go/errors"
+	"github.com/razorpay/razorpay-go/v2/constants"
+	"github.com/razorpay/razorpay-go/v2/errors"
 )
 
 //Auth holds the values required to authenticate the requests made to Razorpay APIs
@@ -277,17 +277,17 @@ func (request *Request) File(path string, params FileUploadParams, extraHeaders 
 }
 
 // Call makes an HTTP request to the Razorpay API
-func (request *Request) Call(method, path string, params interface{}, result interface{}) error {
+func (request *Request) Call(method, path string, payload interface{}, result interface{}, extraHeaders map[string]string) error {
 	var jsonStr []byte
 	var err error
 
-	// Handle different types of params
-	switch p := params.(type) {
+	// Handle different types of payload
+	switch p := payload.(type) {
 	case map[string]interface{}:
 		// If it's already a map, use it directly
 		jsonStr, err = json.Marshal(p)
 	case nil:
-		// If params is nil, use empty map
+		// If payload is nil, use empty map
 		jsonStr, err = json.Marshal(map[string]interface{}{})
 	default:
 		// For any other type (struct), convert to map first
@@ -305,7 +305,7 @@ func (request *Request) Call(method, path string, params interface{}, result int
 	}
 
 	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
-	request.addRequestHeaders(req, nil)
+	request.addRequestHeaders(req, extraHeaders)
 
 	resp, err := request.doRequestResponse(req)
 	if err != nil {

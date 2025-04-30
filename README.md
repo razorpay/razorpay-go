@@ -1,18 +1,34 @@
-# Razorpay Go Client
+# Razorpay Go SDK
 
-Golang bindings for interacting with the Razorpay API
+**Official Go bindings for the Razorpay API**
 
-This is primarily meant for merchants who wish to perform interactions with the Razorpay API programatically 
+This SDK allows you to seamlessly integrate Razorpay APIs into your Go applications for managing payments, orders, customers, and more — programmatically.
 
-Read up here for getting started and understanding the payment flow with Razorpay: <https://razorpay.com/docs/get-started/>
+> 💡 **New to Razorpay?**  
+> Check out the [Getting Started Guide](https://razorpay.com/docs/get-started/) to understand payment flows and set up your account.
+
+---
 
 ## Documentation
 
-Documentation of Razorpay's API and their usage is available at <https://docs.razorpay.com>
+For detailed API references and integration workflows, visit the [Razorpay API Documentation](https://razorpay.com/docs/api/).
+
+---
+
+## Requirements
+
+- Go 1.18 or later
+
+### Installation
+
+```bash
+go get github.com/razorpay/razorpay-go
+```
 
 ## Usage
-You need to setup your key and secret using the following:
-You can find your API keys at <https://dashboard.razorpay.com/#/app/keys>.
+**Initializing the Client**
+
+The `NewClient` method creates a new instance of the Razorpay client, which is used to make API calls.
 
 ```go
 import (
@@ -20,44 +36,66 @@ razorpay "github.com/razorpay/razorpay-go"
 )
 
 client := razorpay.NewClient("<YOUR_API_KEY>", "<YOUR_API_SECRET>")
-
 ```
 
-Note: All methods below return a `map[string]interface{}` and `error`. All methods accept an `extraHeaders` param of type `map[string]string`, allowing you to optinally set extra HTTP headers on the request.
+- <YOUR_API_KEY>: Your Razorpay API Key ID.
 
-## Supported Resources
+- <YOUR_API_SECRET>: Your Razorpay API Key Secret.
 
-- [Account](documents/account.md)
-- [Customer](documents/customers.md)
-- [Token](documents/token.md)
-- [Order](documents/order.md)
-- [Payments](documents/payment.md)
-- [Product Configuration](documents/productConfiguration.md)
-- [Settlements](documents/settlement.md)
-- [Stakeholder](documents/stakeholder.md)
-- [Fund](documents/fundAccount.md)
-- [Refunds](documents/refund.md)
-- [Invoice](documents/invoice.md)
-- [Item](documents/item.md)
-- [Plan](documents/plan.md)
-- [PaymentVerfication](documents/paymentVerification.md)
-- [Subscriptions](documents/subscription.md)
-- [Add-on](documents/addon.md)
-- [Payment Links](documents/paymentLink.md)
-- [Smart Collect](documents/virtualAccount.md)
-- [Route](documents/transfer.md)
-- [QR Code](documents/qrcode.md)
-- [Emandate](documents/emandate.md)
-- [Cards](documents/card.md)
-- [Paper NACH](documents/papernach.md)
-- [UPI](documents/upi.md)
-- [Register Emandate and Charge First Payment Together](documents/registerEmandate.md)
-- [Register NACH and Charge First Payment Together](documents/registerNach.md)
-- [Token](documents/token.md)
-- [Webhook](documents/webhook.md)
-- [Document](documents/document.md)
-- [Dispute](documents/dispute.md)
-- [Iin](documents/iin.md)
+You can find your API keys in the [Razorpay Dashboard](https://dashboard.razorpay.com/#/app/keys).
+
+Once initialized, client provides access to different Razorpay resources like Orders, Payments, Customers, etc.
+
+For example:
+
+### Create an Order
+```go
+request := &resources.OrderRequest{
+	Amount:                1000,
+	Currency:              "INR",
+	PartialPayment:        true,
+	FirstPaymentMinAmount: 100,
+	Notes: resources.Notes{
+		"policy_name": "Jeevan Bima",
+	},
+}
+
+resp, err := client.Order.Create(request, nil)
+
+if err != nil {
+    fmt.Printf("Error creating order: %v\n", err)
+    return
+}
+fmt.Printf("Create order Response:\n%s\n", resp.ID)
+```
+
+### Update an Order
+```go
+request := &resources.OrderUpdateRequest{
+    Notes: resources.Notes{
+        "policy_name": "Jeevan Bima",
+    },
+}
+resp, err := client.Order.Update("order_QOSJNLwLsRK0bB", request, nil)
+
+if err != nil {
+    fmt.Printf("Error updating order: %v\n", err)
+    return
+}
+fmt.Printf("Updating order Response:\n%s\n", resp.ID)
+```
+
+### Fetch an Order
+```go
+response, err := client.Order.Fetch("order_QOSJNLwLsRK0bB", nil, nil)
+
+if err != nil {
+    fmt.Printf("Error fetching order: %v\n", err)
+    return
+}
+fmt.Printf("Fetching order Response:\n%s\n", response.ID)
+```
+
 
 ## License
 

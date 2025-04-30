@@ -1,4 +1,4 @@
-module github.com/razorpay/razorpay-go
+module github.com/razorpay/razorpay-go/v2
 
 go 1.14
 
