@@ -53,4 +53,6 @@ const (
 	WEBHOOK = "/webhooks"
 	DOCUMENT = "/documents"
 	DISPUTE = "/disputes"
+	//PAYOUT_URL ... payout api base path
+	PAYOUT_URL = "/payouts"
 )
