@@ -53,7 +53,7 @@ func TestPayoutCreate(t *testing.T) {
 	teardown, fixture := utils.StartMockServer(url, "fake_payout")
 	defer teardown()
 
-	request := &resources.PayoutRequest{
+	req := &resources.PayoutRequest{
 		AccountNumber:     "7878780080316316",
 		FundAccountID:     "fa_00000000000001",
 		Amount:            1000000,
@@ -69,7 +69,7 @@ func TestPayoutCreate(t *testing.T) {
 		},
 	}
 
-	body, err := utils.Client.Payout.Create(request, nil)
+	body, err := utils.Client.Payout.Create(req, nil)
 	assert.Nil(t, err)
 	assert.NotNil(t, body)
 
