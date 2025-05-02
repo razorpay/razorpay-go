@@ -21,21 +21,3 @@ func (payout *Payout) Fetch(id string, queryParams map[string]interface{}, extra
 	url := "/" + constants.VERSION_V1 + constants.PAYOUT_URL + "/" + id
 	return payout.Request.Get(url, queryParams, extraHeaders)
 }
-
-// Create creates a new payout for the given data
-func (payout *Payout) Create(req *PayoutRequest, extraHeaders map[string]string) (map[string]interface{}, error) {
-	url := "/" + constants.VERSION_V1 + constants.PAYOUT_URL
-
-	// Convert PayoutRequest to map[string]interface{}
-	dataMap := make(map[string]interface{})
-	if req != nil {
-		jsonData, err := json.Marshal(req)
-		if err != nil {
-			return nil, err
-		}
-		if err := json.Unmarshal(jsonData, &dataMap); err != nil {
-			return nil, err
-		}
-	}
-	return payout.Request.Post(url, dataMap, extraHeaders)
-}
