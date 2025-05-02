@@ -57,7 +57,7 @@ func (payout *Payout) Fetch(id string, queryParams map[string]interface{}, extra
 	return payout.Request.Get(url, queryParams, extraHeaders)
 }
 
-// Create creates a new payout for the given data
+// Create creates a new payout for the given req
 func (payout *Payout) Create(req *PayoutRequest, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := "/" + constants.VERSION_V1 + constants.PAYOUT_URL
 
