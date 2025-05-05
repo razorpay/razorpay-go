@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/razorpay/razorpay-go/constants"
+	"github.com/razorpay/razorpay-go/resources"
 	"github.com/razorpay/razorpay-go/utils"
 	"github.com/stretchr/testify/assert"
 )
@@ -58,10 +59,10 @@ func TestOrderCreate(t *testing.T) {
 	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.ORDER_URL)
 	teardown, fixture := utils.StartMockServer(url, "fake_order")
 	defer teardown()
-	params := map[string]interface{}{
-		"amount":   100,
-		"currency": "INR",
-		"receipt":  "dummy",
+	params := resources.OrderCreateRequest{
+		Amount:   100,
+		Currency: "INR",
+		Receipt:  "dymmy",
 	}
 	body, err := utils.Client.Order.Create(params, nil)
 	jsonByteArray, _ := json.Marshal(body)
