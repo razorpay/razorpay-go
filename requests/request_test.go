@@ -78,3 +78,66 @@ func TestBuildURLWithParams(t *testing.T) {
 		})
 	}
 }
+
+func TestGetUserAgentHeaderValue(t *testing.T) {
+	tests := []struct {
+		name     string
+		request  Request
+		expected string
+	}{
+		{
+			name: "empty user agent",
+			request: Request{
+				SDKName:   "razorpay-go",
+				Version:   "1.3.4",
+				userAgent: "",
+			},
+			expected: "razorpay-go/1.3.4",
+		},
+		{
+			name: "custom user agent",
+			request: Request{
+				SDKName:   "razorpay-go",
+				Version:   "1.3.4",
+				userAgent: "CustomApp/2.0",
+			},
+			expected: "CustomApp/2.0 (razorpay-go/1.3.4)",
+		},
+		{
+			name: "user agent with spaces",
+			request: Request{
+				SDKName:   "razorpay-go",
+				Version:   "1.3.4",
+				userAgent: "Custom Application 2.0",
+			},
+			expected: "Custom Application 2.0 (razorpay-go/1.3.4)",
+		},
+		{
+			name: "different SDK version",
+			request: Request{
+				SDKName:   "razorpay-go",
+				Version:   "2.0.0",
+				userAgent: "CustomApp/2.0",
+			},
+			expected: "CustomApp/2.0 (razorpay-go/2.0.0)",
+		},
+		{
+			name: "different SDK name",
+			request: Request{
+				SDKName:   "razorpay-custom",
+				Version:   "1.3.4",
+				userAgent: "CustomApp/2.0",
+			},
+			expected: "CustomApp/2.0 (razorpay-custom/1.3.4)",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := tt.request.getUserAgentHeaderValue()
+			if result != tt.expected {
+				t.Errorf("getUserAgentHeaderValue() = %v, want %v", result, tt.expected)
+			}
+		})
+	}
+}

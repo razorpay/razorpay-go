@@ -42,6 +42,7 @@ type Request struct {
 	SDKName    string
 	AppDetails map[string]string
 	BaseURL    string
+	userAgent  string
 }
 
 func buildURLWithParams(requestURL string, data map[string]interface{}) string {
@@ -85,21 +86,32 @@ func (request *Request) AddHeaders(headers map[string]string) {
 
 func (request *Request) addRequestHeadersInternal(req *http.Request, headers map[string]string) {
 	for key, value := range headers {
-		if key == "Content-Type" || key == "User-Agent" {
+		if key == constants.ContentTypeHeader || key == constants.UserAgentHeader {
 			continue
 		}
 		req.Header.Set(key, value)
 	}
 }
 
+func (request *Request) getUserAgentHeaderValue() string {
+	goSdkVersion := fmt.Sprintf("%s/%s", request.SDKName, request.Version)
+
+	userAgent := request.GetUserAgent()
+	if userAgent == "" {
+		return goSdkVersion
+	}
+
+	return fmt.Sprintf("%s (%s)", userAgent, goSdkVersion)
+}
+
 func (request *Request) addRequestHeaders(req *http.Request, headers map[string]string, contentType ...string) {
 	//Set the Defaults First in case unavailable
-	req.Header.Set("User-Agent", fmt.Sprintf("%s/%s", request.SDKName, request.Version))
+	req.Header.Set(constants.UserAgentHeader, request.getUserAgentHeaderValue())
 
 	if len(contentType) == 0 {
-		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set(constants.ContentTypeHeader, "application/json")
 	} else {
-		req.Header.Set("Content-Type", contentType[0])
+		req.Header.Set(constants.ContentTypeHeader, contentType[0])
 	}
 
 	// Set the already added headers
@@ -111,6 +123,14 @@ func (request *Request) addRequestHeaders(req *http.Request, headers map[string]
 func (request *Request) SetTimeout(timeout int16) {
 	timeoutSeconds := int64(timeout) * int64(time.Second)
 	request.HTTPClient = &http.Client{Timeout: time.Duration(timeoutSeconds)}
+}
+
+func (request *Request) SetUserAgent(userAgent string) {
+	request.userAgent = userAgent
+}
+
+func (request *Request) GetUserAgent() string {
+	return request.userAgent
 }
 
 func processResponse(response *http.Response) (map[string]interface{}, error) {

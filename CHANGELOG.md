@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Query parameter handling in URLs
+- Custom User Agent in headers
 
 ## [1.3.3] - 2025-05-02
 feat: Added new API endpoints
