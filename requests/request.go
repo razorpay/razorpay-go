@@ -18,7 +18,7 @@ import (
 	"github.com/razorpay/razorpay-go/errors"
 )
 
-//Auth holds the values required to authenticate the requests made to Razorpay APIs
+// Auth holds the values required to authenticate the requests made to Razorpay APIs
 type Auth struct {
 	Key    string
 	Secret string
@@ -29,7 +29,7 @@ type FileUploadParams struct {
 	Fields map[string]string
 }
 
-//TIMEOUT ... client timeout
+// TIMEOUT ... client timeout
 const TIMEOUT = 10
 
 // Request encapsulates all the information required to make an HTTP request
@@ -42,6 +42,7 @@ type Request struct {
 	SDKName    string
 	AppDetails map[string]string
 	BaseURL    string
+	userAgent  string
 }
 
 func buildURLWithParams(requestURL string, data map[string]interface{}) string {
@@ -56,6 +57,16 @@ func buildURLWithParams(requestURL string, data map[string]interface{}) string {
 	parameters := url.Values{}
 
 	for k, v := range data {
+		// Handle string arrays specially to follow the format key[]=val1&key[]=val2
+		// This is a common pattern in rzp APIs
+		if stringArray, isStringArray := v.([]string); isStringArray {
+			for _, item := range stringArray {
+				parameters.Add(k, item)
+			}
+			continue
+		}
+
+		// Default case for all other types
 		parameters.Add(k, fmt.Sprintf("%v", v))
 	}
 
@@ -75,21 +86,32 @@ func (request *Request) AddHeaders(headers map[string]string) {
 
 func (request *Request) addRequestHeadersInternal(req *http.Request, headers map[string]string) {
 	for key, value := range headers {
-		if key == "Content-Type" || key == "User-Agent" {
+		if key == constants.ContentTypeHeader || key == constants.UserAgentHeader {
 			continue
 		}
 		req.Header.Set(key, value)
 	}
 }
 
+func (request *Request) getUserAgentHeaderValue() string {
+	goSdkVersion := fmt.Sprintf("%s/%s", request.SDKName, request.Version)
+
+	userAgent := request.GetUserAgent()
+	if userAgent == "" {
+		return goSdkVersion
+	}
+
+	return fmt.Sprintf("%s (%s)", userAgent, goSdkVersion)
+}
+
 func (request *Request) addRequestHeaders(req *http.Request, headers map[string]string, contentType ...string) {
 	//Set the Defaults First in case unavailable
-	req.Header.Set("User-Agent", fmt.Sprintf("%s/%s", request.SDKName, request.Version))
+	req.Header.Set(constants.UserAgentHeader, request.getUserAgentHeaderValue())
 
 	if len(contentType) == 0 {
-		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set(constants.ContentTypeHeader, "application/json")
 	} else {
-		req.Header.Set("Content-Type", contentType[0])
+		req.Header.Set(constants.ContentTypeHeader, contentType[0])
 	}
 
 	// Set the already added headers
@@ -97,10 +119,18 @@ func (request *Request) addRequestHeaders(req *http.Request, headers map[string]
 	request.addRequestHeadersInternal(req, headers)
 }
 
-//SetTimeout ...
+// SetTimeout ...
 func (request *Request) SetTimeout(timeout int16) {
 	timeoutSeconds := int64(timeout) * int64(time.Second)
 	request.HTTPClient = &http.Client{Timeout: time.Duration(timeoutSeconds)}
+}
+
+func (request *Request) SetUserAgent(userAgent string) {
+	request.userAgent = userAgent
+}
+
+func (request *Request) GetUserAgent() string {
+	return request.userAgent
 }
 
 func processResponse(response *http.Response) (map[string]interface{}, error) {
@@ -155,7 +185,7 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	return processResponse(response)
 }
 
-//Get ...
+// Get ...
 func (request *Request) Get(path string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)
 
@@ -170,7 +200,7 @@ func (request *Request) Get(path string, queryParams map[string]interface{}, ext
 	return request.doRequestResponse(req)
 }
 
-//Post ...
+// Post ...
 func (request *Request) Post(path string, payload map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
@@ -186,7 +216,7 @@ func (request *Request) Post(path string, payload map[string]interface{}, extraH
 	return request.doRequestResponse(req)
 }
 
-//Patch ...
+// Patch ...
 func (request *Request) Patch(path string, payload map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
@@ -202,7 +232,7 @@ func (request *Request) Patch(path string, payload map[string]interface{}, extra
 	return request.doRequestResponse(req)
 }
 
-//Put ...
+// Put ...
 func (request *Request) Put(path string, payload map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	jsonStr, _ := json.Marshal(payload)
@@ -218,7 +248,7 @@ func (request *Request) Put(path string, payload map[string]interface{}, extraHe
 	return request.doRequestResponse(req)
 }
 
-//Delete ...
+// Delete ...
 func (request *Request) Delete(path string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("%s%s", request.BaseURL, path)

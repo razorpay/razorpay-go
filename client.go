@@ -9,10 +9,10 @@ import (
 	"github.com/razorpay/razorpay-go/resources"
 )
 
-//Request ...
+// Request ...
 var Request *requests.Request
 
-//Client provides various helper methods to make HTTP requests to Razorpay's APIs.
+// Client provides various helper methods to make HTTP requests to Razorpay's APIs.
 type Client struct {
 	Addon          *resources.Addon
 	Account        *resources.Account
@@ -116,6 +116,10 @@ func (client *Client) AddHeaders(headers map[string]string) {
 // be overridden for all HTTP requests made using this client.
 func (client *Client) SetTimeout(timeout int16) {
 	Request.SetTimeout(timeout)
+}
+
+func (client *Client) SetUserAgent(userAgent string) {
+	Request.SetUserAgent(userAgent)
 }
 
 func getVersion() string {
