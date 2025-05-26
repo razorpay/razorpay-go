@@ -1,0 +1,181 @@
+# yaml-language-server: $schema=https://app.stainless.com/config.schema.json
+
+organization:
+  # Name of your organization or company, used to determine the name of the client
+  # and headings.
+  name: razorpay
+  # Link to your API documentation.
+  docs: https://razorpay.com/docs/api
+  # Contact email for bug reports, questions, and support requests.
+  contact: ''
+
+# `targets` define the output targets and their customization options, such as
+# whether to emit the Node SDK and what it's package name should be.
+targets:
+  go:
+    package_name: razorpay
+    production_repo: razorpay/razorpay-go
+    options:
+      enable_v2: true
+
+# `environments` are a map of the name of the environment (e.g. "sandbox",
+# "production") to the corresponding url to use.
+environments:
+  production: https://api.razorpay.com/v1
+
+# `resources` define the structure and organization for your API, such as how
+# methods and models are grouped together and accessed. See the [configuration
+# guide] for more information.
+#
+# [configuration guide]: https://app.stainless.com/docs/guides/configure#resources
+resources:
+  orders:
+    # Configure the methods defined in this resource. Each key in the object is the
+    # name of the method and the value is either an endpoint (for example, `get /foo`)
+    # or an object with more detail.
+    #
+    # [reference]: https://app.stainless.com/docs/reference/config#method
+    # Configure the models--named types--defined in the resource. Each key in the
+    # object is the name of the model and the value is either the name of a schema in
+    # `#/components/schemas` or an object with more detail.
+    #
+    # [reference]: https://app.stainless.com/docs/reference/config#model
+    models:
+      order: '#/components/schemas/Order'
+      notes: '#/components/schemas/Notes'
+    methods:
+      list: get /orders
+      create: post /orders
+      retrieve: get /orders/{id}
+      update: patch /orders/{id}
+      list_payments: get /orders/{id}/payments
+
+  customers:
+    models:
+      customer: '#/components/schemas/Customer'
+    methods:
+      create: post /customers
+      list: get /customers
+      retrieve: get /customers/{id}
+      update: put /customers/{id}
+
+  payments:
+    models:
+      payment: '#/components/schemas/Payment'
+      card: '#/components/schemas/Card'
+      refund: '#/components/schemas/Refund'
+      acquirer_data: '#/components/schemas/AcquirerData'
+    methods:
+      capture: post /payments/{id}/capture
+      retrieve: get /payments/{id}
+      update: patch /payments/{id}
+      list: get /payments
+    # Subresources define resources that are nested within another for more powerful
+    # logical groupings, e.g. `cards.payments`.
+    subresources:
+      card_details:
+        methods:
+          retrieve: get /payments/{id}/card
+      qr_codes:
+        models:
+          qr_code: '#/components/schemas/QrCode'
+        methods:
+          create: post /payments/qr_codes
+          list: get /payments/qr_codes
+          retrieve: get /payments/qr_codes/{id}
+          close: post /payments/qr_codes/{id}/close
+      refunds:
+        models:
+          refund_list: '#/components/schemas/RefundListResponse'
+        methods:
+          create: post /payments/{id}/refund
+          list: get /payments/{id}/refunds
+          retrieve: get /payments/{id}/refunds/{refund_id}
+
+  payment_links:
+    models:
+      payment_link: '#/components/schemas/PaymentLink'
+    methods:
+      create: post /payment_links
+      list: get /payment_links
+      retrieve: get /payment_links/{id}
+      update: patch /payment_links/{id}
+      notify: post /payment_links/{id}/notify_by/{medium}
+
+  refunds:
+    methods:
+      retrieve: get /refunds/{id}
+      update_notes: patch /refunds/{id}
+      list: get /refunds
+
+  settlements:
+    models:
+      settlement: '#/components/schemas/Settlement'
+    methods:
+      list: get /settlements
+      retrieve: get /settlements/{id}
+    subresources:
+      recon:
+        methods:
+          retrieve: get /settlements/recon/combined
+      ondemand:
+        models:
+          settlement_ondemand: '#/components/schemas/SettlementOndemand'
+        methods:
+          create: post /settlements/ondemand
+          retrieve: get /settlements/ondemand/{id}
+
+  payouts:
+    models:
+      payout: '#/components/schemas/Payout'
+    methods:
+      list: get /payouts
+      retrieve: get /payouts/{id}
+  
+  plans:
+    models:
+      plan: '#/components/schemas/Plan'
+    methods:
+      create: post /plans
+      
+settings:
+  # All generated integration tests that hit the prism mock http server are marked
+  # as skipped. Removing this setting or setting it to false enables tests, but
+  # doing so may result in test failures due to bugs in the test server.
+  #
+  # [prism mock http server]: https://stoplight.io/open-source/prism
+  disable_mock_tests: true
+  license: Apache-2.0
+
+# `client_settings` define settings for the API client, such as extra constructor
+# arguments (used for authentication), retry behavior, idempotency, etc.
+client_settings:
+  opts:
+    username:
+      type: string
+      nullable: false
+      auth:
+        security_scheme: basicAuth
+        role: username
+      read_env: GOTUE_USERNAME
+    password:
+      type: string
+      nullable: false
+      auth:
+        security_scheme: basicAuth
+        role: password
+      read_env: GOTUE_PASSWORD
+
+# `readme` is used to configure the code snippets that will be rendered in the
+# README.md of various SDKs. In particular, you can change the `headline`
+# snippet's endpoint and the arguments to call it with.
+readme:
+  example_requests:
+    default:
+      type: request
+      endpoint: get /orders
+      params: {}
+    headline:
+      type: request
+      endpoint: get /orders
+      params: {}
