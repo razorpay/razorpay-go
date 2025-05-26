@@ -1,0 +1,4419 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Razorpay OpenAPI",
+    "version": "1.0.0"
+  },
+  "license": {
+    "name": "Apache 2.0",
+    "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+  },
+  "version": "1.0.0",
+  "externalDocs": {
+    "description": "Find out more about Razorpay API",
+    "url": "https://razorpay.com/docs/api"
+  },
+  "servers": [
+    {
+      "url": "https://api.razorpay.com/v1"
+    }
+  ],
+  "paths": {
+    "/orders": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Fetch all Orders",
+        "description": "Use this endpoint to retrieve the details of all the orders you created.",
+        "operationId": "fetchOrders",
+        "parameters": [
+          {
+            "name": "authorized",
+            "in": "query",
+            "required": false,
+            "description": "Retrieves Orders for which payments have been authorized. Payment and order states differ.",
+            "schema": {
+              "type": "boolean",
+              "enum": [
+                true,
+                false
+              ]
+            }
+          },
+          {
+            "name": "receipt",
+            "in": "query",
+            "required": false,
+            "description": "Retrieves the orders that contain the provided value for receipt.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "Timestamp (in Unix format) from when the orders should be fetched.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "Timestamp (in Unix format) up till when orders are to be fetched.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "description": "The number of orders to be fetched. The default value is 10. The maximum value is 100.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "description": "The number of orders to be skipped. The default value is 0.",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "expand[]",
+            "in": "query",
+            "required": false,
+            "description": "Used to retrieve additional information about the payment.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "payments",
+                  "payments.card",
+                  "transfers",
+                  "virtual_account"
+                ]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Create a new Order",
+        "description": "Create a new order.",
+        "operationId": "createOrder",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Fetch an Order by ID",
+        "description": "Fetch an order by its unique ID.",
+        "operationId": "fetchOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier for the order",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "Update an Order",
+        "description": "Update an order's notes or other editable fields.",
+        "operationId": "updateOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier for the order",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/payments": {
+      "get": {
+        "tags": [
+          "orders",
+          "payments"
+        ],
+        "summary": "Fetch Payments for an Order",
+        "description": "Use this endpoint to retrieve all payments corresponding to a specific order.\n[See docs](https://razorpay.com/docs/api/payments/fetch-payments-orders)\n",
+        "operationId": "fetchPaymentsForOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier of the order for which you want to fetch payment details.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expand[]",
+            "in": "query",
+            "required": false,
+            "description": "Use to expand the card or EMI details for each payment.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "card",
+                "emi"
+              ],
+              "example": "card"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all payments for the order (with expanded card or EMI details if requested)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entity": {
+                      "type": "string",
+                      "description": "Name of the entity. Always 'collection'.",
+                      "example": "collection"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of payments returned.",
+                      "example": 1
+                    },
+                    "items": {
+                      "type": "array",
+                      "description": "List of payment objects.",
+                      "items": {
+                        "$ref": "#/components/schemas/Payment"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed - The API credentials are invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/customers": {
+      "post": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Create a Customer",
+        "description": "Use this endpoint to create or add a customer with basic details such as name and contact details.",
+        "operationId": "createCustomer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Customer created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or contact number is less than 8 digits",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Fetch all Customers",
+        "description": "Use this endpoint to retrieve the details of all the customers. [See docs](https://razorpay.com/docs/api/customers/fetch-all/)",
+        "operationId": "fetchAllCustomers",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            },
+            "description": "The number of customer records to be retrieved from the system. The default value is 10. The maximum value is 100. This can be used for pagination in combination with skip."
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            },
+            "description": "The number of customer records that must be skipped. The default value is 0. This can be used for pagination in combination with count."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customers fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid API credentials or bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Fetch Customer With ID",
+        "description": "Use this endpoint to retrieve details of a customer with id. [See docs](https://razorpay.com/docs/api/customers/fetch-with-id/)",
+        "operationId": "fetchCustomerById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier linked to the customer."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid customer id or does not exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Edit Customer Details",
+        "description": "Use this endpoint to edit the customer details such as name, email, and contact details. The combination of email and contact must be unique for every customer.",
+        "operationId": "editCustomer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier linked to the customer."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerEditRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer details updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, contact number is less than 8 digits, or invalid customer id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/{id}/capture": {
+      "post": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Capture a Payment",
+        "description": "Use this endpoint to change the payment status from authorized to captured. Attempting to capture a payment whose status is not authorized will produce an error. [See docs](https://razorpay.com/docs/api/payments/capture/)",
+        "operationId": "capturePayment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the payment to be captured."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentCaptureRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment captured successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/{id}": {
+      "get": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Fetch a Payment With ID (with optional expanded card or EMI details)",
+        "description": "Use this endpoint to retrieve the details of a specific payment using its id. You can expand the card or EMI details by passing the query parameter `expand[]=card` or `expand[]=emi`.\n[See docs for card](https://razorpay.com/docs/api/payments/fetch-payment-expanded-card)\n[See docs for EMI](https://razorpay.com/docs/api/payments/fetch-payment-expanded-emi)\n",
+        "operationId": "fetchPaymentById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier of the payment to be retrieved.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expand[]",
+            "in": "query",
+            "required": false,
+            "description": "Use to expand the card or EMI details when the payment method is 'card' or 'emi'.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "card",
+                "emi"
+              ],
+              "example": "card"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved payment details (with expanded card or EMI details if requested)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - The payment_id provided is incorrect",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed - The API credentials are invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Update a Payment (notes only)",
+        "description": "Use this endpoint to update the `notes` field for a particular payment. Only the `notes` field can be updated. You can add up to 15 key-value pairs, each value not exceeding 256 characters.\n[See docs](https://razorpay.com/docs/api/payments/update)\n",
+        "operationId": "updatePaymentNotes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier of the payment for which the notes field should be updated.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "notes"
+                ],
+                "properties": {
+                  "notes": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    ],
+                    "description": "Contains user-defined fields, stored for reference purposes. Maximum 15 key-value pairs, 256 characters each.",
+                    "example": {
+                      "key1": "value1",
+                      "key2": "value2"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the payment notes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters or notes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments": {
+      "get": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Fetch All Payments (with optional expanded card or EMI details)",
+        "description": "Use this endpoint to retrieve details of all the payments. By default, only the last 10 records are displayed. You can use the `count` and `skip` parameters to retrieve the specific number of records that you need. You can also expand card or EMI details using `expand[]=card` or `expand[]=emi`.\n[See docs](https://razorpay.com/docs/api/payments/fetch-all-payments)\n",
+        "operationId": "fetchAllPayments",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "UNIX timestamp, in seconds, from when payments are to be fetched.",
+            "schema": {
+              "type": "integer",
+              "example": 1593320020
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "UNIX timestamp, in seconds, till when payments are to be fetched.",
+            "schema": {
+              "type": "integer",
+              "example": 1624856020
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "description": "Number of payments to be fetched. Default is 10. Maximum is 100.",
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "description": "Number of records to be skipped while fetching the payments.",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "expand[]",
+            "in": "query",
+            "required": false,
+            "description": "Use to expand the card or EMI details for each payment.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "card",
+                "emi"
+              ],
+              "example": "card"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all payments (with expanded card or EMI details if requested)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entity": {
+                      "type": "string",
+                      "description": "Name of the entity. Always 'collection'.",
+                      "example": "collection"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "Number of payments returned.",
+                      "example": 2
+                    },
+                    "items": {
+                      "type": "array",
+                      "description": "List of payment objects.",
+                      "items": {
+                        "$ref": "#/components/schemas/Payment"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/{id}/card": {
+      "get": {
+        "tags": [
+          "payments",
+          "card"
+        ],
+        "summary": "Fetch Card Details of a Payment",
+        "description": "Use this endpoint to retrieve the details of the card used to make a payment.\n[See docs](https://razorpay.com/docs/api/payments/fetch-card-details-payment)\n",
+        "operationId": "fetchCardDetailsOfPayment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique identifier of the payment for which you want to retrieve card details.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved card details for the payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - The payment_id provided is incorrect or payment was not done using card",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/{id}/refund": {
+      "post": {
+        "tags": [
+          "payments"
+        ],
+        "summary": "Create an Instant Refund",
+        "description": "Use this endpoint to process refunds instantaneously to your customers. The instant refund is enabled by default for your account. You should set the refund speed to `optimum` when creating a refund request to ensure refunds are processed instantly. [See docs](https://razorpay.com/docs/api/refunds/create-instant/)\n",
+        "operationId": "createInstantRefund",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the payment which needs to be refunded."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Refund created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Refund"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters, payment already refunded, or refund amount issues",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/{id}/refunds": {
+      "get": {
+        "tags": [
+          "refunds"
+        ],
+        "summary": "Fetch Multiple Refunds for a Payment",
+        "description": "Use this endpoint to retrieve multiple refunds for a payment. By default, only the last 10 refunds are returned. You can use count and skip query parameters to change that behaviour. [See docs](https://razorpay.com/docs/api/refunds/fetch-multiple-refund-payment)\n",
+        "operationId": "fetchMultipleRefundsForPayment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the payment for which refund has been requested."
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "UNIX timestamp at which the refunds were created."
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "UNIX timestamp till which the refunds were created."
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100
+            },
+            "description": "The number of refunds to fetch for the payment. Maximum is 100."
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of refunds to be skipped for the payment."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved refunds for the payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefundListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters or payment id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/{id}/refunds/{refund_id}": {
+      "get": {
+        "tags": [
+          "refunds"
+        ],
+        "summary": "Fetch a Specific Refund for a Payment",
+        "description": "Use this endpoint to retrieve details of a specific refund made for a payment. [See docs](https://razorpay.com/docs/api/refunds/fetch-specific-refund-payment)\n",
+        "operationId": "fetchSpecificRefundForPayment",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the payment for which the refund has been made."
+          },
+          {
+            "name": "refund_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the refund to be retrieved."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved refund details for the payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Refund"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid payment id or refund id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment_links": {
+      "post": {
+        "tags": [
+          "payment_links"
+        ],
+        "summary": "Create a Standard Payment Link",
+        "description": "Use this endpoint to create a Payment Link using basic details such as amount, expiry date, reference id, description, customer details and so on.\n[See docs](https://razorpay.com/docs/api/payments/payment-links/create-standard/)\n",
+        "operationId": "createStandardPaymentLink",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentLinkCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment Link created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentLink"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed - The API credentials are invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "payment_links"
+        ],
+        "summary": "Fetch all Payment Links",
+        "description": "Use this endpoint to retrieve the details of all Payment Links.\nTo get only UPI Payment Links, filter the response objects where `upi_link` is `true`.\n[See docs](https://razorpay.com/docs/api/payments/payment-links/fetch-all-upi)\n",
+        "operationId": "fetchAllPaymentLinks",
+        "parameters": [
+          {
+            "name": "payment_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the payment associated with the Payment Link."
+          },
+          {
+            "name": "reference_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique reference number entered while creating the Payment Link."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Payment Links fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentLinkListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment_links/{id}": {
+      "get": {
+        "tags": [
+          "payment_links"
+        ],
+        "summary": "Fetch Payment Link by ID",
+        "description": "Use this endpoint to retrieve the details of a Payment Link using its id.\n[See docs](https://razorpay.com/docs/api/payments/payment-links/fetch-id-standard/)\n",
+        "operationId": "fetchPaymentLinkById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the Payment Link."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment Link details fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentLink"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid or missing id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "payment_links"
+        ],
+        "summary": "Update Standard Payment Link",
+        "description": "Use this endpoint to edit the Standard Payment Link details such as the reference id, expiry date, enabling reminders and so on.\n[See docs](https://razorpay.com/docs/api/payments/payment-links/update-standard)\n",
+        "operationId": "updateStandardPaymentLink",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the Payment Link."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentLinkUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment Link updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentLink"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid or missing id, or invalid input fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment_links/{id}/notify_by/{medium}": {
+      "post": {
+        "tags": [
+          "payment_links"
+        ],
+        "summary": "Send or Resend Payment Link Notification",
+        "description": "Use this endpoint to send or resend notifications to your customers via email or SMS.\n[See docs](https://razorpay.com/docs/api/payments/payment-links/resend/)\n",
+        "operationId": "resendPaymentLinkNotification",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the Payment Link."
+          },
+          {
+            "name": "medium",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sms",
+                "email"
+              ]
+            },
+            "description": "Medium through which the Payment Link must be resent. Possible values:- sms, email."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Indicates whether the notification was sent successfully.",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid notification medium or id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refunds/{id}": {
+      "get": {
+        "tags": [
+          "refunds"
+        ],
+        "summary": "Fetch Refund With ID",
+        "description": "Use this endpoint to retrieve the refund using the id. [See docs](https://razorpay.com/docs/api/refunds/fetch-with-id/)\n",
+        "operationId": "fetchRefundById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the refund which is to be retrieved."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved refund details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Refund"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid refund id or refund not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "refunds"
+        ],
+        "summary": "Update Refund Notes",
+        "description": "Use this endpoint to update the notes field for a particular refund. Only the notes field can be updated. [See docs](https://razorpay.com/docs/api/refunds/update/)\n",
+        "operationId": "updateRefundNotes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the refund to be updated."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated refund notes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Refund"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters or notes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refunds": {
+      "get": {
+        "tags": [
+          "refunds"
+        ],
+        "summary": "Fetch All Refunds",
+        "description": "Use this endpoint to retrieve details of all refunds. By default, only the last 10 refunds are returned. You can use count and skip query parameters to change that behaviour. [See docs](https://razorpay.com/docs/api/refunds/fetch-all/)\n",
+        "operationId": "fetchAllRefunds",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "UNIX timestamp at which the refunds were created."
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "UNIX timestamp till which the refunds were created."
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100
+            },
+            "description": "The number of refunds to fetch. Maximum is 100."
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of refunds to be skipped."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all refunds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefundListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/qr_codes": {
+      "post": {
+        "tags": [
+          "qr_codes"
+        ],
+        "summary": "Create a QR Code",
+        "description": "Use this endpoint to create a QR Code. You can share the short URL with customers to accept payments, print, and download it. [See docs](https://razorpay.com/docs/api/qr-codes/create/)\n",
+        "operationId": "createQrCode",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QrCodeCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "QR Code created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QrCode"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters or missing required fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "qr_codes"
+        ],
+        "summary": "Fetch All QR Codes",
+        "description": "Use this endpoint to retrieve details of all QR Codes. By default, only the last 10 QR Codes are returned. You can use count and skip query parameters to change that behaviour. You can also filter QR Codes by customer_id. [See docs](https://razorpay.com/docs/api/qr-codes/fetch-customer-id)\n",
+        "operationId": "fetchAllQrCodes",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the customer whose QR Codes are to be fetched."
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "UNIX timestamp, in seconds, from when QR Codes are to be fetched."
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "UNIX timestamp, in seconds, till when QR Codes are to be fetched."
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 100
+            },
+            "description": "Number of QR Codes to be fetched. Default is 10. Maximum is 100."
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Number of records to be skipped while fetching the QR Codes."
+          },
+          {
+            "name": "payment_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the payment whose QR Codes are to be fetched."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QR Codes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QrCodeListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/qr_codes/{id}": {
+      "get": {
+        "tags": [
+          "qr_codes"
+        ],
+        "summary": "Fetch QR Codes for a Payment ID",
+        "description": "Use this endpoint to retrieve the details of a QR Code by using a Payment Id. [See docs](https://razorpay.com/docs/api/qr-codes/fetch-payment-id/)\n",
+        "operationId": "fetchQrCodesForPaymentId",
+        "parameters": [
+          {
+            "name": "payment_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the payment whose QR Codes are to be fetched."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QR Codes for the payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QrCode"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters or payment id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments/qr_codes/{id}/close": {
+      "post": {
+        "tags": [
+          "qr_codes"
+        ],
+        "summary": "Close a QR Code",
+        "description": "Use this endpoint to close a QR Code. [See docs](https://razorpay.com/docs/api/qr-codes/close/)\n",
+        "operationId": "closeQrCode",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the QR Code to be closed."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "QR Code closed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QrCode"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid QR Code id or already closed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settlements": {
+      "get": {
+        "tags": [
+          "settlements"
+        ],
+        "summary": "Fetch All Settlements",
+        "description": "Use this endpoint to retrieve details of all settlements. [See docs](https://razorpay.com/docs/api/settlements/fetch-all/)\n",
+        "operationId": "fetchAllSettlements",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "UNIX timestamp (in seconds) from when settlements are to be fetched."
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "UNIX timestamp (in seconds) till when settlements are to be fetched."
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Number of settlement records to be fetched. Default is 10. Possible value- 1 to 100."
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "description": "Number of settlement records to be skipped. Default is 0."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all settlements",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettlementListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settlements/{id}": {
+      "get": {
+        "tags": [
+          "settlements"
+        ],
+        "summary": "Fetch Settlement With ID",
+        "description": "Use this endpoint to retrieve details of a settlement with its id. [See docs](https://razorpay.com/docs/api/settlements/fetch-with-id)\n",
+        "operationId": "fetchSettlementById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the settlement to be retrieved."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved settlement details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Settlement"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid settlement id or not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settlements/recon/combined": {
+      "get": {
+        "tags": [
+          "settlements"
+        ],
+        "summary": "Fetch Settlement Recon Details",
+        "description": "Use this endpoint to return a list of all transactions such as payments, refunds, transfers and adjustments settled to your account on a particular day or month. [See docs](https://razorpay.com/docs/api/settlements/fetch-recon)\n",
+        "operationId": "fetchSettlementReconDetails",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The year the settlement was received in the YYYY format. For example, 2022."
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The month the settlement was received in the MM format. For example, 06."
+          },
+          {
+            "name": "day",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The date on which the settlement was received in the DD format. For example, 11."
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000
+            },
+            "description": "Specifies the number of available settlements to be fetched. Possible values- 1 to 1000."
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Specifies the number of available settlements to be skipped when fetching a count."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved settlement recon details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettlementReconListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settlements/ondemand": {
+      "post": {
+        "tags": [
+          "settlements"
+        ],
+        "summary": "Create an Instant Settlement",
+        "description": "Use this endpoint to create an Instant Settlement. [See docs](https://razorpay.com/docs/api/settlements/instant/create/)\n",
+        "operationId": "createInstantSettlement",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettlementOndemandCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Instant settlement created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettlementOndemand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters or amount",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settlements/ondemand/{id}": {
+      "get": {
+        "tags": [
+          "settlements"
+        ],
+        "summary": "Fetch Instant Settlement With ID",
+        "description": "Use this endpoint to retrieve the details of a particular Instant Settlement. [See docs](https://razorpay.com/docs/api/settlements/instant/fetch-with-id/)\n",
+        "operationId": "fetchInstantSettlementById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier for the instant settlement transaction. For example, setlod_FNj7g2YS5J67Rz."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved instant settlement details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SettlementOndemand"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid settlement id or not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payouts": {
+      "get": {
+        "tags": [
+          "payouts"
+        ],
+        "summary": "Fetch All Payouts",
+        "description": "Use this endpoint to retrieve the details of all the available payouts in the system. [See docs](https://razorpay.com/docs/api/x/payouts/fetch-all/)",
+        "operationId": "fetchAllPayouts",
+        "parameters": [
+          {
+            "name": "account_number",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The account from which the payouts were done. For example, 7878780080316316."
+          },
+          {
+            "name": "contact_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the contact for which you want to fetch payouts."
+          },
+          {
+            "name": "fund_account_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the fund account for which you want to fetch payouts."
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "NEFT",
+                "RTGS",
+                "IMPS",
+                "UPI",
+                "card",
+                "amazonpay"
+              ]
+            },
+            "description": "The mode for which payouts are to be fetched. You can use one of the following payout modes NEFT, RTGS, IMPS, UPI, card, amazonpay."
+          },
+          {
+            "name": "reference_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The user-generated reference for which payouts are to be fetched. Maximum length is 40 characters."
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "queued",
+                "pending",
+                "rejected",
+                "processing",
+                "processed",
+                "cancelled",
+                "reversed",
+                "failed"
+              ]
+            },
+            "description": "The payout status. Possible payout states queued, pending, rejected, processing, processed, cancelled, reversed, failed."
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Timestamp, in Unix, from when you want to fetch payouts."
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Timestamp, in Unix, till when you want to fetch payouts."
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "maximum": 100
+            },
+            "description": "Number of payouts to be fetched. Default value is 10. Maximum value is 100."
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "description": "Numbers of payouts to be skipped. Default value is 0."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all payouts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayoutListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payouts/{id}": {
+      "get": {
+        "tags": [
+          "payouts"
+        ],
+        "summary": "Fetch Payout By ID",
+        "description": "Use this endpoint to retrieve the details of a particular payout in the system. [See docs](https://razorpay.com/docs/api/x/payouts/fetch-with-id)",
+        "operationId": "fetchPayoutById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "This is the unique identifier linked to the payout. For example, pout_00000000000001."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved payout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payout"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plans": {
+      "post": {
+        "tags": [
+          "plans"
+        ],
+        "summary": "Create a new Plan",
+        "description": "Use this endpoint to create a plan with frequency, interval, item details, and notes",
+        "operationId": "createPlan",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanCreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plan created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "BAD_REQUEST_ERROR"
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid request payload"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "order_QVIFdXUgTUJxzN"
+          },
+          "entity": {
+            "type": "string",
+            "example": "order"
+          },
+          "amount": {
+            "type": "integer",
+            "example": 1000
+          },
+          "amount_paid": {
+            "type": "integer",
+            "example": 0
+          },
+          "amount_due": {
+            "type": "integer",
+            "example": 1000
+          },
+          "currency": {
+            "type": "string",
+            "example": "INR"
+          },
+          "receipt": {
+            "type": "string",
+            "example": "rcptid_11"
+          },
+          "status": {
+            "type": "string",
+            "example": "created"
+          },
+          "attempts": {
+            "type": "integer",
+            "example": 0
+          },
+          "created_at": {
+            "type": "integer",
+            "example": 1747331470
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "offer_id": {
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "line_items_total": {
+            "type": "integer",
+            "example": 0
+          },
+          "shipping_fee": {
+            "type": "integer",
+            "example": 0
+          },
+          "cod_fee": {
+            "type": "integer",
+            "example": 0
+          }
+        }
+      },
+      "OrderCreateRequest": {
+        "type": "object",
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "Amount in the smallest currency unit (e.g., paise)",
+            "example": 1000
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO currency code",
+            "example": "INR"
+          },
+          "receipt": {
+            "type": "string",
+            "description": "Receipt number for internal reference",
+            "example": "rcptid_11"
+          },
+          "offer_id": {
+            "type": "string",
+            "description": "Unique identifier for the offer",
+            "example": "offer_JHD834hjbxzhd38d"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "partial_payment": {
+            "type": "boolean",
+            "description": "Allow partial payments"
+          },
+          "first_payment_min_amount": {
+            "type": "integer",
+            "description": "Minimum amount for the first partial payment"
+          }
+        }
+      },
+      "OrderUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          }
+        }
+      },
+      "OrderListResponse": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "example": "collection"
+          },
+          "count": {
+            "type": "integer",
+            "example": 1
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            }
+          }
+        }
+      },
+      "PaymentListResponse": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "example": "collection"
+          },
+          "count": {
+            "type": "integer",
+            "example": 1
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Payment"
+            }
+          }
+        }
+      },
+      "Payment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the payment.",
+            "example": "pay_MT48CvBhIC98MQ"
+          },
+          "entity": {
+            "type": "string",
+            "description": "Indicates the type of entity.",
+            "example": "payment"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The payment amount in currency subunits. For example, for an amount of ₹1.00 enter 100.",
+            "example": 2100
+          },
+          "currency": {
+            "type": "string",
+            "description": "The currency in which the payment is made.",
+            "example": "INR"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the payment.",
+            "enum": [
+              "created",
+              "authorized",
+              "captured",
+              "refunded",
+              "failed"
+            ],
+            "example": "captured"
+          },
+          "order_id": {
+            "type": "string",
+            "description": "Order id, if provided.",
+            "example": "order_MT47xgV5ApouIB"
+          },
+          "invoice_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Invoice id, if any.",
+            "example": null
+          },
+          "international": {
+            "type": "boolean",
+            "description": "Indicates whether the payment is done via an international card or a domestic one.",
+            "example": false
+          },
+          "method": {
+            "type": "string",
+            "description": "The payment method used for making the payment.",
+            "enum": [
+              "card",
+              "netbanking",
+              "wallet",
+              "emi",
+              "upi"
+            ],
+            "example": "netbanking"
+          },
+          "amount_refunded": {
+            "type": "integer",
+            "description": "The amount refunded in currency subunits.",
+            "example": 0
+          },
+          "refund_status": {
+            "type": "string",
+            "nullable": true,
+            "description": "The refund status of the payment.",
+            "example": null
+          },
+          "captured": {
+            "type": "boolean",
+            "description": "Indicates if the payment is captured.",
+            "example": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the payment, if any.",
+            "example": "#MT47qgzX2EOko2"
+          },
+          "card_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "The unique identifier of the card used by the customer to make the payment.",
+            "example": null
+          },
+          "bank": {
+            "type": "string",
+            "nullable": true,
+            "description": "The 4-character bank code which the customer's account is associated with.",
+            "example": "ICIC"
+          },
+          "wallet": {
+            "type": "string",
+            "nullable": true,
+            "description": "The name of the wallet used by the customer to make the payment.",
+            "example": null
+          },
+          "vpa": {
+            "type": "string",
+            "nullable": true,
+            "description": "The customer's VPA (Virtual Payment Address) or UPI id used to make the payment.",
+            "example": null
+          },
+          "email": {
+            "type": "string",
+            "description": "Customer email address used for the payment.",
+            "example": "gaurav.kumar@example.com"
+          },
+          "contact": {
+            "type": "string",
+            "description": "Customer contact number used for the payment.",
+            "example": "+919000090000"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "fee": {
+            "type": "integer",
+            "description": "Fee (including GST) charged by Razorpay.",
+            "example": 50
+          },
+          "tax": {
+            "type": "integer",
+            "description": "GST charged for the payment.",
+            "example": 8
+          },
+          "error_code": {
+            "type": "string",
+            "nullable": true,
+            "description": "Error that occurred during payment.",
+            "example": null
+          },
+          "error_description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Description of the error that occurred during payment.",
+            "example": null
+          },
+          "error_source": {
+            "type": "string",
+            "nullable": true,
+            "description": "The point of failure.",
+            "example": null
+          },
+          "error_step": {
+            "type": "string",
+            "nullable": true,
+            "description": "The stage where the transaction failure occurred.",
+            "example": null
+          },
+          "error_reason": {
+            "type": "string",
+            "nullable": true,
+            "description": "The exact error reason.",
+            "example": null
+          },
+          "acquirer_data": {
+            "$ref": "#/components/schemas/AcquirerData"
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "Timestamp, in UNIX format, on which the payment was created.",
+            "example": 1692696719
+          },
+          "card": {
+            "$ref": "#/components/schemas/Card",
+            "nullable": true,
+            "description": "Details of the card used to make the payment. Present only if method is 'card' and expand[]=card is used."
+          },
+          "emi": {
+            "$ref": "#/components/schemas/Emi",
+            "nullable": true,
+            "description": "Details of the EMI plan used to make the payment. Present only if method is 'emi' and expand[]=emi is used."
+          },
+          "reward": {
+            "type": "string",
+            "nullable": true
+          },
+          "source_channel": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CustomerCreateRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "contact",
+          "email"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Customer's name. Alphanumeric value with period (.), apostrophe ('), forward slash (/), at (@) and parentheses are allowed. The name must be between 3-50 characters in length.",
+            "example": "Gaurav Kumar"
+          },
+          "contact": {
+            "type": "string",
+            "description": "The customer's phone number. A maximum length of 15 characters including country code.",
+            "example": "9123456780"
+          },
+          "email": {
+            "type": "string",
+            "description": "The customer's email address. A maximum length of 64 characters.",
+            "example": "gaurav.kumar@example.com"
+          },
+          "fail_existing": {
+            "type": "boolean",
+            "description": "Possible values: false (fetches details of existing customer), true (default, throws error if customer exists).",
+            "example": false
+          },
+          "gstin": {
+            "type": "string",
+            "description": "Customer's GST number, if available.",
+            "example": "29XAbbA4369J1PA"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the customer.",
+            "example": "cust_1Aa00000000004"
+          },
+          "entity": {
+            "type": "string",
+            "description": "Indicates the type of entity.",
+            "example": "customer"
+          },
+          "name": {
+            "type": "string",
+            "description": "Customer's name. Alphanumeric, with period (.), apostrophe ('), forward slash (/), at (@) and parentheses allowed. The name must be between 3-50 characters in length.",
+            "example": "Gaurav Kumar"
+          },
+          "contact": {
+            "type": "string",
+            "description": "The customer's phone number. A maximum length of 15 characters including country code.",
+            "example": "9123456780"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "email": {
+            "type": "string",
+            "description": "The customer's email address. A maximum length of 64 characters.",
+            "example": "gaurav.kumar@example.com"
+          },
+          "gstin": {
+            "type": "string",
+            "nullable": true,
+            "description": "GST number linked to the customer.",
+            "example": "29XAbbA4369J1PA",
+            "notes": {
+              "$ref": "#/components/schemas/Notes"
+            }
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "UNIX timestamp, when the customer was created.",
+            "example": 1234567890
+          }
+        }
+      },
+      "CustomerEditRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Customer's name. Alphanumeric, with period (.), apostrophe ('), forward slash (/), at (@) and parentheses allowed. The name must be between 3-50 characters in length.",
+            "example": "Gaurav Kumar"
+          },
+          "contact": {
+            "type": "string",
+            "description": "The customer's phone number. A maximum length of 15 characters including country code.",
+            "example": "9000000000"
+          },
+          "email": {
+            "type": "string",
+            "description": "The customer's email address. A maximum length of 64 characters.",
+            "example": "gaurav.kumar@example.com"
+          }
+        }
+      },
+      "CustomerListResponse": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "description": "Indicates the type of entity. Always 'collection' for this response.",
+            "example": "collection"
+          },
+          "count": {
+            "type": "integer",
+            "description": "The number of customer records returned in this response.",
+            "example": 2
+          },
+          "items": {
+            "type": "array",
+            "description": "List of customer objects.",
+            "items": {
+              "$ref": "#/components/schemas/Customer"
+            },
+            "example": [
+              {
+                "id": "cust_LQPdeJqQeKQrJM",
+                "entity": "customer",
+                "name": "Gaurav Kumar",
+                "email": null,
+                "contact": "+919876543210",
+                "gstin": null,
+                "notes": [],
+                "created_at": 1678580352
+              },
+              {
+                "id": "cust_LQPd9lomgwDE5F",
+                "entity": "customer",
+                "name": "Saurav Kumar",
+                "email": "saurav.kumar@example.com",
+                "contact": "+919876543210",
+                "gstin": null,
+                "notes": [],
+                "created_at": 1678580324
+              }
+            ]
+          }
+        }
+      },
+      "PaymentCaptureRequest": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "The amount to be captured.",
+            "example": 1000
+          },
+          "currency": {
+            "type": "string",
+            "description": "The currency in which the payment is made.",
+            "example": "INR"
+          }
+        }
+      },
+      "Card": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the card.",
+            "example": "card_H9oR0ocen1cmZq"
+          },
+          "entity": {
+            "type": "string",
+            "description": "Name of the entity. Here, it is card.",
+            "example": "card"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name on the card.",
+            "example": "Gaurav"
+          },
+          "last4": {
+            "type": "string",
+            "description": "Last four digits of the card.",
+            "example": "1213"
+          },
+          "network": {
+            "type": "string",
+            "description": "Card network.",
+            "example": "RuPay"
+          },
+          "type": {
+            "type": "string",
+            "description": "Card type.",
+            "example": "credit"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Card issuer code.",
+            "example": "UTIB"
+          },
+          "international": {
+            "type": "boolean",
+            "description": "Indicates if the card is international.",
+            "example": false
+          },
+          "emi": {
+            "type": "boolean",
+            "description": "Indicates if the card supports EMI.",
+            "example": false
+          },
+          "sub_type": {
+            "type": "string",
+            "description": "Card sub type.",
+            "example": "business"
+          },
+          "token_iin": {
+            "type": "string",
+            "nullable": true,
+            "description": "IIN of the tokenized card.",
+            "example": 411111
+          }
+        }
+      },
+      "Emi": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "description": "The bank code of the EMI issuer.",
+            "example": "ICIC"
+          },
+          "type": {
+            "type": "string",
+            "example": "credit"
+          },
+          "rate": {
+            "type": "integer",
+            "description": "The interest rate (in basis points) for the EMI plan.",
+            "example": 1300
+          },
+          "duration": {
+            "type": "integer",
+            "description": "The duration of the EMI plan in months.",
+            "example": 6
+          }
+        }
+      },
+      "PaymentLinkCreateRequest": {
+        "type": "object",
+        "required": [
+          "amount",
+          "currency"
+        ],
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "Amount to be paid using the Payment Link. Must be in the smallest unit of the currency.",
+            "example": 1000
+          },
+          "currency": {
+            "type": "string",
+            "description": "A three-letter ISO code for the currency in which you want to accept the payment.",
+            "example": "INR"
+          },
+          "accept_partial": {
+            "type": "boolean",
+            "description": "Indicates whether customers can make partial payments using the Payment Link.Not allowed for UPI Payment Links.",
+            "example": true
+          },
+          "first_min_partial_amount": {
+            "type": "integer",
+            "description": "Minimum amount, in currency subunits, that must be paid by the customer as the first partial payment. Must be passed along with accept_partial.",
+            "example": 100
+          },
+          "expire_by": {
+            "type": "integer",
+            "description": "Timestamp, in Unix, at which the Payment Link will expire.",
+            "example": 1691097057
+          },
+          "reference_id": {
+            "type": "string",
+            "description": "Reference number tagged to a Payment Link. Must be unique for each Payment Link. Max 40 characters.",
+            "example": "TS1989"
+          },
+          "description": {
+            "type": "string",
+            "description": "A brief description of the Payment Link. Max 2048 characters.",
+            "example": "Payment for policy no"
+          },
+          "customer": {
+            "type": "object",
+            "description": "Customer details.",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the customer.",
+                "example": "Gaurav Kumar"
+              },
+              "contact": {
+                "type": "string",
+                "description": "Contact number of the customer.",
+                "example": "+919000090000"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email address of the customer.",
+                "example": "gaurav.kumar@example.com"
+              }
+            }
+          },
+          "notify": {
+            "type": "object",
+            "description": "Defines who handles Payment Link notification.",
+            "properties": {
+              "sms": {
+                "type": "boolean",
+                "description": "Send SMS notification.",
+                "example": true
+              },
+              "email": {
+                "type": "boolean",
+                "description": "Send email notification.",
+                "example": true
+              }
+            }
+          },
+          "reminder_enable": {
+            "type": "boolean",
+            "description": "Used to send reminders for the Payment Link.",
+            "example": true
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "callback_url": {
+            "type": "string",
+            "description": "If specified, adds a redirect URL to the Payment Link.",
+            "example": "https://example-callback-url.com/"
+          },
+          "callback_method": {
+            "type": "string",
+            "description": "If callback_url parameter is passed, callback_method must be passed with the value get.",
+            "example": "get"
+          },
+          "upi_link": {
+            "type": "boolean",
+            "description": "Must be set to true for creating a UPI Payment Link. If not passed or false, a Standard Payment Link will be created.",
+            "example": true
+          }
+        }
+      },
+      "PaymentLink": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the Payment Link.",
+            "example": "plink_ExjpAUN3gVHrPJ"
+          },
+          "entity": {
+            "type": "string",
+            "description": "Name of the entity. Always 'payment_link'.",
+            "example": "payment_link"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "Amount to be paid using the Payment Link.",
+            "example": 1000
+          },
+          "amount_paid": {
+            "type": "integer",
+            "description": "Amount paid by the customer.",
+            "example": 0
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code.",
+            "example": "INR"
+          },
+          "accept_partial": {
+            "type": "boolean",
+            "description": "Indicates whether customers can make partial payments.",
+            "example": true
+          },
+          "first_min_partial_amount": {
+            "type": "integer",
+            "description": "Minimum amount for the first partial payment.",
+            "example": 100
+          },
+          "expire_by": {
+            "type": "integer",
+            "description": "Expiry timestamp.",
+            "example": 1691097057
+          },
+          "expired_at": {
+            "type": "integer",
+            "description": "Timestamp at which the Payment Link expired.",
+            "example": 0
+          },
+          "cancelled_at": {
+            "type": "integer",
+            "description": "Timestamp at which the Payment Link was cancelled.",
+            "example": 0
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "Timestamp when the Payment Link was created.",
+            "example": 1591097057
+          },
+          "updated_at": {
+            "type": "integer",
+            "description": "Timestamp when the Payment Link was updated.",
+            "example": 1591097057
+          },
+          "reference_id": {
+            "type": "string",
+            "description": "Reference number tagged to a Payment Link.",
+            "example": "TS1989"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the Payment Link.",
+            "example": "Payment for policy no"
+          },
+          "customer": {
+            "type": "object",
+            "description": "Customer details.",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the customer.",
+                "example": "Gaurav Kumar"
+              },
+              "contact": {
+                "type": "string",
+                "description": "Contact number of the customer.",
+                "example": "+919000090000"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email address of the customer.",
+                "example": "gaurav.kumar@example.com"
+              }
+            }
+          },
+          "notify": {
+            "type": "object",
+            "description": "Notification settings.",
+            "properties": {
+              "sms": {
+                "type": "boolean",
+                "description": "SMS notification enabled.",
+                "example": true
+              },
+              "email": {
+                "type": "boolean",
+                "description": "Email notification enabled.",
+                "example": true
+              }
+            }
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "callback_url": {
+            "type": "string",
+            "description": "Redirect URL after payment.",
+            "example": "https://example-callback-url.com/"
+          },
+          "callback_method": {
+            "type": "string",
+            "description": "Callback method.",
+            "example": "get"
+          },
+          "reminder_enable": {
+            "type": "boolean",
+            "description": "Used to send reminders for the Payment Link.",
+            "example": true
+          },
+          "reminders": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "example": {
+                  "status": "failed"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": []
+              }
+            ]
+          },
+          "payments": {
+            "type": "array",
+            "description": "Payment details such as amount, payment id, Payment Link id and more. This array is populated only after a payment is made by the customer or if the payment fails. Until then, the value is null.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "integer",
+                  "description": "The amount paid by the customer using the Payment Link.",
+                  "example": 1000
+                },
+                "created_at": {
+                  "type": "integer",
+                  "description": "Timestamp, in Unix, indicating when the payment was made.",
+                  "example": 1591097057
+                },
+                "method": {
+                  "type": "string",
+                  "description": "The payment method used to make the payment.",
+                  "enum": [
+                    "netbanking",
+                    "card",
+                    "wallet",
+                    "upi",
+                    "emi",
+                    "bank_transfer"
+                  ],
+                  "example": "upi"
+                },
+                "payment_id": {
+                  "type": "string",
+                  "description": "Unique identifier of the payment made against the Payment Link.",
+                  "example": "pay_29QQoUBi66xm2f"
+                },
+                "plink_id": {
+                  "type": "string",
+                  "description": "Unique identifier of the Payment Link.",
+                  "example": "plink_ERgihyaAAC0VNW"
+                },
+                "status": {
+                  "type": "string",
+                  "description": "The payment state.",
+                  "example": "captured"
+                },
+                "updated_at": {
+                  "type": "integer",
+                  "description": "Timestamp, in Unix, indicating when the payment was updated.",
+                  "example": 1591097070
+                }
+              }
+            },
+            "nullable": true
+          },
+          "short_url": {
+            "type": "string",
+            "description": "The unique short URL generated for the Payment Link.",
+            "example": "https://rzp.io/i/nxrHnLJ"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current state of the Payment Link.",
+            "enum": [
+              "created",
+              "partially_paid",
+              "expired",
+              "cancelled",
+              "paid"
+            ],
+            "example": "created"
+          },
+          "user_id": {
+            "type": "string",
+            "description": "Unique identifier for the user role through which the Payment Link was created.",
+            "example": "HD1JAKCCPGDfRx"
+          },
+          "source": {
+            "type": "string",
+            "description": "Source of the Payment Link creation (if applicable).",
+            "example": "api"
+          },
+          "source_id": {
+            "type": "string",
+            "description": "Identifier for the source (if applicable).",
+            "example": "src_123456"
+          }
+        }
+      },
+      "PaymentLinkListResponse": {
+        "type": "object",
+        "properties": {
+          "payment_links": {
+            "type": "array",
+            "description": "List of Payment Links.",
+            "items": {
+              "$ref": "#/components/schemas/PaymentLink"
+            }
+          }
+        }
+      },
+      "PaymentLinkUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "accept_partial": {
+            "type": "boolean",
+            "description": "Indicates whether customers can make partial payments. Not allowed for UPI Payment Links.",
+            "example": false
+          },
+          "reference_id": {
+            "type": "string",
+            "description": "Adds a unique reference number to an existing link.",
+            "example": "TS35"
+          },
+          "expire_by": {
+            "type": "integer",
+            "description": "Unix timestamp when the payment link should expire.",
+            "example": 1653347540
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          }
+        }
+      },
+      "RefundCreateRequest": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "The amount to be refunded. Amount should be in the smallest unit of the currency in which the payment was made. Required in case of partial refund.",
+            "example": 500100
+          },
+          "speed": {
+            "type": "string",
+            "description": "Indicates that the refund will be processed at an optimal speed based on Razorpay's internal fund transfer logic. Must be 'optimum'.",
+            "enum": [
+              "optimum"
+            ],
+            "example": "optimum"
+          },
+          "receipt": {
+            "type": "string",
+            "description": "A unique identifier provided by you for your internal reference.",
+            "example": "Receipt No. 31"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          }
+        }
+      },
+      "Refund": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the refund.",
+            "example": "rfnd_FP8R8EGjGbPkVb"
+          },
+          "entity": {
+            "type": "string",
+            "description": "Indicates the type of entity. Here, it is refund.",
+            "example": "refund"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The amount to be refunded (in the smallest unit of currency).",
+            "example": 500100
+          },
+          "currency": {
+            "type": "string",
+            "description": "The currency of payment amount for which the refund is initiated.",
+            "example": "INR"
+          },
+          "payment_id": {
+            "type": "string",
+            "description": "The unique identifier of the payment for which a refund is initiated.",
+            "example": "pay_29QQoUBi66xm2f"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "receipt": {
+            "type": "string",
+            "description": "A unique identifier provided by you for your internal reference.",
+            "example": "Receipt No. 31"
+          },
+          "acquirer_data": {
+            "$ref": "#/components/schemas/AcquirerData"
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "Unix timestamp at which the refund was created.",
+            "example": 1597078914
+          },
+          "batch_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "This parameter is populated if the refund was created as part of a batch upload.",
+            "example": null
+          },
+          "status": {
+            "type": "string",
+            "description": "Indicates the state of the refund.",
+            "enum": [
+              "pending",
+              "processed",
+              "failed"
+            ],
+            "example": "processed"
+          },
+          "speed_processed": {
+            "type": "string",
+            "description": "The mode used to process a refund.",
+            "enum": [
+              "instant",
+              "normal"
+            ],
+            "example": "normal"
+          },
+          "speed_requested": {
+            "type": "string",
+            "description": "The processing mode of the refund seen in the refund response.",
+            "enum": [
+              "normal",
+              "optimum"
+            ],
+            "example": "optimum"
+          }
+        }
+      },
+      "RefundListResponse": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "description": "Name of the entity. Always 'collection'.",
+            "example": "collection"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of refunds returned.",
+            "example": 2
+          },
+          "items": {
+            "type": "array",
+            "description": "List of refund objects.",
+            "items": {
+              "$ref": "#/components/schemas/Refund"
+            }
+          }
+        }
+      },
+      "RefundUpdateRequest": {
+        "type": "object",
+        "required": [
+          "notes"
+        ],
+        "properties": {
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          }
+        }
+      },
+      "QrCodeCreateRequest": {
+        "type": "object",
+        "required": [
+          "type",
+          "usage",
+          "fixed_amount"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The type of the QR Code. Only 'upi_qr' is supported.",
+            "enum": [
+              "upi_qr"
+            ],
+            "example": "upi_qr"
+          },
+          "name": {
+            "type": "string",
+            "description": "Label entered to identify the QR Code.",
+            "example": "Store Front Display"
+          },
+          "usage": {
+            "type": "string",
+            "description": "Indicates if the QR Code should accept single or multiple payments.",
+            "enum": [
+              "single_use",
+              "multiple_use"
+            ],
+            "example": "single_use"
+          },
+          "fixed_amount": {
+            "type": "boolean",
+            "description": "Indicates if the QR should accept payments of specific amounts or any amount.",
+            "example": true
+          },
+          "payment_amount": {
+            "type": "integer",
+            "description": "The amount allowed for a transaction (in the smallest currency unit).",
+            "example": 300
+          },
+          "description": {
+            "type": "string",
+            "description": "A brief description about the QR Code.",
+            "example": "For Store 1"
+          },
+          "customer_id": {
+            "type": "string",
+            "description": "The unique identifier of the customer the QR Code is linked with.",
+            "example": "cust_HKsR5se84c5LTO"
+          },
+          "close_by": {
+            "type": "integer",
+            "description": "Unix timestamp at which the QR Code is scheduled to be automatically closed.",
+            "example": 1681615838
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          }
+        }
+      },
+      "QrCode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the QR Code.",
+            "example": "qr_HMsVL8HOpbMcjU"
+          },
+          "entity": {
+            "type": "string",
+            "description": "Indicates the type of entity. Here, it is qr_code.",
+            "example": "qr_code"
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "Unix timestamp at which the QR Code is created.",
+            "example": 1623660301
+          },
+          "name": {
+            "type": "string",
+            "description": "Label entered to identify the QR Code.",
+            "example": "Store Front Display"
+          },
+          "usage": {
+            "type": "string",
+            "description": "Indicates if the QR Code should accept single or multiple payments.",
+            "enum": [
+              "single_use",
+              "multiple_use"
+            ],
+            "example": "single_use"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the QR Code. Only 'upi_qr' is supported.",
+            "enum": [
+              "upi_qr"
+            ],
+            "example": "upi_qr"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "The URL of the QR Code image.",
+            "example": "https://rzp.io/i/BWcUVrLp"
+          },
+          "payment_amount": {
+            "type": "integer",
+            "description": "The amount allowed for a transaction (in the smallest currency unit).",
+            "example": 300
+          },
+          "status": {
+            "type": "string",
+            "description": "Indicates the status of the QR Code.",
+            "enum": [
+              "active",
+              "closed"
+            ],
+            "example": "active"
+          },
+          "description": {
+            "type": "string",
+            "description": "A brief description about the QR Code.",
+            "example": "For Store 1"
+          },
+          "fixed_amount": {
+            "type": "boolean",
+            "description": "Indicates if the QR Code should accept payments of specific amounts or any amount.",
+            "example": true
+          },
+          "payments_amount_received": {
+            "type": "integer",
+            "description": "The total amount received on the QR Code.",
+            "example": 0
+          },
+          "payments_count_received": {
+            "type": "integer",
+            "description": "The total number of payments received on the QR Code.",
+            "example": 0
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "customer_id": {
+            "type": "string",
+            "description": "The unique identifier of the customer the QR Code is linked with.",
+            "example": "cust_HKsR5se84c5LTO"
+          },
+          "close_by": {
+            "type": "integer",
+            "description": "Unix timestamp at which the QR Code is scheduled to be automatically closed.",
+            "example": 1681615838
+          },
+          "closed_at": {
+            "type": "integer",
+            "description": "Unix timestamp at which the QR Code is automatically closed.",
+            "example": 1681616000
+          },
+          "close_reason": {
+            "type": "string",
+            "description": "The reason for the closure of the QR Code.",
+            "enum": [
+              "on_demand",
+              "paid",
+              null
+            ],
+            "example": null
+          },
+          "tax_invoice": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Tax invoice details for GST compliant transactions",
+              "properties": {
+                "number": {
+                  "type": "string",
+                  "description": "This is the invoice number against which the payment is collected. If not provided, the transaction will default to non-GST compliant UPI flow.",
+                  "example": "INV001"
+                },
+                "date": {
+                  "type": "integer",
+                  "description": "Unix Timestamp that indicates the issue date of the invoice. If not provided, it will default to the current date.",
+                  "example": 1589994898
+                },
+                "customer_name": {
+                  "type": "string",
+                  "description": "Customer name on the invoice. If not provided, the transaction will default to non-GST compliant UPI flow.",
+                  "example": "Gaurav Kumar"
+                },
+                "business_gstin": {
+                  "type": "string",
+                  "description": "The GSTIN mentioned on the invoice. If not passed, it is picked up from the database.",
+                  "example": "06AABCU9605R1ZR"
+                },
+                "gst_amount": {
+                  "type": "integer",
+                  "description": "GST amount on the invoice in paise. If not provided, the transaction will default to the non-GST compliant UPI flow.",
+                  "example": 4000
+                },
+                "cess_amount": {
+                  "type": "integer",
+                  "description": "CESS Amount on the invoice in paise. If not provided, the transaction will default to the non-GST compliant UPI flow.",
+                  "example": 0
+                },
+                "supply_type": {
+                  "type": "string",
+                  "description": "Indicates whether the transaction is interstate or intrastate",
+                  "enum": [
+                    "interstate",
+                    "intrastate"
+                  ],
+                  "example": "interstate"
+                }
+              },
+              "required": [
+                "number",
+                "date",
+                "customer_name",
+                "business_gstin",
+                "gst_amount",
+                "cess_amount",
+                "supply_type"
+              ]
+            }
+          }
+        }
+      },
+      "QrCodeListResponse": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "description": "Name of the entity. Always 'collection'.",
+            "example": "collection"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of QR Codes returned.",
+            "example": 2
+          },
+          "items": {
+            "type": "array",
+            "description": "List of QR Code objects.",
+            "items": {
+              "$ref": "#/components/schemas/QrCode"
+            }
+          }
+        }
+      },
+      "Settlement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the settlement transaction.",
+            "example": "setl_DGlQ1Rj8os78Ec"
+          },
+          "entity": {
+            "type": "string",
+            "description": "Indicates the type of entity. Here, it is settlement.",
+            "example": "settlement"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The amount to be settled (in the smallest unit of currency).",
+            "example": 9973635
+          },
+          "status": {
+            "type": "string",
+            "description": "Indicates the settlement state.",
+            "enum": [
+              "created",
+              "processed",
+              "failed"
+            ],
+            "example": "processed"
+          },
+          "fees": {
+            "type": "integer",
+            "description": "The total fee charged for processing all payments received from customers settled to you in this settlement transaction.",
+            "example": 0
+          },
+          "tax": {
+            "type": "integer",
+            "description": "The total tax, in currency subunits, charged on the fees collected to process all payments received from customers settled to you in this settlement transaction.",
+            "example": 0
+          },
+          "utr": {
+            "type": "string",
+            "description": "The Unique Transaction Reference (UTR) number available across banks.",
+            "example": "1568176960vxp0rj"
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "Unix timestamp at which the settlement transaction was created.",
+            "example": 1568176960
+          }
+        }
+      },
+      "SettlementListResponse": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "description": "Name of the entity. Always 'collection'.",
+            "example": "collection"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of settlements returned.",
+            "example": 2
+          },
+          "items": {
+            "type": "array",
+            "description": "List of settlement objects.",
+            "items": {
+              "$ref": "#/components/schemas/Settlement"
+            }
+          }
+        }
+      },
+      "SettlementRecon": {
+        "type": "object",
+        "properties": {
+          "entity_id": {
+            "type": "string",
+            "description": "The unique identifier of the transaction that has been settled.",
+            "example": "pay_DEXrnipqTmWVGE"
+          },
+          "type": {
+            "type": "string",
+            "description": "Indicates the type of transaction.",
+            "enum": [
+              "payment",
+              "refund",
+              "transfer",
+              "adjustment"
+            ],
+            "example": "payment"
+          },
+          "debit": {
+            "type": "integer",
+            "description": "The amount, in currency subunits, that has been debited from your account for this transaction.",
+            "example": 0
+          },
+          "credit": {
+            "type": "integer",
+            "description": "The amount, in currency subunits, that has been credited to your account for this transaction.",
+            "example": 97100
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The total amount of the transaction (in the smallest unit of currency).",
+            "example": 100000
+          },
+          "currency": {
+            "type": "string",
+            "description": "The currency of the transaction.",
+            "example": "INR"
+          },
+          "fee": {
+            "type": "integer",
+            "description": "The fee charged for processing the transaction.",
+            "example": 2900
+          },
+          "tax": {
+            "type": "integer",
+            "description": "The tax charged for processing the transaction.",
+            "example": 0
+          },
+          "on_hold": {
+            "type": "boolean",
+            "description": "Indicates whether the account settlement for transfer is on hold.",
+            "example": false
+          },
+          "settled": {
+            "type": "boolean",
+            "description": "Indicates whether the transaction has been settled or not.",
+            "example": true
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "Unix timestamp at which the transaction was created.",
+            "example": 1567692556
+          },
+          "settled_at": {
+            "type": "integer",
+            "description": "Unix timestamp when the transaction was settled.",
+            "example": 1568176960
+          },
+          "settlement_id": {
+            "type": "string",
+            "description": "The unique identifier of the settlement transaction.",
+            "example": "setl_DGlQ1Rj8os78Ec"
+          },
+          "posted_at": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Unix timestamp when the transaction was posted.",
+            "example": null
+          },
+          "credit_type": {
+            "type": "string",
+            "description": "The type of credit for the transaction.",
+            "example": "default"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Brief description about the transaction.",
+            "example": "Recurring Payment via Subscription"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "payment_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "The unique identifier of the payment linked to refund or transfer that has been settled.",
+            "example": "pay_DEXq1pACSqFxtS"
+          },
+          "settlement_utr": {
+            "type": "string",
+            "nullable": true,
+            "description": "The unique reference number linked to the settlement.",
+            "example": "1568176960vxp0rj"
+          },
+          "order_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Order id linked to the payment made by the customer that has been settled.",
+            "example": "order_DEXrnRiR3SNDHA"
+          },
+          "order_receipt": {
+            "type": "string",
+            "nullable": true,
+            "description": "Receipt number entered while creating the Order.",
+            "example": null
+          },
+          "method": {
+            "type": "string",
+            "nullable": true,
+            "description": "The payment method used to complete the payment.",
+            "example": "card"
+          },
+          "card_network": {
+            "type": "string",
+            "nullable": true,
+            "description": "The card network used to process the payment.",
+            "example": "MasterCard"
+          },
+          "card_issuer": {
+            "type": "string",
+            "nullable": true,
+            "description": "The 4-character code denoting the issuing bank.",
+            "example": "KARB"
+          },
+          "card_type": {
+            "type": "string",
+            "nullable": true,
+            "description": "The card type used to process the payment.",
+            "example": "credit"
+          },
+          "dispute_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "The unique identifier of any dispute, if any, for this transaction.",
+            "example": null
+          }
+        }
+      },
+      "SettlementReconListResponse": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "description": "Name of the entity. Always 'collection'.",
+            "example": "collection"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of settlement recon records returned.",
+            "example": 4
+          },
+          "items": {
+            "type": "array",
+            "description": "List of settlement recon objects.",
+            "items": {
+              "$ref": "#/components/schemas/SettlementRecon"
+            }
+          }
+        }
+      },
+      "SettlementOndemandCreateRequest": {
+        "type": "object",
+        "required": [
+          "amount"
+        ],
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "description": "The amount, in paise, you want to get settled instantly.",
+            "example": 200000
+          },
+          "settle_full_balance": {
+            "type": "boolean",
+            "description": "Indicates whether full balance is settled. If true, Razorpay will settle the maximum amount possible and ignore the amount parameter.",
+            "example": false
+          },
+          "description": {
+            "type": "string",
+            "description": "Custom note for the instant settlement. Max 30 characters. Allowed a-z, A-Z, 0-9, space.",
+            "example": "Need this to make vendor payments."
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          }
+        }
+      },
+      "SettlementOndemand": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the instant settlement transaction.",
+            "example": "setlod_FNj7g2YS5J67Rz"
+          },
+          "entity": {
+            "type": "string",
+            "description": "Indicates the type of entity. Here it is settlement.ondemand.",
+            "example": "settlement.ondemand"
+          },
+          "amount_requested": {
+            "type": "integer",
+            "description": "The settlement amount, in paise, requested by you.",
+            "example": 200000
+          },
+          "amount_settled": {
+            "type": "integer",
+            "description": "Total amount (minus fees and tax), in paise, settled to the bank account.",
+            "example": 199410
+          },
+          "amount_pending": {
+            "type": "integer",
+            "description": "Portion of the requested amount, in paise, yet to be settled to you.",
+            "example": 199410
+          },
+          "amount_reversed": {
+            "type": "integer",
+            "description": "Portion of the requested amount, in paise, that was not settled to you. This amount is reversed to your PG current balance.",
+            "example": 0
+          },
+          "fees": {
+            "type": "integer",
+            "description": "Total amount (fees+tax), in paise, deducted for the instant settlement.",
+            "example": 590
+          },
+          "tax": {
+            "type": "integer",
+            "description": "Total tax, in paise, charged for the fee component.",
+            "example": 90
+          },
+          "currency": {
+            "type": "string",
+            "description": "The 3-letter ISO currency code for the settlement.",
+            "example": "INR"
+          },
+          "settle_full_balance": {
+            "type": "boolean",
+            "description": "Indicates whether full balance is settled.",
+            "example": false
+          },
+          "status": {
+            "type": "string",
+            "description": "Indicates the state of the instant settlement.",
+            "enum": [
+              "created",
+              "initiated",
+              "partially_processed",
+              "processed",
+              "reversed"
+            ],
+            "example": "initiated"
+          },
+          "description": {
+            "type": "string",
+            "description": "Custom note for the instant settlement.",
+            "example": "Need this to make vendor payments."
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "Unix timestamp at which the instant settlement was created.",
+            "example": 1596771429
+          },
+          "ondemand_payouts": {
+            "type": "object",
+            "description": "List of payouts created for the instant settlement.",
+            "properties": {
+              "entity": {
+                "type": "string",
+                "example": "collection"
+              },
+              "count": {
+                "type": "integer",
+                "example": 1
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "setlodp_FNj7g2cbvw8ueO"
+                    },
+                    "entity": {
+                      "type": "string",
+                      "example": "settlement.ondemand_payout"
+                    },
+                    "initiated_at": {
+                      "type": "integer",
+                      "nullable": true,
+                      "example": null
+                    },
+                    "processed_at": {
+                      "type": "integer",
+                      "nullable": true,
+                      "example": null
+                    },
+                    "reversed_at": {
+                      "type": "integer",
+                      "nullable": true,
+                      "example": null
+                    },
+                    "amount": {
+                      "type": "integer",
+                      "example": 200000
+                    },
+                    "amount_settled": {
+                      "type": "integer",
+                      "nullable": true,
+                      "example": null
+                    },
+                    "fees": {
+                      "type": "integer",
+                      "example": 590
+                    },
+                    "tax": {
+                      "type": "integer",
+                      "example": 90
+                    },
+                    "utr": {
+                      "type": "string",
+                      "nullable": true,
+                      "example": null
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "created"
+                    },
+                    "created_at": {
+                      "type": "integer",
+                      "example": 1596771429
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Payout": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the payout.",
+            "example": "pout_00000000000001"
+          },
+          "entity": {
+            "type": "string",
+            "description": "The entity being created. Here, it will be payout.",
+            "example": "payout"
+          },
+          "fund_account_id": {
+            "type": "string",
+            "description": "The unique identifier linked to the fund account.",
+            "example": "fa_00000000000001"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The payout amount, in paise. The value does not include fees and tax. Fees and tax, if any, are deducted from your account balance.",
+            "example": 1000000
+          },
+          "currency": {
+            "type": "string",
+            "description": "The payout's currency. Here, it is INR.",
+            "example": "INR"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "fees": {
+            "type": "integer",
+            "description": "The fees for the payout. This value is returned only when the payout moves to the processing state.",
+            "example": 590
+          },
+          "tax": {
+            "type": "integer",
+            "description": "The tax that is applicable for the fee being charged. This value is returned only when the payout moves to the processing state.",
+            "example": 90
+          },
+          "status": {
+            "type": "string",
+            "description": "The payout status.",
+            "enum": [
+              "queued",
+              "pending",
+              "rejected",
+              "processing",
+              "processed",
+              "cancelled",
+              "reversed",
+              "failed"
+            ],
+            "example": "processed"
+          },
+          "purpose": {
+            "type": "string",
+            "description": "The purpose of the payout that is being created.",
+            "example": "payout"
+          },
+          "utr": {
+            "type": "string",
+            "nullable": true,
+            "description": "The unique transaction number linked to a payout.",
+            "example": null
+          },
+          "mode": {
+            "type": "string",
+            "description": "The mode used to make the payout.",
+            "enum": [
+              "NEFT",
+              "RTGS",
+              "IMPS",
+              "card",
+              "UPI",
+              "amazonpay"
+            ],
+            "example": "NEFT"
+          },
+          "reference_id": {
+            "type": "string",
+            "description": "A user-generated reference given to the payout. Maximum length is 40 characters.",
+            "example": "Acme Transaction ID 12345"
+          },
+          "narration": {
+            "type": "string",
+            "description": "Custom note that also appears on the bank statement. Maximum length 30 characters.",
+            "example": "Acme Corp Fund Transfer"
+          },
+          "batch_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "This value is returned if the contact was created as part of a bulk upload.",
+            "example": null
+          },
+          "status_details": {
+            "type": "object",
+            "description": "This parameter returns the current status of the payout.",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "Status description.",
+                "example": "Payout is processed and the money has been credited into the beneficiaries account"
+              },
+              "source": {
+                "type": "string",
+                "description": "Status source.",
+                "example": "beneficiary_bank"
+              },
+              "reason": {
+                "type": "string",
+                "description": "Status reason.",
+                "example": "payout_processed"
+              }
+            }
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "Indicates the Unix timestamp when this payout was created.",
+            "example": 1545382870
+          },
+          "fee_type": {
+            "type": "string",
+            "description": "Indicates the fee type charged for the payout. Possible value is free_payout.",
+            "example": ""
+          }
+        }
+      },
+      "PayoutListResponse": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string",
+            "description": "Name of the entity. Always collection.",
+            "example": "collection"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of payouts returned.",
+            "example": 2
+          },
+          "items": {
+            "type": "array",
+            "description": "List of payout objects.",
+            "items": {
+              "$ref": "#/components/schemas/Payout"
+            }
+          }
+        }
+      },
+      "Notes": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Key-value pair that can be used to store additional information about the entity.",
+            "example": {
+              "key1": "value3",
+              "key2": "value2"
+            }
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Key-value pair for additional information as an array",
+            "example": []
+          }
+        ]
+      },
+      "AcquirerData": {
+        "type": "object",
+        "description": "A dynamic array consisting of unique reference numbers.",
+        "properties": {
+          "arn": {
+            "type": "string",
+            "example": "825069857820"
+          },
+          "rrn": {
+            "type": "string",
+            "example": "825069857820"
+          },
+          "upi_transaction_id": {
+            "type": "string",
+            "description": "Upi transaction ID",
+            "example": "2125F872BB0430B25D4F6276FF776BD2"
+          },
+          "bank_transaction_id": {
+            "type": "string",
+            "description": "Bank transaction ID",
+            "example": "6951370"
+          },
+          "transaction_id": {
+            "type": "string",
+            "description": "transaction ID",
+            "example": "6951370"
+          }
+        }
+      },
+      "PlanCreateRequest": {
+        "type": "object",
+        "required": [
+          "period",
+          "interval",
+          "item"
+        ],
+        "properties": {
+          "period": {
+            "type": "string",
+            "description": "This, combined with interval, defines the frequency of the plan. Possible values are daily, weekly, monthly, quarterly, yearly",
+            "example": "weekly",
+            "enum": [
+              "daily",
+              "weekly",
+              "monthly",
+              "quarterly",
+              "yearly"
+            ]
+          },
+          "interval": {
+            "type": "integer",
+            "description": "This, combined with period, defines the frequency of the plan. If the billing cycle is 2 months, the value should be 2. For daily plans, the minimum value should be 7",
+            "example": 1
+          },
+          "item": {
+            "$ref": "#/components/schemas/PlanItem"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          }
+        }
+      },
+      "Plan": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier linked to a plan",
+            "example": "plan_00000000000001"
+          },
+          "entity": {
+            "type": "string",
+            "description": "The entity being created. Here, it is plan",
+            "example": "plan"
+          },
+          "interval": {
+            "type": "integer",
+            "description": "Used together with period to define how often the customer should be charged",
+            "example": 1
+          },
+          "period": {
+            "type": "string",
+            "description": "Used together with interval to define how often the customer should be charged. Possible values are daily, weekly, monthly, yearly",
+            "example": "weekly",
+            "enum": [
+              "daily",
+              "weekly",
+              "monthly",
+              "yearly"
+            ]
+          },
+          "item": {
+            "$ref": "#/components/schemas/PlanItem"
+          },
+          "notes": {
+            "$ref": "#/components/schemas/Notes"
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "The Unix timestamp at which the plan was created",
+            "example": 1580219935
+          }
+        }
+      },
+      "PlanItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the item",
+            "example": "item_00000000000001"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Indicates if the item is active",
+            "example": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the plan item",
+            "example": "Test plan - Weekly"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Description for the plan item",
+            "example": "Description for the test plan - Weekly"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "Amount for the plan item in currency subunits",
+            "example": 69900
+          },
+          "unit_amount": {
+            "type": "integer",
+            "description": "Unit amount for the plan item in currency subunits",
+            "example": 69900
+          },
+          "currency": {
+            "type": "string",
+            "description": "ISO code for the currency",
+            "example": "INR"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the item",
+            "example": "plan"
+          },
+          "unit": {
+            "type": "string",
+            "nullable": true,
+            "description": "Unit for the plan item",
+            "example": null
+          },
+          "tax_inclusive": {
+            "type": "boolean",
+            "description": "Indicates if tax is inclusive",
+            "example": false
+          },
+          "hsn_code": {
+            "type": "string",
+            "nullable": true,
+            "description": "HSN code for the item",
+            "example": null
+          },
+          "sac_code": {
+            "type": "string",
+            "nullable": true,
+            "description": "SAC code for the item",
+            "example": null
+          },
+          "tax_rate": {
+            "type": "number",
+            "nullable": true,
+            "description": "Tax rate for the item",
+            "example": null
+          },
+          "tax_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Tax ID for the item",
+            "example": null
+          },
+          "tax_group_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Tax group ID for the item",
+            "example": null
+          },
+          "created_at": {
+            "type": "integer",
+            "description": "The Unix timestamp at which the item was created",
+            "example": 1580219935
+          },
+          "updated_at": {
+            "type": "integer",
+            "description": "The Unix timestamp at which the item was last updated",
+            "example": 1580219935
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ]
+}
