@@ -117,6 +117,10 @@ func (client *Client) SetTimeout(timeout int16) {
 	client.Request.SetTimeout(timeout)
 }
 
+func (client *Client) SetUserAgent(userAgent string) {
+	client.Request.SetUserAgent(userAgent)
+}
+
 func getVersion() string {
 	return SDKVersion
 }
