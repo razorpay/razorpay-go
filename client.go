@@ -9,11 +9,9 @@ import (
 	"github.com/razorpay/razorpay-go/resources"
 )
 
-// Request ...
-var Request *requests.Request
-
 // Client provides various helper methods to make HTTP requests to Razorpay's APIs.
 type Client struct {
+	*requests.Request
 	Addon          *resources.Addon
 	Account        *resources.Account
 	Card           *resources.Card
@@ -46,37 +44,43 @@ type Client struct {
 func NewClient(key string, secret string) *Client {
 	auth := requests.Auth{Key: key, Secret: secret}
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
-	Request = &requests.Request{Auth: auth, HTTPClient: httpClient,
-		Version: getVersion(), SDKName: getSDKName(),
-		BaseURL: constants.BASE_URL}
+	request := &requests.Request{
+		Auth:       auth,
+		HTTPClient: httpClient,
+		Version:    getVersion(),
+		SDKName:    getSDKName(),
+		BaseURL:    constants.BASE_URL,
+		Headers:    make(map[string]string),
+	}
 
-	account := resources.Account{Request: Request}
-	addon := resources.Addon{Request: Request}
-	card := resources.Card{Request: Request}
-	customer := resources.Customer{Request: Request}
-	invoice := resources.Invoice{Request: Request}
-	paymentLink := resources.PaymentLink{Request: Request}
-	order := resources.Order{Request: Request}
-	payment := resources.Payment{Request: Request}
-	product := resources.Product{Request: Request}
-	plan := resources.Plan{Request: Request}
-	refund := resources.Refund{Request: Request}
-	subscription := resources.Subscription{Request: Request}
-	token := resources.Token{Request: Request}
-	transfer := resources.Transfer{Request: Request}
-	va := resources.VirtualAccount{Request: Request}
-	qrCode := resources.QrCode{Request: Request}
-	fundAccount := resources.FundAccount{Request: Request}
-	settlement := resources.Settlement{Request: Request}
-	stakeholder := resources.Stakeholder{Request: Request}
-	item := resources.Item{Request: Request}
-	iin := resources.Iin{Request: Request}
-	webhook := resources.Webhook{Request: Request}
-	document := resources.Document{Request: Request}
-	dispute := resources.Dispute{Request: Request}
-	payout := resources.Payout{Request: Request}
+	account := resources.Account{Request: request}
+	addon := resources.Addon{Request: request}
+	card := resources.Card{Request: request}
+	customer := resources.Customer{Request: request}
+	invoice := resources.Invoice{Request: request}
+	paymentLink := resources.PaymentLink{Request: request}
+	order := resources.Order{Request: request}
+	payment := resources.Payment{Request: request}
+	product := resources.Product{Request: request}
+	plan := resources.Plan{Request: request}
+	refund := resources.Refund{Request: request}
+	subscription := resources.Subscription{Request: request}
+	token := resources.Token{Request: request}
+	transfer := resources.Transfer{Request: request}
+	va := resources.VirtualAccount{Request: request}
+	qrCode := resources.QrCode{Request: request}
+	fundAccount := resources.FundAccount{Request: request}
+	settlement := resources.Settlement{Request: request}
+	stakeholder := resources.Stakeholder{Request: request}
+	item := resources.Item{Request: request}
+	iin := resources.Iin{Request: request}
+	webhook := resources.Webhook{Request: request}
+	document := resources.Document{Request: request}
+	dispute := resources.Dispute{Request: request}
+	payout := resources.Payout{Request: request}
 
 	client := Client{
+		Request:        request,
 		Account:        &account,
 		Addon:          &addon,
 		Card:           &card,
@@ -109,17 +113,17 @@ func NewClient(key string, secret string) *Client {
 // AddHeaders adds additional headers to Razorpay's client. All requests
 // made using the client will contain these additional headers in the HTTP request.
 func (client *Client) AddHeaders(headers map[string]string) {
-	Request.AddHeaders(headers)
+	client.Request.AddHeaders(headers)
 }
 
 // SetTimeout sets the timeout of Razorpay's Client. The default timeout will
 // be overridden for all HTTP requests made using this client.
 func (client *Client) SetTimeout(timeout int16) {
-	Request.SetTimeout(timeout)
+	client.Request.SetTimeout(timeout)
 }
 
 func (client *Client) SetUserAgent(userAgent string) {
-	Request.SetUserAgent(userAgent)
+	client.Request.SetUserAgent(userAgent)
 }
 
 func getVersion() string {
