@@ -6,7 +6,7 @@ data := map[string]interface{}{
     "name": "Gaurav Kumar",
     "contact": 9123456780,
     "email": "gaurav.kumar@example.com",
-    "fail_existing": 0,
+    "fail_existing": true,
     "notes": map[string]interface{}{
         "notes_key_1": "Tea, Earl Grey, Hot",
         "notes_key_2": "Tea, Earl Grey… decaf.",
@@ -23,7 +23,7 @@ body, err := client.Customer.Create(data, nil)
 | email        | string      | Email of the customer                       |
 | contact      | string      | Contact number of the customer              |
 | notes         | object      | A key-value pair                            |
-| fail_existing | string | If a customer with the same details already exists, the request throws an exception by default. Possible value is `0` or `1`|
+| fail_existing | string | If a customer with the same details already exists, the request throws an exception by default. Possible value is `true` or `false`|
 
 **Response:**
 ```json
@@ -189,8 +189,8 @@ data:= map[string]interface{}{
     "max_amount":50000,
   },
   "receipt":"Receipt No. 1",
-  "sms_notify":1,
-  "email_notify":1,
+  "sms_notify": true,
+  "email_notify": true,
   "expire_by":1647483647,
   "notes":map[string]interface{}{
     "note_key 1":"Beam me up Scotty",
@@ -211,8 +211,8 @@ body, err := client.Invoice.CreateRegistrationLink(data, nil)
 | amount*         | integer  | The payment amount in the smallest currency sub-unit.                 |
 | description*    | string  | A description that appears on the hosted page. For example, `12:30 p.m. Thali meals (Gaurav Kumar`).                                                             |
 | subscription_registration | object  | All parameters listed [here](https://razorpay.com/docs/api/payments/recurring-payments/paper-nach/create-authorization-transaction/#121-create-a-registration-link) |
-| sms_notify  | boolean  | SMS notifications are to be sent by Razorpay (default : 1)  |
-| email_notify | boolean  | Email notifications are to be sent by Razorpay (default : 1)  |
+| sms_notify  | boolean  | SMS notifications are to be sent by Razorpay (default : true)  |
+| email_notify | boolean  | Email notifications are to be sent by Razorpay (default : true)  |
 | expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
 | receipt      | string  | Your system order reference id.  |
 | notes           | object  | A key-value pair  |
@@ -663,7 +663,7 @@ data:= map[string]interface{}{
   "order_id": "<orderId>",
   "customer_id": "<customerId>",
   "token": "<tokenId>",
-  "recurring": "1",
+  "recurring": true,
   "description": "Creating recurring payment for Gaurav Kumar",
   "notes": map[string]interface{}{
     "note_key 1": "Beam me up Scotty",
@@ -684,7 +684,7 @@ body, err := Client.Payment.CreateRecurringPayment(data, nil)
 | order_id*        | string  | The unique identifier of the order created. |
 | customer_id*        | string  | The `customer_id` for the customer you want to charge.  |
 | token*        | string  | The `token_id` generated when the customer successfully completes the authorization payment. Different payment instruments for the same customer have different `token_id`.|
-| recurring*        | string  | Determines if recurring payment is enabled or not. Possible values:<br>* `1` - Recurring is enabled.* `0` - Recurring is not enabled.|
+| recurring*        | string  | Determines if recurring payment is enabled or not. Possible values:<br>* `true` - Recurring is enabled.* `false` - Recurring is not enabled.|
 | description        | string  | A user-entered description for the payment.|
 | notes       | object  | Key-value pair that can be used to store additional information about the entity. Maximum 15 key-value pairs, 256 characters (maximum) each. |
 

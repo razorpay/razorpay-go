@@ -41,8 +41,8 @@ data := map[string]interface{}{
     },
   },
   "line_items": line_items,
-  "sms_notify": 1,
-  "email_notify": 1,
+  "sms_notify": true,
+  "email_notify": true,
   "currency": "INR",
   "expire_by": 1589765167,
 }
@@ -93,7 +93,7 @@ body, err := client.Invoice.Create(data, nil)
 | line_items    | object | All parameters listed [here](https://razorpay.com/docs/api/payments/invoices/#create-an-invoice) are supported |
 | sms_notify  | boolean  | SMS notifications are to be sent by Razorpay (default : 1)  |
 | currency*  (conditionally mandatory) | string  | The 3-letter ISO currency code for the payment. Currently, only `INR` is supported. |
-| email_notify | boolean  | Email notifications are to be sent by Razorpay (default : 1)  |
+| email_notify | boolean  | Email notifications are to be sent by Razorpay (default : true)  |
 | expire_by    | integer | The timestamp, in Unix format, till when the customer can make the authorization payment. |
 
 

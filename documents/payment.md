@@ -394,7 +394,7 @@ data := map[string]interface{}{
   "amount": 50000,
   "currency": "INR",
   "receipt": "some_receipt_id",
-  "payment_capture": 1,
+  "payment_capture": true,
   "notes": map[string]interface{}{
       "key1": "value1",
       "key2": "value2",
@@ -410,7 +410,7 @@ body, err := client.Order.Create(data, nil)
 | amount*          | integer | Amount of the order to be paid                                               |
 | currency*        | string  | Currency of the order. Currently only `INR` is supported.                      |
 | receipt         | string  | Your system order reference id.                                              |
-| payment_capture  | integer  | 1 if capture should be done automatically or else 0                                                             |
+| payment_capture  | integer  | true if capture should be done automatically or else false                                                             |
 | notes           | object  | A key-value pair                                                             |
 
 **Response:** <br>
@@ -436,18 +436,29 @@ body, err := client.Order.Create(data, nil)
 
 ```go
 para_attr := map[string]interface{}{
-  "amount": 100,
+  "amount":   100,
   "currency": "INR",
-  "order_id": "order_EAkbvXiCJlwhHR",
-  "email": "gaurav.kumar@example.com",
-  "contact": 9090909090,
-  "method": "card",
+  "contact":  "9000090000",
+  "email":    "gaurav.kumar@example.com",
+  "order_id": "order_DPzFe1Q1dEOKed",
+  "method":   "card",
   "card": map[string]interface{}{
-    "number": "4111111111111111",
-    "name": "Gaurav",
+    "number":       "4386289407660153",
+    "name":         "Gaurav",
     "expiry_month": 11,
-    "expiry_year": 23,
-    "cvv": 100,
+    "expiry_year":  30,
+    "cvv":          100,
+  },
+  "authentication": map[string]interface{}{
+    "authentication_channel": "browser",
+  },
+  "browser": map[string]interface{}{
+    "java_enabled":       false,
+    "javascript_enabled": false,
+    "timezone_offset":    11,
+    "color_depth":        23,
+    "screen_width":       23,
+    "screen_height":      100,
   },
 }
 body, err := client.Payment.CreatePaymentJson(para_attr, nil)
@@ -526,7 +537,7 @@ para_attr := map[string]interface{}{
   "contact": "9123456789",
   "method": "upi",
   "customer_id": "cust_EIW4T2etiweBmG",
-  "save": 1,
+  "save": true,
   "ip": "192.168.0.103",
   "referer": "http",
   "user_agent": "Mozilla/5.0",
@@ -554,7 +565,7 @@ body, err := client.Payment.CreateUpi(para_attr, nil)
 | contact*      | string      | Contact number of the customer              |
 | notes | object  | A key-value pair  |
 | description | string  | Descriptive text of the payment. |
-| save | boolean  |  Specifies if the VPA should be stored as tokens.Possible value is `0`, `1`  |
+| save | boolean  |  Specifies if the VPA should be stored as tokens.Possible value is `true`, `false`  |
 | callback_url   | string      | URL where Razorpay will submit the final payment status. |
 | ip*   | string      | The client's browser IP address. For example `117.217.74.98` |
 | referer*   | string      | Value of `referer` header passed by the client's browser. For example, `https://example.com/` |
@@ -604,7 +615,7 @@ body, err := client.Payment.CreateUpi(para_attr, nil)
 | contact*      | string      | Contact number of the customer              |
 | notes | object  | A key-value pair  |
 | description | string  | Descriptive text of the payment. |
-| save | boolean  |  Specifies if the VPA should be stored as tokens.Possible value is `0`, `1`  |
+| save | boolean  |  Specifies if the VPA should be stored as tokens.Possible value is `true` or `false`  |
 | callback_url   | string      | URL where Razorpay will submit the final payment status. |
 | ip*   | string      | The client's browser IP address. For example `117.217.74.98` |
 | referer*   | string      | Value of `referer` header passed by the client's browser. For example, `https://example.com/` |

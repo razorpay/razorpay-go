@@ -469,7 +469,7 @@ body, err := client.Transfer.All(data, nil)
 
 ```go
 data:= map[string]interface{}{
-  "reverse_all": 1,
+  "reverse_all": true,
 }
 body, err := client.Payment.Refund("<paymentId>", <amount>, data, nil)
 ```
@@ -480,7 +480,7 @@ body, err := client.Payment.Refund("<paymentId>", <amount>, data, nil)
 |---------------|-------------|---------------------------------------------|
 | paymentId*   | string      | The id of the payment to be fetched  |
 | amount*   | integer      | The amount to be captured (should be equal to the authorized amount, in paise) |
-| reverse_all   | boolean    | Reverses transfer made to a linked account. Possible values:<br> * `1` - Reverses transfer made to a linked account.<br>* `0` - Does not reverse transfer made to a linked account.|
+| reverse_all   | boolean    | Reverses transfer made to a linked account. Possible values:<br> * `true` - Reverses transfer made to a linked account.<br>* `false` - Does not reverse transfer made to a linked account.|
 
 **Response:**
 ```json
@@ -659,7 +659,7 @@ body, err := client.Payment.Transfer("<paymentId>", data, nil)
 ### Modify settlement hold for transfers
 ```go
 data:= map[string]interface{}{
-  "on_hold": 1,
+  "on_hold": true,
   "on_hold_until": 1679691505,
 }
 body, err := client.Transfer.Edit("<transferId>", data, nil)
@@ -670,7 +670,7 @@ body, err := client.Transfer.Edit("<transferId>", data, nil)
 | Name          | Type        | Description                                 |
 |---------------|-------------|---------------------------------------------|
 | transferId*   | string      | The id of the transfer for which settlement configurations should be modified.  |
-| on_hold*   | boolean     | Indicates whether the account settlement for transfer is on hold. Possible values: `1` or `0` |
+| on_hold*   | boolean     | Indicates whether the account settlement for transfer is on hold. Possible values: `true` or `false` |
 | on_hold_until   | integer     | Timestamp, in Unix, that indicates until when the settlement of the transfer must be put on hold. If no value is passed, the settlement is put on hold indefinitely. |
 
 **Response:**
