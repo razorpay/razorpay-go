@@ -8,7 +8,7 @@ data := map[string]interface{}{
     "name": "Gaurav Kumar",
     "contact": 9123456780,
     "email": "gaurav.kumar@example.com",
-    "fail_existing": true,
+    "fail_existing": "1",
     "gstin": "29XAbbA4369J1PA",
     "notes": map[string]interface{}{
       "notes_key_1": "Tea, Earl Grey, Hot",
@@ -25,7 +25,7 @@ body, err := client.Customer.Create(data, nil)
 |---------------|-------------|---------------------------------------------|
 | name*          | string      | Name of the customer                        |
 | email        | string      | Email of the customer                       |
-| fail_existing | string | If a customer with the same details already exists, the request throws an exception by default. Possible value is `true` or `false`|
+| fail_existing | string | If a customer with the same details already exists, the request throws an exception by default. Possible value is `1` or `0`|
 | contact      | string      | Contact number of the customer              |
 | gstin         | string      | Customer's GST number, if available. For example, 29XAbbA4369J1PA  |
 | notes         | object      | A key-value pair                            |
