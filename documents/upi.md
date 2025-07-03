@@ -6,7 +6,7 @@ data := map[string]interface{}{
     "name": "Gaurav Kumar",
     "contact": 9123456780,
     "email": "gaurav.kumar@example.com",
-    "fail_existing": 0,
+    "fail_existing": "1",
     "notes": map[string]interface{}{
         "notes_key_1": "Tea, Earl Grey, Hot",
         "notes_key_2": "Tea, Earl Grey… decaf.",
@@ -22,7 +22,7 @@ body, err := client.Customer.Create(data, nil)
 | name*          | string      | Name of the customer                        |
 | email        | string      | Email of the customer                       |
 | contact      | string      | Contact number of the customer              |
-| fail_existing | string | If a customer with the same details already exists, the request throws an exception by default. Possible value is `0` or `1`|
+| fail_existing | string | If a customer with the same details already exists, the request throws an exception by default. Possible value is `1` or `0`|
 | notes         | object      | A key-value pair                            |
 
 **Response:**
@@ -125,8 +125,8 @@ data:= map[string]interface{}{
     "frequency": "monthly"
   },
   "receipt":"Receipt No. 1",
-  "email_notify":1,
-  "sms_notify":1,
+  "email_notify": true,
+  "sms_notify": true,
   "expire_by":1681987284,
   "notes":map[string]interface{}{
     "note_key 1":"Beam me up Scotty",
@@ -487,7 +487,7 @@ data:= map[string]interface{}{
   "order_id": "<orderId>",
   "customer_id": "<customerId>",
   "token": "<tokenId>",
-  "recurring": "1",
+  "recurring": true,
   "description": "Creating recurring payment for Gaurav Kumar",
   "notes": map[string]interface{}{
     "note_key 1": "Beam me up Scotty",
@@ -508,7 +508,7 @@ body, err := client.Payment.CreateRecurringPayment(data, nil);
 | order_id*        | string  | The unique identifier of the order created. |
 | customer_id*        | string  | The `customer_id` for the customer you want to charge.  |
 | token*        | string  | The `token_id` generated when the customer successfully completes the authorization payment. Different payment instruments for the same customer have different `token_id`.|
-| recurring*        | string  | Determines if recurring payment is enabled or not. Possible values:<br>* `1` - Recurring is enabled.* `0` - Recurring is not enabled.|
+| recurring*        | string  | Determines if recurring payment is enabled or not. Possible values:<br>* `true` - Recurring is enabled.* `false` - Recurring is not enabled.|
 | description        | string  | A user-entered description for the payment.|
 | notes        | object  | Key-value pair that can be used to store additional information about the entity. Maximum 15 key-value pairs, 256 characters (maximum) each. |
 
