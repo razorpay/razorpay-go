@@ -266,7 +266,7 @@ body, err := client.Subscription.Fetch("<subscriptionId>", nil, nil)
 
 ```go
 data := map[string]interface{}{
-  "cancel_at_cycle_end": 1,
+  "cancel_at_cycle_end": true,
 }
 body, err := client.Subscription.Cancel("<subscriptionId>", data, nil)
 ```
