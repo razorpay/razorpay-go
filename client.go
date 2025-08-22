@@ -39,6 +39,64 @@ type Client struct {
 	Payout         *resources.Payout
 }
 
+// createClient initializes and returns a new Client with all resources
+func createClient(request *requests.Request) *Client {
+	account := resources.Account{Request: request}
+	addon := resources.Addon{Request: request}
+	card := resources.Card{Request: request}
+	customer := resources.Customer{Request: request}
+	invoice := resources.Invoice{Request: request}
+	paymentLink := resources.PaymentLink{Request: request}
+	order := resources.Order{Request: request}
+	payment := resources.Payment{Request: request}
+	product := resources.Product{Request: request}
+	plan := resources.Plan{Request: request}
+	refund := resources.Refund{Request: request}
+	subscription := resources.Subscription{Request: request}
+	token := resources.Token{Request: request}
+	transfer := resources.Transfer{Request: request}
+	va := resources.VirtualAccount{Request: request}
+	qrCode := resources.QrCode{Request: request}
+	fundAccount := resources.FundAccount{Request: request}
+	settlement := resources.Settlement{Request: request}
+	stakeholder := resources.Stakeholder{Request: request}
+	item := resources.Item{Request: request}
+	iin := resources.Iin{Request: request}
+	webhook := resources.Webhook{Request: request}
+	document := resources.Document{Request: request}
+	dispute := resources.Dispute{Request: request}
+	payout := resources.Payout{Request: request}
+
+	return &Client{
+		Request:        request,
+		Account:        &account,
+		Addon:          &addon,
+		Card:           &card,
+		Customer:       &customer,
+		Invoice:        &invoice,
+		PaymentLink:    &paymentLink,
+		Order:          &order,
+		Payment:        &payment,
+		Plan:           &plan,
+		Product:        &product,
+		Refund:         &refund,
+		Subscription:   &subscription,
+		Token:          &token,
+		Transfer:       &transfer,
+		VirtualAccount: &va,
+		QrCode:         &qrCode,
+		FundAccount:    &fundAccount,
+		Settlement:     &settlement,
+		Stakeholder:    &stakeholder,
+		Item:           &item,
+		Iin:            &iin,
+		Webhook:        &webhook,
+		Document:       &document,
+		Dispute:        &dispute,
+		Payout:         &payout,
+	}
+}
+
 // NewClient creates and returns a new Razorpay client. key and secret
 // are used to authenticate the requests made to Razorpay's APIs.
 func NewClient(key string, secret string) *Client {
@@ -54,67 +112,16 @@ func NewClient(key string, secret string) *Client {
 		Headers:    make(map[string]string),
 	}
 
-	account := resources.Account{Request: request}
-	addon := resources.Addon{Request: request}
-	card := resources.Card{Request: request}
-	customer := resources.Customer{Request: request}
-	invoice := resources.Invoice{Request: request}
-	paymentLink := resources.PaymentLink{Request: request}
-	order := resources.Order{Request: request}
-	payment := resources.Payment{Request: request}
-	product := resources.Product{Request: request}
-	plan := resources.Plan{Request: request}
-	refund := resources.Refund{Request: request}
-	subscription := resources.Subscription{Request: request}
-	token := resources.Token{Request: request}
-	transfer := resources.Transfer{Request: request}
-	va := resources.VirtualAccount{Request: request}
-	qrCode := resources.QrCode{Request: request}
-	fundAccount := resources.FundAccount{Request: request}
-	settlement := resources.Settlement{Request: request}
-	stakeholder := resources.Stakeholder{Request: request}
-	item := resources.Item{Request: request}
-	iin := resources.Iin{Request: request}
-	webhook := resources.Webhook{Request: request}
-	document := resources.Document{Request: request}
-	dispute := resources.Dispute{Request: request}
-	payout := resources.Payout{Request: request}
-
-	client := Client{
-		Request:        request,
-		Account:        &account,
-		Addon:          &addon,
-		Card:           &card,
-		Customer:       &customer,
-		Invoice:        &invoice,
-		PaymentLink:    &paymentLink,
-		Order:          &order,
-		Payment:        &payment,
-		Plan:           &plan,
-		Product:        &product,
-		Refund:         &refund,
-		Subscription:   &subscription,
-		Token:          &token,
-		Transfer:       &transfer,
-		VirtualAccount: &va,
-		QrCode:         &qrCode,
-		FundAccount:    &fundAccount,
-		Settlement:     &settlement,
-		Stakeholder:    &stakeholder,
-		Item:           &item,
-		Iin:            &iin,
-		Webhook:        &webhook,
-		Document:       &document,
-		Dispute:        &dispute,
-		Payout:         &payout,
-	}
-	return &client
+	return createClient(request)
 }
 
 
 func NewClientOAuth(oauthToken string) *Client {
 	auth := requests.Auth{Token: oauthToken}
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
+	headers := make(map[string]string)
+	headers["Authorization"] = "Bearer " + oauthToken
+	
 	request := &requests.Request{
 		Auth:       auth,
 		AuthType:   requests.OAuthAuth,
@@ -122,64 +129,10 @@ func NewClientOAuth(oauthToken string) *Client {
 		Version:    getVersion(),
 		SDKName:    getSDKName(),
 		BaseURL:    constants.BASE_URL,
-		Headers:    make(map[string]string),
+		Headers:    headers,
 	}
 
-	account := resources.Account{Request: request}
-	addon := resources.Addon{Request: request}
-	card := resources.Card{Request: request}
-	customer := resources.Customer{Request: request}
-	invoice := resources.Invoice{Request: request}
-	paymentLink := resources.PaymentLink{Request: request}
-	order := resources.Order{Request: request}
-	payment := resources.Payment{Request: request}
-	product := resources.Product{Request: request}
-	plan := resources.Plan{Request: request}
-	refund := resources.Refund{Request: request}
-	subscription := resources.Subscription{Request: request}
-	token := resources.Token{Request: request}
-	transfer := resources.Transfer{Request: request}
-	va := resources.VirtualAccount{Request: request}
-	qrCode := resources.QrCode{Request: request}
-	fundAccount := resources.FundAccount{Request: request}
-	settlement := resources.Settlement{Request: request}
-	stakeholder := resources.Stakeholder{Request: request}
-	item := resources.Item{Request: request}
-	iin := resources.Iin{Request: request}
-	webhook := resources.Webhook{Request: request}
-	document := resources.Document{Request: request}
-	dispute := resources.Dispute{Request: request}
-	payout := resources.Payout{Request: request}
-
-	client := Client{
-		Request:        request,
-		Account:        &account,
-		Addon:          &addon,
-		Card:           &card,
-		Customer:       &customer,
-		Invoice:        &invoice,
-		PaymentLink:    &paymentLink,
-		Order:          &order,
-		Payment:        &payment,
-		Plan:           &plan,
-		Product:        &product,
-		Refund:         &refund,
-		Subscription:   &subscription,
-		Token:          &token,
-		Transfer:       &transfer,
-		VirtualAccount: &va,
-		QrCode:         &qrCode,
-		FundAccount:    &fundAccount,
-		Settlement:     &settlement,
-		Stakeholder:    &stakeholder,
-		Item:           &item,
-		Iin:            &iin,
-		Webhook:        &webhook,
-		Document:       &document,
-		Dispute:        &dispute,
-		Payout:         &payout,
-	}
-	return &client
+	return createClient(request)
 }
 
 // AddHeaders adds additional headers to Razorpay's client. All requests
