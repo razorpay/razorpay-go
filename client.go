@@ -46,6 +46,78 @@ func NewClient(key string, secret string) *Client {
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
 	request := &requests.Request{
 		Auth:       auth,
+		AuthType:   requests.BasicAuth,
+		HTTPClient: httpClient,
+		Version:    getVersion(),
+		SDKName:    getSDKName(),
+		BaseURL:    constants.BASE_URL,
+		Headers:    make(map[string]string),
+	}
+
+	account := resources.Account{Request: request}
+	addon := resources.Addon{Request: request}
+	card := resources.Card{Request: request}
+	customer := resources.Customer{Request: request}
+	invoice := resources.Invoice{Request: request}
+	paymentLink := resources.PaymentLink{Request: request}
+	order := resources.Order{Request: request}
+	payment := resources.Payment{Request: request}
+	product := resources.Product{Request: request}
+	plan := resources.Plan{Request: request}
+	refund := resources.Refund{Request: request}
+	subscription := resources.Subscription{Request: request}
+	token := resources.Token{Request: request}
+	transfer := resources.Transfer{Request: request}
+	va := resources.VirtualAccount{Request: request}
+	qrCode := resources.QrCode{Request: request}
+	fundAccount := resources.FundAccount{Request: request}
+	settlement := resources.Settlement{Request: request}
+	stakeholder := resources.Stakeholder{Request: request}
+	item := resources.Item{Request: request}
+	iin := resources.Iin{Request: request}
+	webhook := resources.Webhook{Request: request}
+	document := resources.Document{Request: request}
+	dispute := resources.Dispute{Request: request}
+	payout := resources.Payout{Request: request}
+
+	client := Client{
+		Request:        request,
+		Account:        &account,
+		Addon:          &addon,
+		Card:           &card,
+		Customer:       &customer,
+		Invoice:        &invoice,
+		PaymentLink:    &paymentLink,
+		Order:          &order,
+		Payment:        &payment,
+		Plan:           &plan,
+		Product:        &product,
+		Refund:         &refund,
+		Subscription:   &subscription,
+		Token:          &token,
+		Transfer:       &transfer,
+		VirtualAccount: &va,
+		QrCode:         &qrCode,
+		FundAccount:    &fundAccount,
+		Settlement:     &settlement,
+		Stakeholder:    &stakeholder,
+		Item:           &item,
+		Iin:            &iin,
+		Webhook:        &webhook,
+		Document:       &document,
+		Dispute:        &dispute,
+		Payout:         &payout,
+	}
+	return &client
+}
+
+
+func NewClientOAuth(oauthToken string) *Client {
+	auth := requests.Auth{Token: oauthToken}
+	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
+	request := &requests.Request{
+		Auth:       auth,
+		AuthType:   requests.OAuthAuth,
 		HTTPClient: httpClient,
 		Version:    getVersion(),
 		SDKName:    getSDKName(),
