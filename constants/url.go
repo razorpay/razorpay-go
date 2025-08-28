@@ -4,7 +4,7 @@ const (
 	VERSION_V1 = "v1"
 	VERSION_V2 = "v2"
 	//BASE_URL ... base api url
-	BASE_URL = "https://api-web.ext.dev.razorpay.in"
+	BASE_URL = "https://api.razorpay.com"
 	//ORDER_URL ...orders api base path
 	ORDER_URL = "/orders"
 	//INVOICE_URL ...invoices api base path
