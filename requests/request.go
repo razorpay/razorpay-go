@@ -39,7 +39,7 @@ type AuthType int
 
 const (
 	BasicAuth AuthType = iota
-	OAuthAuth
+	OAuth
 )
 
 // Request encapsulates all the information required to make an HTTP request
@@ -146,8 +146,8 @@ func (request *Request) GetUserAgent() string {
 
 // setAuthentication sets the appropriate authentication header based on AuthType
 func (request *Request) setAuthentication(req *http.Request) {
-	if request.AuthType == OAuthAuth {
-		req.Header.Set("Authorization", "Bearer "+ request.Auth.Token)
+	if request.AuthType == OAuth {
+		req.Header.Set(constants.AuthorizationHeader, constants.BearerPrefix + request.Auth.Token)
 	} else {
 		req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
 	}

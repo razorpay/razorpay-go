@@ -148,8 +148,8 @@ func TestAuthType(t *testing.T) {
 	if BasicAuth != 0 {
 		t.Errorf("Expected BasicAuth to be 0, got %d", BasicAuth)
 	}
-	if OAuthAuth != 1 {
-		t.Errorf("Expected OAuthAuth to be 1, got %d", OAuthAuth)
+	if OAuth != 1 {
+		t.Errorf("Expected OAuth to be 1, got %d", OAuth)
 	}
 }
 
@@ -169,18 +169,18 @@ func TestSetAuthentication(t *testing.T) {
 			expectedAuth: "Basic", // This will be set by SetBasicAuth
 		},
 		{
-			name: "OAuthAuth with token",
+			name: "OAuth with token",
 			request: Request{
 				Auth:     Auth{Token: "oauth_token_123"},
-				AuthType: OAuthAuth,
+				AuthType: OAuth,
 			},
 			expectedHeader: "Bearer oauth_token_123",
 		},
 		{
-			name: "OAuthAuth with empty token",
+			name: "OAuth with empty token",
 			request: Request{
 				Auth:     Auth{Token: ""},
-				AuthType: OAuthAuth,
+				AuthType: OAuth,
 			},
 			expectedHeader: "Bearer ",
 		},
@@ -206,7 +206,7 @@ func TestSetAuthentication(t *testing.T) {
 			tt.request.setAuthentication(httpReq)
 
 			// Verify the authentication was set correctly
-			if tt.request.AuthType == OAuthAuth {
+			if tt.request.AuthType == OAuth {
 				authHeader := httpReq.Header.Get("Authorization")
 				if authHeader != tt.expectedHeader {
 					t.Errorf("Expected Authorization header to be %s, got %s", tt.expectedHeader, authHeader)
@@ -253,7 +253,7 @@ func TestSetAuthenticationWithDifferentTokens(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			request := Request{
 				Auth:     Auth{Token: tt.token},
-				AuthType: OAuthAuth,
+				AuthType: OAuth,
 			}
 
 			httpReq, err := http.NewRequest("GET", "https://api.razorpay.com/v1/test", nil)

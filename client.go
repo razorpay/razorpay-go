@@ -39,8 +39,8 @@ type Client struct {
 	Payout         *resources.Payout
 }
 
-// createClient initializes and returns a new Client with all resources
-func createClient(request *requests.Request) *Client {
+// createClientFromRequest initializes and returns a new Client with all resources
+func createClientFromRequest(request *requests.Request) *Client {
 	account := resources.Account{Request: request}
 	addon := resources.Addon{Request: request}
 	card := resources.Card{Request: request}
@@ -112,7 +112,7 @@ func NewClient(key string, secret string) *Client {
 		Headers:    make(map[string]string),
 	}
 
-	return createClient(request)
+	return createClientFromRequest(request)
 }
 
 
@@ -120,11 +120,11 @@ func NewClientOAuth(oauthToken string) *Client {
 	auth := requests.Auth{Token: oauthToken}
 	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
 	headers := make(map[string]string)
-	headers["Authorization"] = "Bearer " + oauthToken
+	headers[constants.AuthorizationHeader] = constants.BearerPrefix + oauthToken
 	
 	request := &requests.Request{
 		Auth:       auth,
-		AuthType:   requests.OAuthAuth,
+		AuthType:   requests.OAuth,
 		HTTPClient: httpClient,
 		Version:    getVersion(),
 		SDKName:    getSDKName(),
@@ -132,7 +132,7 @@ func NewClientOAuth(oauthToken string) *Client {
 		Headers:    headers,
 	}
 
-	return createClient(request)
+	return createClientFromRequest(request)
 }
 
 // AddHeaders adds additional headers to Razorpay's client. All requests
