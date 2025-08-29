@@ -22,7 +22,9 @@ import (
 type Auth struct {
 	Key    string
 	Secret string
+	Token  string
 }
+
 
 type FileUploadParams struct {
 	File   *os.File
@@ -32,10 +34,19 @@ type FileUploadParams struct {
 // TIMEOUT ... client timeout
 const TIMEOUT = 10
 
+// AuthType represents the type of authentication to use
+type AuthType int
+
+const (
+	BasicAuth AuthType = iota
+	OAuth
+)
+
 // Request encapsulates all the information required to make an HTTP request
 // to Razorpay's APIs.
 type Request struct {
 	Auth       Auth
+	AuthType   AuthType
 	HTTPClient *http.Client
 	Headers    map[string]string
 	Version    string
@@ -133,6 +144,15 @@ func (request *Request) GetUserAgent() string {
 	return request.userAgent
 }
 
+// setAuthentication sets the appropriate authentication header based on AuthType
+func (request *Request) setAuthentication(req *http.Request) {
+	if request.AuthType == OAuth {
+		req.Header.Set(constants.AuthorizationHeader, constants.BearerPrefix + request.Auth.Token)
+	} else {
+		req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	}
+}
+
 func processResponse(response *http.Response) (map[string]interface{}, error) {
 	defer response.Body.Close()
 	body, err := ioutil.ReadAll(response.Body)
@@ -193,7 +213,7 @@ func (request *Request) Get(path string, queryParams map[string]interface{}, ext
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	request.setAuthentication(req)
 
 	request.addRequestHeaders(req, extraHeaders)
 
@@ -209,7 +229,7 @@ func (request *Request) Post(path string, payload map[string]interface{}, extraH
 
 	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 
-	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	request.setAuthentication(req)
 
 	request.addRequestHeaders(req, extraHeaders)
 
@@ -225,7 +245,7 @@ func (request *Request) Patch(path string, payload map[string]interface{}, extra
 
 	req, _ := http.NewRequest("PATCH", url, bytes.NewBuffer(jsonStr))
 
-	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	request.setAuthentication(req)
 
 	request.addRequestHeaders(req, extraHeaders)
 
@@ -241,7 +261,7 @@ func (request *Request) Put(path string, payload map[string]interface{}, extraHe
 
 	req, _ := http.NewRequest("PUT", url, bytes.NewBuffer(jsonStr))
 
-	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	request.setAuthentication(req)
 
 	request.addRequestHeaders(req, extraHeaders)
 
@@ -257,7 +277,7 @@ func (request *Request) Delete(path string, queryParams map[string]interface{}, 
 
 	req, _ := http.NewRequest("DELETE", url, nil)
 
-	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	request.setAuthentication(req)
 
 	request.addRequestHeaders(req, extraHeaders)
 
@@ -299,7 +319,7 @@ func (request *Request) File(path string, params FileUploadParams, extraHeaders 
 	}
 	contentType := writer.FormDataContentType()
 
-	req.SetBasicAuth(request.Auth.Key, request.Auth.Secret)
+	request.setAuthentication(req)
 
 	request.addRequestHeaders(req, extraHeaders, contentType)
 

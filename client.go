@@ -39,20 +39,8 @@ type Client struct {
 	Payout         *resources.Payout
 }
 
-// NewClient creates and returns a new Razorpay client. key and secret
-// are used to authenticate the requests made to Razorpay's APIs.
-func NewClient(key string, secret string) *Client {
-	auth := requests.Auth{Key: key, Secret: secret}
-	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
-	request := &requests.Request{
-		Auth:       auth,
-		HTTPClient: httpClient,
-		Version:    getVersion(),
-		SDKName:    getSDKName(),
-		BaseURL:    constants.BASE_URL,
-		Headers:    make(map[string]string),
-	}
-
+// createClientFromRequest initializes and returns a new Client with all resources
+func createClientFromRequest(request *requests.Request) *Client {
 	account := resources.Account{Request: request}
 	addon := resources.Addon{Request: request}
 	card := resources.Card{Request: request}
@@ -79,7 +67,7 @@ func NewClient(key string, secret string) *Client {
 	dispute := resources.Dispute{Request: request}
 	payout := resources.Payout{Request: request}
 
-	client := Client{
+	return &Client{
 		Request:        request,
 		Account:        &account,
 		Addon:          &addon,
@@ -107,7 +95,44 @@ func NewClient(key string, secret string) *Client {
 		Dispute:        &dispute,
 		Payout:         &payout,
 	}
-	return &client
+}
+
+// NewClient creates and returns a new Razorpay client. key and secret
+// are used to authenticate the requests made to Razorpay's APIs.
+func NewClient(key string, secret string) *Client {
+	auth := requests.Auth{Key: key, Secret: secret}
+	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
+	request := &requests.Request{
+		Auth:       auth,
+		AuthType:   requests.BasicAuth,
+		HTTPClient: httpClient,
+		Version:    getVersion(),
+		SDKName:    getSDKName(),
+		BaseURL:    constants.BASE_URL,
+		Headers:    make(map[string]string),
+	}
+
+	return createClientFromRequest(request)
+}
+
+
+func NewClientOAuth(oauthToken string) *Client {
+	auth := requests.Auth{Token: oauthToken}
+	httpClient := &http.Client{Timeout: requests.TIMEOUT * time.Second}
+	headers := make(map[string]string)
+	headers[constants.AuthorizationHeader] = constants.BearerPrefix + oauthToken
+	
+	request := &requests.Request{
+		Auth:       auth,
+		AuthType:   requests.OAuth,
+		HTTPClient: httpClient,
+		Version:    getVersion(),
+		SDKName:    getSDKName(),
+		BaseURL:    constants.BASE_URL,
+		Headers:    headers,
+	}
+
+	return createClientFromRequest(request)
 }
 
 // AddHeaders adds additional headers to Razorpay's client. All requests
