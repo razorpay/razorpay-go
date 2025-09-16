@@ -28,7 +28,7 @@ func (p *Payment) Fetch(paymentID string, queryParams map[string]interface{}, ex
 }
 
 // Capture captures the payment having the given paymentID.
-func (p *Payment) Capture(paymentID string, amount int, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+func (p *Payment) Capture(paymentID string, amount float64, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("/%s%s/%s/capture", constants.VERSION_V1, constants.PAYMENT_URL, url.PathEscape(paymentID))
 	// Amount should be in paisa
@@ -41,7 +41,7 @@ func (p *Payment) Capture(paymentID string, amount int, data map[string]interfac
 }
 
 // Refund initiates a refund for the given paymentID.
-func (p *Payment) Refund(paymentID string, amount int, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+func (p *Payment) Refund(paymentID string, amount float64, data map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
 
 	url := fmt.Sprintf("/%s%s/%s/refund", constants.VERSION_V1, constants.PAYMENT_URL, url.PathEscape(paymentID))
 	// Amount should be in paisa
