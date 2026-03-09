@@ -54,3 +54,9 @@ func (t *Token) ProcessPaymentOnAlternatePAorPG(data map[string]interface{}, ext
 	url := fmt.Sprintf("/%s/tokens/service_provider_tokens/token_transactional_data", constants.VERSION_V1)
 	return t.Request.Post(url, data, extraHeaders)
 }
+
+// Cancel cancels a token.
+func (t *Token) Cancel(customerID string, tokenID string, queryParams map[string]interface{}, extraHeaders map[string]string) (map[string]interface{}, error) {
+	url := fmt.Sprintf("/%s%s/%s/tokens/%s/cancel", constants.VERSION_V1, constants.CUSTOMER_URL, customerID, tokenID)
+	return t.Request.Put(url, queryParams, extraHeaders)
+}

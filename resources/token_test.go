@@ -67,3 +67,13 @@ func TestParterTokenCreate(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
+
+func TestTokenCancel(t *testing.T) {
+	url := fmt.Sprintf("/%s%s/%s/tokens/%s/cancel", constants.VERSION_V1, constants.CUSTOMER_URL, TestCustomerID, TestTokenID)
+	teardown, fixture := utils.StartMockServer(url, "token_cancel")
+	defer teardown()
+	body, err := utils.Client.Token.Cancel(TestCustomerID, TestTokenID, nil, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
