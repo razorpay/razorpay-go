@@ -4,7 +4,7 @@ const (
 	VERSION_V1 = "v1"
 	VERSION_V2 = "v2"
 	//BASE_URL ... base api url
-	BASE_URL = "https://api.razorpay.com"
+	BASE_URL = "https://api-web-jatin-auth-2.dev.razorpay.in"
 	//ORDER_URL ...orders api base path
 	ORDER_URL = "/orders"
 	//INVOICE_URL ...invoices api base path
@@ -50,9 +50,9 @@ const (
 	//IIN_URL ... iin api base path
 	IIN = "/iins"
 	//WEBHOOK ... webhook api base path
-	WEBHOOK = "/webhooks"
+	WEBHOOK  = "/webhooks"
 	DOCUMENT = "/documents"
-	DISPUTE = "/disputes"
+	DISPUTE  = "/disputes"
 	//PAYOUT_URL ... payout api base path
 	PAYOUT_URL = "/payouts"
 )
