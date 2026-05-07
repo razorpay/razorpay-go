@@ -6,9 +6,9 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"reflect"
 	"strings"
 	"testing"
@@ -47,7 +47,7 @@ func testSetup() func() {
 
 func getFixture(path string) string {
 	filepath := path + ".json"
-	b, err := os.ReadFile("../testdata/" + filepath)
+	b, err := ioutil.ReadFile("../testdata/" + filepath)
 	if err != nil {
 		panic(err)
 	}
@@ -85,7 +85,7 @@ func StartMockServer(url string, fixtureName string) (func(), string) {
 	mux.HandleFunc(url, func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprint(w, fixture)
+		fmt.Fprintf(w, "%s", fixture) // nosemgrep : go.lang.security.audit.xss.no-fprintf-to-responsewriter.no-fprintf-to-responsewriter
 	})
 	return teardown, fixture
 }
