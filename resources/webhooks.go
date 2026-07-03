@@ -35,7 +35,7 @@ func (wh *Webhook) Edit(webhookId string, accountId string, data map[string]inte
 		url := fmt.Sprintf("/%s%s/%s%s/%s", constants.VERSION_V2, constants.ACCOUNT_URL, url.PathEscape(accountId), constants.WEBHOOK, url.PathEscape(webhookId))
 		return wh.Request.Patch(url, data, extraHeaders)
 	}
-	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.WEBHOOK, url.PathEscape(accountId))
+	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.WEBHOOK, url.PathEscape(webhookId))
 	return wh.Request.Put(url, data, extraHeaders)
 }
 
