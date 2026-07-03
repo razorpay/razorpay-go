@@ -74,3 +74,19 @@ func TestWebhookEdit(t *testing.T) {
 	assert.Equal(t, err, nil)
 	utils.TestResponse(jsonByteArray, []byte(fixture), t)
 }
+
+func TestWebhookEditV1(t *testing.T) {
+	// When no accountId is supplied, the v1 endpoint must address the webhook
+	// being edited: /v1/webhooks/{webhookId}
+	url := "/" + constants.VERSION_V1 + constants.WEBHOOK + "/" + TestWebhookID
+	teardown, fixture := utils.StartMockServer(url, "fake_webhook")
+	defer teardown()
+
+	data := map[string]interface{}{
+		"url": "https://www.linkedin.com",
+	}
+	body, err := utils.Client.Webhook.Edit(TestWebhookID, "", data, nil)
+	jsonByteArray, _ := json.Marshal(body)
+	assert.Equal(t, err, nil)
+	utils.TestResponse(jsonByteArray, []byte(fixture), t)
+}
