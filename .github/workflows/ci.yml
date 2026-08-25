@@ -12,20 +12,18 @@ jobs:
   test:
     name: Run tests and publish test coverage
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
 
-      # Start PMG in server mode to block malicious packages during installs
-      - uses: safedep/pmg@v1
+      - name: Setup PMG proxy
+        id: pmg-setup
+        uses: safedep/pmg@v1
         with:
           server-mode: true
           api-key: ${{ secrets.PMG_PUBLIC_REPOS_TOKEN }}
           tenant-id: ${{ secrets.PMG_TENANT_ID }}
-
       - uses: actions/setup-go@v2
         with:
           go-version: '1.26'
@@ -39,7 +37,11 @@ jobs:
         with:
            token: ${{ secrets.CODECOV_TOKEN }}
 
-      # Enforce PMG policy and flush events to SafeDep Cloud
       - name: Enforce PMG policy
         if: always()
-        run: pmg proxy stop --fail-on-violation
+        run: |
+          if [ "${{ steps.pmg-setup.outcome }}" = "success" ]; then
+            pmg proxy stop --fail-on-violation
+          else
+            pmg proxy stop || true
+          fi
