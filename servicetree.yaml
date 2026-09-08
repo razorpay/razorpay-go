@@ -1,0 +1,37 @@
+service: razorpay-go  # required, canonical slug — immutable once registered
+displayName: "Razorpay Go SDK"  # required, human-readable name — README title "Razorpay Go Client"; the official Go client library for the Razorpay API
+description: "Official Go client library for the Razorpay API: merchant-facing bindings covering orders, payments, refunds, subscriptions, payment links, settlements, virtual accounts, Route transfers, QR codes, e-mandates and more, published as github.com/razorpay/razorpay-go."  # required, one-sentence description — from the repo README ("Golang bindings for interacting with the Razorpay API... primarily meant for merchants") and its supported-resources list
+type: library  # required, one of: service | worker | cron | library | pipeline — a merchant-facing SDK imported as a Go module; no server deployment, Dockerfile, helm or Spinnaker pipeline · retype after the serviceTypes enum widens: sdk
+tier: T2  # required, one of: T0 | T1 | T2 | T3 — an official merchant-facing SDK whose bugs land inside merchants' production integrations: wider blast radius than internal tooling, but it is a client library, not a running Razorpay service, so below T1
+lifecycle: live  # optional, one of: incubating | live | deprecated | retired — actively maintained (last push 2026-08-28) and the SDK linked from docs.razorpay.com
+
+domain: razorpay1/partnerships  # required, two-level domain/subgroup slug — family razorpay1 from the registry seed l1 (BU SME Payments, team Partnerships under POD "PG (Plugins, Checkout)"); area partnerships reused from the existing "razorpay1/partnerships" slug, matching the seed csv_team
+
+owner:
+  team:  # required, owning team slug — TO FILL: this repo has no CODEOWNERS file, .github/repo_owners.json carries no team slug, and the GitHub repository-teams API is not readable with the current token; ask the POD lead for the owning GitHub team
+  em:  # name | @slack | email — TO FILL: DevRev runnable owner not found in SuccessFactors
+  org_group:  # SuccessFactors group of the EM — TO FILL: the declared owner has no SuccessFactors record, so the org tree cannot be resolved; ask the POD lead
+  org_sub_group:  # SuccessFactors sub-group of the EM — TO FILL: the declared owner has no SuccessFactors record; ask the POD lead
+  org_pod:  # SuccessFactors pod of the EM — TO FILL: the declared owner has no SuccessFactors record; ask the POD lead
+  pm:  # product manager — TO FILL: nothing in the repo or registry names a PM; ask the Partnerships POD lead
+  overrides: []  # optional, region-scoped owner overrides — TO FILL only if some region is owned by a different team; each entry is a "region" code plus the owning "team" slug
+
+links:
+  repo: "https://github.com/razorpay/razorpay-go"  # canonical GitHub repo URL
+  alerts_repo:  # this service's alert rules in razorpay/alert-rules — TO FILL: no matching ruleset found; add one in razorpay/alert-rules, then link the file here
+  slos:  # SLO definitions — TO FILL: no slo.yaml at this repo root and no sloth ruleset for it under razorpay/alert-rules/slo/prod (the two places SLOs are defined today); add one there and link it here
+  slack_channel:  # primary Slack channel for this service — TO FILL: no slack_candidates in the draft; ask the Partnerships POD lead (EM Shobhit Jain) which channel owns the public SDKs
+  zenduty_policy:  # Zenduty policy/service name used for paging — TO FILL: the service-to-policy mapping is not in DevRev or alert-rules for this service; it lives in the external Zenduty policies sheet
+  escalation_l1:  # service EM — TO FILL: no owner could be resolved for this service
+  escalation_l2:  # EM's manager — TO FILL: the EM has no SuccessFactors record, so no manager chain is available
+  escalation_l3:  # manager's manager — TO FILL: the EM has no SuccessFactors record, so no manager chain is available
+  oncall_handle:  # Slack/PagerDuty oncall handle or usergroup — TO FILL: not set on the DevRev runnable
+  runbook:  # link to the incident runbook — TO FILL: no runbook directory for this service in razorpay/rzp-oncall-agent; add one or link the Google Doc / alpha.razorpay.com page
+  api_docs: "https://docs.razorpay.com"  # API documentation — README links the official Razorpay API docs as the usage documentation for this SDK
+  dashboard:  # primary dashboard — TO FILL: no Grafana hits in the draft; a client SDK has no runtime dashboard
+  logs_and_traces: "https://razorpay-prod.app.coralogix.in/#/query-new/archive-logs"  # org-standard prod Coralogix — filter subsystem "razorpay-go"
+  strategy_okr:  # TO FILL: link the FY strategy doc for the owning group.
+  risk_assessment:  # TO FILL: no .agents/skills/risk-assessment in this repo; add the per-repo risk-assessment skill
+  regions:  # per-region links — TO FILL: no prod region deployment found for this service in spinacode or alert-rules; add a block per geography once it ships
+
+dependencies: []  # optional, declared service dependencies — TO FILL: shape: - service: <slug> for internal deps, - vendor: <name> for external (gateways, banks)
