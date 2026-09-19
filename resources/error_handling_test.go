@@ -47,6 +47,22 @@ func startSuccessMockServer(url string, responseJSON string) (func(), *razorpay.
 	return func() { server.Close() }, client
 }
 
+func startRawErrorMockServer(url string, statusCode int, rawBody string) (func(), *razorpay.Client) {
+	mux := http.NewServeMux()
+	server := httptest.NewServer(mux)
+
+	client := razorpay.NewClient("test_key", "test_secret")
+	client.Request.BaseURL = server.URL
+
+	mux.HandleFunc(url, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(statusCode)
+		w.Write([]byte(rawBody))
+	})
+
+	return func() { server.Close() }, client
+}
+
 func TestBadRequestError_400(t *testing.T) {
 	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.ORDER_URL)
 	teardown, client := startErrorMockServer(url, 400, "BAD_REQUEST_ERROR", "The amount field is required")
@@ -151,4 +167,62 @@ func TestMalformedJsonResponse(t *testing.T) {
 	_, err := client.Order.Fetch("order_123", nil, nil)
 
 	assert.NotNil(t, err, "Should return error for malformed JSON")
+}
+
+// Regression tests for #116: a non-2xx response must never produce an error
+// whose Error() is the empty string.
+
+func TestNonSuccessMalformedJSONHasNonEmptyError(t *testing.T) {
+	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.ORDER_URL, "order_123")
+	teardown, client := startRawErrorMockServer(url, 400, `{invalid json`)
+	defer teardown()
+
+	_, err := client.Order.Fetch("order_123", nil, nil)
+
+	assert.NotNil(t, err, "Should return an error for malformed non-2xx body")
+	assert.NotEmpty(t, err.Error(), "Error() must not be empty")
+}
+
+func TestNonSuccessWithoutErrorObjectHasNonEmptyError(t *testing.T) {
+	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.ORDER_URL, "order_123")
+	teardown, client := startRawErrorMockServer(url, 400, `{"message":"forbidden"}`)
+	defer teardown()
+
+	_, err := client.Order.Fetch("order_123", nil, nil)
+
+	assert.NotNil(t, err, "Should return an error when body has no error object")
+	assert.NotEmpty(t, err.Error(), "Error() must not be empty")
+}
+
+func TestNonSuccessErrorWithoutDescriptionHasNonEmptyError(t *testing.T) {
+	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.ORDER_URL, "order_123")
+	teardown, client := startRawErrorMockServer(url, 400, `{"error":{"code":"BAD_REQUEST_ERROR"}}`)
+	defer teardown()
+
+	_, err := client.Order.Fetch("order_123", nil, nil)
+
+	assert.NotNil(t, err, "Should return an error when description is absent")
+	assert.NotEmpty(t, err.Error(), "Error() must not be empty")
+}
+
+func TestNonSuccessEmptyBodyHasNonEmptyError(t *testing.T) {
+	url := fmt.Sprintf("/%s%s/%s", constants.VERSION_V1, constants.ORDER_URL, "order_123")
+	teardown, client := startRawErrorMockServer(url, 502, "")
+	defer teardown()
+
+	_, err := client.Order.Fetch("order_123", nil, nil)
+
+	assert.NotNil(t, err, "Should return an error for an empty non-2xx body")
+	assert.NotEmpty(t, err.Error(), "Error() must not be empty")
+}
+
+func TestWellFormedErrorMessageIsUnchanged(t *testing.T) {
+	url := fmt.Sprintf("/%s%s", constants.VERSION_V1, constants.ORDER_URL)
+	teardown, client := startErrorMockServer(url, 400, "BAD_REQUEST_ERROR", "amount required")
+	defer teardown()
+
+	_, err := client.Order.Create(map[string]interface{}{}, nil)
+
+	assert.NotNil(t, err, "Should return an error for 400 response")
+	assert.Equal(t, "amount required", err.Error(), "Well-formed error message must be unchanged")
 }

@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/razorpay/razorpay-go/constants"
@@ -187,18 +188,68 @@ func (request *Request) doRequestResponse(req *http.Request) (map[string]interfa
 	}
 
 	// Raise an error depending on the type of error in response
+	defer response.Body.Close()
+
+	body, readErr := io.ReadAll(response.Body)
+
 	var jsonResponse errors.RZPErrorJSON
-	json.NewDecoder(response.Body).Decode(&jsonResponse)
+	var decodeErr error
+	if readErr == nil && len(body) > 0 {
+		decodeErr = json.Unmarshal(body, &jsonResponse)
+	}
 	errorData := jsonResponse.ErrorData
+
+	message := errorData.Description
+	var cause error
+	if message == "" {
+		// The response carried no usable error description, so Error() would
+		// otherwise be empty. Fall back to the HTTP status and, when the body
+		// could not be read or parsed, surface that as the wrapped cause.
+		cause = readErr
+		if cause == nil {
+			cause = decodeErr
+		}
+		message = errorFallbackMessage(response, body, cause)
+	}
 
 	switch errorData.InternalErrorCode {
 	case constants.SERVER_ERROR:
-		return nil, &errors.ServerError{Message: errorData.Description}
+		return nil, &errors.ServerError{Message: message, Err: cause}
 	case constants.GATEWAY_ERROR:
-		return nil, &errors.GatewayError{Message: errorData.Description}
+		return nil, &errors.GatewayError{Message: message, Err: cause}
 	default:
-		return nil, &errors.BadRequestError{Message: errorData.Description}
+		return nil, &errors.BadRequestError{Message: message, Err: cause}
 	}
+}
+
+// maxErrorBodySnippet caps how much of an unparseable response body is quoted
+// back in an error message.
+const maxErrorBodySnippet = 256
+
+// errorFallbackMessage builds a non-empty message for a non-2xx response whose
+// body carried no "error.description".
+//
+// handleError concatenates Message and Err without a separator, so when cause is
+// non-nil the message ends in ": " and the cause completes the sentence.
+func errorFallbackMessage(response *http.Response, body []byte, cause error) string {
+	status := strings.TrimSpace(response.Status)
+	if status == "" {
+		status = fmt.Sprintf("%d %s", response.StatusCode, http.StatusText(response.StatusCode))
+	}
+
+	if cause != nil {
+		return status + ": "
+	}
+
+	snippet := strings.TrimSpace(string(body))
+	if snippet == "" {
+		return status
+	}
+	if len(snippet) > maxErrorBodySnippet {
+		snippet = snippet[:maxErrorBodySnippet] + "..."
+	}
+
+	return status + ": " + snippet
 }
 
 // Get ...
