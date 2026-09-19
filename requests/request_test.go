@@ -1,6 +1,8 @@
 package requests
 
 import (
+	"bytes"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -350,5 +352,74 @@ func TestGetUserAgent_Empty(t *testing.T) {
 
 	if request.GetUserAgent() != "" {
 		t.Errorf("Expected empty user agent, got %s", request.GetUserAgent())
+	}
+}
+
+// Regression test for #116: the non-2xx path used to return without closing
+// response.Body, leaking the connection back to the transport pool.
+
+// closeTrackingBody records whether Close was called.
+type closeTrackingBody struct {
+	reader io.Reader
+	closed *bool
+}
+
+func (b *closeTrackingBody) Read(p []byte) (int, error) { return b.reader.Read(p) }
+
+func (b *closeTrackingBody) Close() error {
+	*b.closed = true
+	return nil
+}
+
+// stubTransport returns a canned response with an instrumented body.
+type stubTransport struct {
+	statusCode int
+	body       string
+	closed     *bool
+}
+
+func (t *stubTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	return &http.Response{
+		StatusCode: t.statusCode,
+		Status:     http.StatusText(t.statusCode),
+		Body:       &closeTrackingBody{reader: bytes.NewBufferString(t.body), closed: t.closed},
+		Header:     make(http.Header),
+		Request:    req,
+	}, nil
+}
+
+func TestResponseBodyClosedOnErrorResponse(t *testing.T) {
+	cases := []struct {
+		name       string
+		statusCode int
+		body       string
+	}{
+		{"well-formed razorpay error", 400, `{"error":{"internal_error_code":"BAD_REQUEST_ERROR","description":"amount required"}}`},
+		{"malformed json", 400, `{invalid json`},
+		{"empty body", 502, ""},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			closed := false
+			request := &Request{
+				Auth:       Auth{Key: "key", Secret: "secret"},
+				HTTPClient: &http.Client{Transport: &stubTransport{statusCode: tc.statusCode, body: tc.body, closed: &closed}},
+				Headers:    map[string]string{},
+				BaseURL:    "https://api.razorpay.com",
+			}
+
+			_, err := request.Get("/v1/orders/order_123", nil, nil)
+
+			if err == nil {
+				t.Fatalf("expected an error for status %d", tc.statusCode)
+			}
+			if err.Error() == "" {
+				t.Errorf("Error() must not be empty for status %d", tc.statusCode)
+			}
+			if !closed {
+				t.Errorf("response.Body was not closed for status %d", tc.statusCode)
+			}
+		})
 	}
 }
