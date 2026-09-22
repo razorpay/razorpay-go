@@ -1,10 +1,13 @@
 package constants
 
+import "os"
+
 const (
 	VERSION_V1 = "v1"
 	VERSION_V2 = "v2"
-	//BASE_URL ... base api url
-	BASE_URL = "https://api.razorpay.com"
+	//DEFAULT_BASE_URL ... default base api url, used when
+	//RAZORPAY_BASE_URL is not set
+	DEFAULT_BASE_URL = "https://api.razorpay.com"
 	//ORDER_URL ...orders api base path
 	ORDER_URL = "/orders"
 	//INVOICE_URL ...invoices api base path
@@ -56,3 +59,14 @@ const (
 	//PAYOUT_URL ... payout api base path
 	PAYOUT_URL = "/payouts"
 )
+
+// GetBaseURL returns the base api url. It reads RAZORPAY_BASE_URL from
+// the environment first and falls back to DEFAULT_BASE_URL when the
+// variable is unset or empty.
+func GetBaseURL() string {
+	if baseURL := os.Getenv("RAZORPAY_BASE_URL"); baseURL != "" {
+		return baseURL
+	}
+
+	return DEFAULT_BASE_URL
+}

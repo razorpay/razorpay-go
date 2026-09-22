@@ -108,7 +108,7 @@ func NewClient(key string, secret string) *Client {
 		HTTPClient: httpClient,
 		Version:    getVersion(),
 		SDKName:    getSDKName(),
-		BaseURL:    constants.BASE_URL,
+		BaseURL:    constants.GetBaseURL(),
 		Headers:    make(map[string]string),
 	}
 
@@ -128,7 +128,7 @@ func NewClientOAuth(oauthToken string) *Client {
 		HTTPClient: httpClient,
 		Version:    getVersion(),
 		SDKName:    getSDKName(),
-		BaseURL:    constants.BASE_URL,
+		BaseURL:    constants.GetBaseURL(),
 		Headers:    headers,
 	}
 
