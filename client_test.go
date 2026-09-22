@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/razorpay/razorpay-go/constants"
 	"github.com/razorpay/razorpay-go/requests"
 	"github.com/stretchr/testify/assert"
 )
@@ -11,6 +12,7 @@ import (
 func TestNewClient(t *testing.T) {
 	key := "rzp_test_key123"
 	secret := "test_secret_456"
+	t.Setenv("RAZORPAY_BASE_URL", "")
 
 	client := NewClient(key, secret)
 
@@ -18,6 +20,16 @@ func TestNewClient(t *testing.T) {
 	assert.Equal(t, key, client.Request.Auth.Key, "Key should be set correctly")
 	assert.Equal(t, secret, client.Request.Auth.Secret, "Secret should be set correctly")
 	assert.Equal(t, requests.BasicAuth, client.Request.AuthType, "AuthType should be BasicAuth")
+	assert.Equal(t, constants.DEFAULT_BASE_URL, client.Request.BaseURL, "BaseURL should default to the production api url")
+}
+
+func TestNewClient_BaseURLOverride(t *testing.T) {
+	customURL := "https://api-web.ext.dev.razorpay.in"
+	t.Setenv("RAZORPAY_BASE_URL", customURL)
+
+	client := NewClient("rzp_test_key", "test_secret")
+
+	assert.Equal(t, customURL, client.Request.BaseURL, "BaseURL should be read from RAZORPAY_BASE_URL")
 }
 
 func TestNewClient_ResourcesInitialized(t *testing.T) {
@@ -53,12 +65,23 @@ func TestNewClient_ResourcesInitialized(t *testing.T) {
 
 func TestNewClientOAuth(t *testing.T) {
 	token := "oauth_token_abc123"
+	t.Setenv("RAZORPAY_BASE_URL", "")
 
 	client := NewClientOAuth(token)
 
 	assert.NotNil(t, client, "OAuth client should not be nil")
 	assert.Equal(t, token, client.Request.Auth.Token, "Token should be set correctly")
 	assert.Equal(t, requests.OAuth, client.Request.AuthType, "AuthType should be OAuth")
+	assert.Equal(t, constants.DEFAULT_BASE_URL, client.Request.BaseURL, "BaseURL should default to the production api url")
+}
+
+func TestNewClientOAuth_BaseURLOverride(t *testing.T) {
+	customURL := "https://api-web.ext.dev.razorpay.in"
+	t.Setenv("RAZORPAY_BASE_URL", customURL)
+
+	client := NewClientOAuth("oauth_token_test")
+
+	assert.Equal(t, customURL, client.Request.BaseURL, "BaseURL should be read from RAZORPAY_BASE_URL")
 }
 
 func TestNewClientOAuth_ResourcesInitialized(t *testing.T) {
